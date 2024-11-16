@@ -103,8 +103,19 @@ const Footer = () => {
           <img
             src="../images/logo.png" // Remplacez par le chemin de votre logo
             alt="Logo"
-            style={{ width: "40%", height: "40%" ,marginTop:'10%'}}
+            style={{ width: "40%", height: "40%" ,marginTop:'5%'}}
           />
+            {/* Copyright */}
+       <div
+        style={{
+          textAlign: "center",
+          marginTop:'5%',
+          fontSize: "12px",
+          color: "white",
+        }}
+      >
+        © 2024 All rights reserved
+      </div>
         </div>
 
         {/* Liste à droite "Get in Touch" */}
@@ -193,6 +204,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
+     
     </div>
   );
 };
