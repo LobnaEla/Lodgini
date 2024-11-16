@@ -1,0 +1,12 @@
+.apartment-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* Space between cards */
+    gap: 20px;
+    /* Space between cards */
+    padding: 0 15px;
+    /* Padding on left and right sides */
+    margin: 0 auto;
+    /* Center the grid */
+}
