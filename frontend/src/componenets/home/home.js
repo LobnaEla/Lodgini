@@ -1,5 +1,5 @@
 // Home.js
-
+import Footer from './footer';
 import React from 'react';
 import Navbar from './navbar1';  // Assurez-vous que le chemin d'importation est correct
 
@@ -170,6 +170,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+    <Footer/>
     </div>
     );
 };
