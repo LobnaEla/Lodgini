@@ -100,7 +100,7 @@ export const Signin = () => {
             }}>Login property owner account</button>
             
             <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
-              <a href="/property-owner-register" style={{ color: 'black', textDecoration: 'none' ,textDecoration: 'underline'}}>Create an Account</a>
+              <a href="../sign_up" style={{ color: 'black', textDecoration: 'none' ,textDecoration: 'underline'}}>Create an Account</a>
             </p>
           </form>
         </div>

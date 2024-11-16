@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../home/navbar1';
 import Footer from '../home/footer';
 
-export const Signup = () => {
+export const Signupowner = () => {
   return (
     <div style={{ backgroundColor: '#ede7e3' }}>
       <Navbar />
@@ -74,7 +74,8 @@ export const Signup = () => {
             display: 'flex',
             flexDirection: 'column',
           }}>
-            <h2 style={{ textAlign: 'center' }}>Create Account</h2>
+            <h2 style={{ textAlign: 'center' }}>Create Property 
+            Owner Account</h2>
 
             {/* Name field */}
             <div style={{ marginBottom: '3%' }}>
@@ -194,11 +195,9 @@ export const Signup = () => {
 
            {/* Additional links */}
             <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
-              <a href="/sign_in" style={{ color: 'black', textDecoration: 'none',textDecoration: 'underline' }}>Login</a>
+              <a href="/login" style={{ color: 'black', textDecoration: 'none',textDecoration: 'underline' }}>Login</a>
             </p>
-            <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
-              <a href="/property-owner-register" style={{ color: 'black', textDecoration: 'none' ,textDecoration: 'underline'}}>Register as property owner</a>
-            </p>
+            
           </form>
         </div>
       </div>
@@ -208,4 +207,4 @@ export const Signup = () => {
   );
 }
 
-export default Signup;
+export default Signupowner;
