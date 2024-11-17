@@ -82,7 +82,7 @@ const Navbar = () => {
     ...buttonStyles,
     color: '#16697a',
     backgroundColor: '#ede7e3',
-    padding: '8px 15px', 
+    padding: '8px 15px',
     fontSize: '14px'
   };
 

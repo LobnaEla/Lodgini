@@ -3,12 +3,45 @@ import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
 import ApartmentGrid from "../categories/apartmentGrid";
 import { useNavigate } from "react-router-dom";
+import Review from "./review";
 
 const Profile = () => {
     const navigate = useNavigate();
     const handleAddReviewClick = () => {
         navigate("/Profile/Add_review");
     };
+
+    const reviews = [
+        {
+            name: "Lobna Elabed",
+            propertyName: "Luxury Apartment Downtown",
+            description: "This place is absolutely amazing! Highly recommended.",
+            stars: 5,
+            date: "2 days ago",
+            imageUrl: "images/apartment.jpg",
+            profileImageUrl: "images/lobna.jpeg",
+        },
+        {
+            name: "Lobna Elabed",
+            propertyName: "Cozy Cottage Near the Lake",
+            description: "Not bad, but could be better. The staff was helpful.",
+            stars: 3,
+            date: "1 week ago",
+            imageUrl: "images/vacation.jpg",
+            profileImageUrl: "images/lobna.jpeg",
+        },
+        {
+            name: "Lobna Elabed",
+            propertyName: "Beachside Villa",
+            description: "Terrible experience. Would not recommend.",
+            stars: 1,
+            date: "1 month ago",
+            imageUrl: "images/vacation.jpg",
+            profileImageUrl: "images/lobna.jpeg",
+        },
+    ];
+
+
 
     return (
         <div>
@@ -35,16 +68,29 @@ const Profile = () => {
                             <div
                                 className="avatar"
                                 style={{
-                                    width: "100px",
-                                    height: "100px",
+                                    width: "150px",
+                                    height: "150px",
                                     borderRadius: "50%",
-                                    backgroundColor: "#CCC",
+                                    overflow: "hidden",
+                                    border: "3px solid #ddd",
+                                    marginBottom: "1.5rem",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                                 }}
-                            ></div>
+                            >
+                                <img
+                                    src="images/lobna.jpeg" // Update the path if necessary
+                                    alt="Profile Avatar"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            </div>
                             <div className="form">
                                 <input
                                     type="text"
-                                    value="John Doe"
+                                    value="Lobna Elabed"
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -58,7 +104,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="email"
-                                    value="example@gmail.com"
+                                    value="lobna.elabed@supcom.tn"
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -86,7 +132,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="text"
-                                    value="Nabeul"
+                                    value="Tunis"
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -111,51 +157,28 @@ const Profile = () => {
                     <section style={{ marginBottom: "2rem" }}>
                         <h2 className="title">Reviews History</h2>
                         <div className="reviews">
-                            <div
-                                className="review-card"
-                                style={{
-                                    background: "#FFF",
-                                    border: "1px solid #ddd",
-                                    padding: "1rem",
-                                    borderRadius: "8px",
-                                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                                    maxWidth: "400px",
-                                }}
-                            >
-                                <div
-                                    className="review-header"
-                                    style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}
-                                >
-                                    <div
-                                        className="avatar"
-                                        style={{
-                                            width: "50px",
-                                            height: "50px",
-                                            borderRadius: "50%",
-                                            backgroundColor: "#CCC",
-                                            marginRight: "1rem",
-                                        }}
-                                    ></div>
-                                    <div>
-                                        <p style={{ fontWeight: "700", marginBottom: "0.2rem" }}>John Doe</p>
-                                        <p style={{ fontSize: "0.9rem", color: "#555" }}>Royal Azur Thalassa</p>
-                                    </div>
-                                </div>
-                                <p style={{ fontSize: "0.9rem", color: "#555" }}>
-                                    Royal Azur is excellent. I'd definitely recommend it to a friend.
-                                </p>
-                            </div>
+                            {reviews.map((review, index) => (
+                                <Review
+                                    key={index}
+                                    name={review.propertyName}
+                                    description={review.description}
+                                    stars={review.stars}
+                                    date={review.date}
+                                    imageUrl={review.imageUrl}
+                                    profileImageUrl={review.profileImageUrl}
+                                />
+                            ))}
                         </div>
                         <button onClick={handleAddReviewClick} className="button1">
                             Write Review
                         </button>
                     </section>
                 </div>
-            </main>
+            </main >
 
             {/* Footer */}
-            <Footer />
-        </div>
+            < Footer />
+        </div >
     );
 };
 

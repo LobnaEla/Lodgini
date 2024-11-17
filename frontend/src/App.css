@@ -255,118 +255,307 @@ body {
 
 .add-property-button:hover span {
   color: #ffc677;
+}
 
+/* Reviews */
+.reviews {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow items to wrap to the next row */
+  gap: 1.5rem;
+  /* Space between cards */
+  justify-content: space-between;
+  /* Space items evenly */
+  padding: 1rem;
+}
 
-  /* Search Bar Styles */
-  .search-bar {
+.reviews .card {
+  flex: 1 1 calc(33.333% - 1.5rem);
+  /* 3 items per row */
+  max-width: calc(33.333% - 1.5rem);
+  min-width: 250px;
+  /* Prevent cards from being too narrow */
+  height: 300px;
+  /* Fixed height for all cards */
+  box-sizing: border-box;
+  /* Includes padding and border in the card size */
+  display: flex;
+  flex-direction: column;
+  /* Ensure content stacks vertically */
+  justify-content: space-between;
+  /* Evenly space the content */
+  overflow: hidden;
+  /* Hide overflowing content */
+}
+
+.reviews .card .description {
+  flex-grow: 1;
+  /* Allow the description to take up available space */
+  overflow: hidden;
+  /* Prevent text overflow */
+  text-overflow: ellipsis;
+  /* Optional for trimming */
+  white-space: normal;
+  /* Allow text to wrap */
+  line-height: 1.4;
+  /* Improve readability with proper line spacing */
+}
+
+@media screen and (max-width: 768px) {
+  .reviews .card {
+    flex: 1 1 calc(50% - 1.5rem);
+    /* 2 items per row on smaller screens */
+    max-width: calc(50% - 1.5rem);
+    height: 300px;
+    /* Same height for consistency */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .reviews .card {
+    flex: 1 1 100%;
+    /* 1 item per row on small screens */
+    max-width: 100%;
+    height: auto;
+    /* Allow height to adjust on small screens */
+  }
+}
+
+/* Search Bar Styles */
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  /* Add spacing between inputs */
+  flex-wrap: wrap;
+  background-color: #f8f8f8;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Categories Styles */
+.categories {
+  display: flex;
+  align-items: center;
+}
+
+.categories fieldset {
+  border: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button-group {
+  flex-grow: 1;
+  margin: auto;
+}
+
+.button-group input[type="radio"] {
+  display: none;
+}
+
+.button-group label {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #ffc677;
+  /* Stroke color */
+  background-color: white;
+  color: #ffc677;
+  /* Text color for non-selected */
+  border-radius: 15px;
+  transition: all ease 0.2s;
+  text-align: center;
+  flex-grow: 1;
+  flex-basis: 0;
+  width: 140px;
+  /* Adjust width to fit the labels */
+  font-size: 13px;
+  margin: 5px;
+}
+
+.button-group input[type="radio"]:checked+label {
+  background-color: #ffc677;
+  color: white;
+}
+
+/* Furnishing options Styles */
+.categories {
+  display: flex;
+  align-items: center;
+}
+
+.categories fieldset {
+  border: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.options-group {
+  flex-grow: 1;
+  margin: auto;
+}
+
+.options-group input[type="radio"] {
+  display: none;
+}
+
+.options-group label {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #16869C;
+  /* Stroke color */
+  background-color: white;
+  color: #16869C;
+  /* Text color for non-selected */
+  border-radius: 15px;
+  transition: all ease 0.2s;
+  text-align: center;
+  flex-grow: 1;
+  flex-basis: 0;
+  width: 140px;
+  /* Adjust width to fit the labels */
+  font-size: 13px;
+  margin: 5px;
+}
+
+.options-group input[type="radio"]:checked+label {
+  background-color: #16869C;
+  color: white;
+}
+
+/* Add property */
+.add-property-page {
+  background-color: #f9f3ed;
+  padding: 2rem 1rem;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  text-align: left;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 1.8rem;
+    color: #333;
+  }
+
+  .property-type {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 1rem;
-    /* Add spacing between inputs */
-    flex-wrap: wrap;
-    background-color: #f8f8f8;
-    padding: 1rem;
-    border-radius: 10px;
+
+    button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      background: #f0f0f0;
+      color: #555;
+      cursor: pointer;
+
+      &.active {
+        background: #ffca7a;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+
+  label {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
   }
 
-  .search-input {
-    flex: 1;
-    min-width: 150px;
-    padding: 10px;
-    font-size: 14px;
+  input,
+  textarea {
+    padding: 0.8rem;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #333;
   }
 
-  /* Categories Styles */
-  .categories {
+  textarea {
+    resize: none;
+  }
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+
+  label {
     display: flex;
     align-items: center;
-  }
-
-  .categories fieldset {
-    border: 0;
-    display: flex;
     gap: 0.5rem;
   }
+}
 
-  .button-group {
-    flex-grow: 1;
-    margin: auto;
+.photos input {
+  display: block;
+}
+
+.details {
+  .detail-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .detail {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .icon {
+        font-size: 1.2rem;
+      }
+    }
   }
+}
 
-  .button-group input[type="radio"] {
-    display: none;
-  }
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
 
-  .button-group label {
-    display: inline-block;
-    padding: 10px 20px;
+  button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    border: 1px solid #ffc677;
-    /* Stroke color */
-    background-color: white;
-    color: #ffc677;
-    /* Text color for non-selected */
-    border-radius: 15px;
-    transition: all ease 0.2s;
-    text-align: center;
-    flex-grow: 1;
-    flex-basis: 0;
-    width: 140px;
-    /* Adjust width to fit the labels */
-    font-size: 13px;
-    margin: 5px;
   }
 
-  .button-group input[type="radio"]:checked+label {
-    background-color: #ffc677;
-    color: white;
+  .cancel {
+    background: #ddd;
+    color: #555;
   }
 
-  /* Furnishing options Styles */
-  .categories {
-    display: flex;
-    align-items: center;
+  .confirm {
+    background: #ffca7a;
+    color: #fff;
   }
-
-  .categories fieldset {
-    border: 0;
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .options-group {
-    flex-grow: 1;
-    margin: auto;
-  }
-
-  .options-group input[type="radio"] {
-    display: none;
-  }
-
-  .options-group label {
-    display: inline-block;
-    padding: 10px 20px;
-    cursor: pointer;
-    border: 1px solid #16869C;
-    /* Stroke color */
-    background-color: white;
-    color: #16869C;
-    /* Text color for non-selected */
-    border-radius: 15px;
-    transition: all ease 0.2s;
-    text-align: center;
-    flex-grow: 1;
-    flex-basis: 0;
-    width: 140px;
-    /* Adjust width to fit the labels */
-    font-size: 13px;
-    margin: 5px;
-  }
-
-  .options-group input[type="radio"]:checked+label {
-    background-color: #16869C;
-    color: white;
-  }
+}

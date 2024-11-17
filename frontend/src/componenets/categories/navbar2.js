@@ -103,7 +103,7 @@ const Navbar = () => {
             <ul style={linksStyles}>
                 <li>
                     <a
-                        href="#home"
+                        href="/"
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
@@ -113,7 +113,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <a
-                        href="#profile"
+                        href="/profile"
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
@@ -123,7 +123,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <a
-                        href="#about"
+                        onClick={() => window.location.href = "../about"}
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
@@ -133,7 +133,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <a
-                        href="#contact"
+                        href="#footer"
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}

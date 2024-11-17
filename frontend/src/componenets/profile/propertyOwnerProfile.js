@@ -35,16 +35,29 @@ const Profile = () => {
                             <div
                                 className="avatar"
                                 style={{
-                                    width: "100px",
-                                    height: "100px",
+                                    width: "150px",
+                                    height: "150px",
                                     borderRadius: "50%",
-                                    backgroundColor: "#CCC",
+                                    overflow: "hidden",
+                                    border: "3px solid #ddd",
+                                    marginBottom: "1.5rem",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                                 }}
-                            ></div>
+                            >
+                                <img
+                                    src="images/farah.jpg" // Update the path if necessary
+                                    alt="Profile Avatar"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            </div>
                             <div className="form">
                                 <input
                                     type="text"
-                                    value="John Doe"
+                                    value="Farah Rebai"
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -58,7 +71,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="email"
-                                    value="example@gmail.com"
+                                    value="farah.rebai@supcom.tn"
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -86,7 +99,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="text"
-                                    value="Nabeul"
+                                    value="Sfax"
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -106,7 +119,7 @@ const Profile = () => {
                     <h2 className="title">Your properties</h2>
                     <ApartmentGrid />
                     <div className="add-property-wrapper">
-                        <button className="add-property-button" onClick={() => navigate("/add-property")}>
+                        <button className="add-property-button" onClick={() => navigate("/add_property")}>
                             <span> +</span>
                         </button>
                     </div>
