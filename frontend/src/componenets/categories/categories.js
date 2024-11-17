@@ -2,20 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Categories = () => {
-    return (
-        <StyledWrapper>
-            <fieldset>
-                <div className="button-group">
-                    <input type="radio" id="apartments" name="category" defaultChecked />
-                    <label htmlFor="apartments">Apartments</label>
-                </div>
-                <div className="button-group">
-                    <input type="radio" id="vacationHomes" name="category" />
-                    <label htmlFor="vacationHomes">Vacation Homes</label>
-                </div>
-            </fieldset>
-        </StyledWrapper>
-    );
+  return (
+    <StyledWrapper>
+      <fieldset>
+        <div className="button-group">
+          <input type="radio" id="apartments" name="category" defaultChecked />
+          <label htmlFor="apartments">Apartments</label>
+        </div>
+        <div className="button-group">
+          <input type="radio" id="vacationHomes" name="category" />
+          <label htmlFor="vacationHomes">Vacation Homes</label>
+        </div>
+      </fieldset>
+    </StyledWrapper>
+  );
 }
 
 const StyledWrapper = styled.div`
@@ -43,7 +43,6 @@ const StyledWrapper = styled.div`
     width: 140px;  /* Adjust width to fit the labels */
     font-size: 13px;
     margin: 5px;
-    box-shadow: 0px 0px 50px -15px #000000;
   }
 
   .button-group input[type="radio"]:checked + label {

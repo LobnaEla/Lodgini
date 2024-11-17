@@ -135,17 +135,19 @@ const Home = () => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             padding: '10px 10px' // Optional: adds subtle shadow for depth
           }}>
-            <img
-              src="../images/vacation.jpg"  // Replace with the actual URL of your image
-              alt="Vacation Houses"
-              style={{
-                width: '150px',  // Adjust the image size
-                height: '150px',
-                borderRadius: '15px',  // Rounded corners for the image
+            <Link to="/VacationHouses" style={{ textDecoration: 'none' }}>
+              <img
+                src="../images/vacation.jpg"  // Replace with the actual URL of your image
+                alt="Vacation Houses"
+                style={{
+                  width: '150px',  // Adjust the image size
+                  height: '150px',
+                  borderRadius: '15px',  // Rounded corners for the image
 
-              }}
-            />
-            <p style={{ fontSize: '18px', fontWeight: 'bold', color: '#000' }}>Vacation Houses</p>
+                }}
+              />
+              <p style={{ fontSize: '18px', fontWeight: 'bold', color: '#000' }}>Vacation Houses</p>
+            </Link>
           </div>
 
           {/* Apartments */}

@@ -72,10 +72,17 @@ body {
   display: inline;
 }
 
-.hero {
+.hero_apt {
   text-align: center;
   padding: 2rem;
   background: url('../public/images/apartement.jpg') no-repeat center/cover;
+  color: white;
+}
+
+.hero_vac {
+  text-align: center;
+  padding: 2rem;
+  background: url('../public/images/vacation.jpg') no-repeat center/cover;
   color: white;
 }
 
@@ -110,4 +117,40 @@ body {
   justify-content: space-between;
   padding: 1rem 2rem;
   background-color: #f4f4f4;
+}
+
+.discover {
+  font-family: 'Poppins', sans-serif;
+  /* Matches your project font */
+  font-size: 3.5rem;
+  /* Larger font for a hero heading */
+  font-weight: 700;
+  /* Bolder text for prominence */
+  text-align: center;
+  /* Center-align the text */
+  color: #fff;
+  /* White font color */
+  line-height: 1.4;
+  /* Balanced spacing for readability */
+  margin: 0 auto;
+  /* Centers the text within its container */
+  max-width: 900px;
+  /* Restricts width for better focus */
+  padding: 0 20px;
+  /* Adds slight padding for spacing */
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  /* Stronger shadow for contrast */
+}
+
+.apartment-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* Space between cards */
+  gap: 20px;
+  /* Space between cards */
+  padding: 0 15px;
+  /* Padding on left and right sides */
+  margin: 0 auto;
+  /* Center the grid */
 }
