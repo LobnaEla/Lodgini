@@ -8,6 +8,7 @@ import Signup from './componenets/sign/signup';
 import Signupowner from './componenets/sign/signupowner';
 import Created from './componenets/sign/created';
 import Reserv1 from './componenets/reservation/reserv1';
+import Reserv2 from './componenets/reservation/reserv2';
 function App() {
   return (
     <div className="App">
@@ -20,6 +21,7 @@ function App() {
         <Route path='/Sign_up_as_owner' element={<Signupowner />}/>
         <Route path='/sign_up/created' element={<Created />}/>
         <Route path='/booking' element={<Reserv1 />}/>
+        <Route path='/payment' element={<Reserv2 />}/>
       </Routes>
     </div>
   );
