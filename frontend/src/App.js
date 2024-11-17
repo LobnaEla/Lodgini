@@ -13,6 +13,8 @@ import Booked from './componenets/reservation/booked';
 import VacationHouses from './componenets/categories/vacationHouses';
 import Details from './componenets/Details/details';
 import { Addreview } from './componenets/profile/addreview';
+import PropertyOwnerProfile from './componenets/profile/propertyOwnerProfile';
+import Profile from './componenets/profile/profile';
 
 function App() {
   return (
@@ -30,7 +32,10 @@ function App() {
         <Route path='/payment' element={<Reserv2 />} />
         <Route path='/booked' element={<Booked />} />
         <Route path='/details' element={<Details />} />
-        <Route path='/Profile/Add_review' element={<Addreview />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile/Add_review' element={<Addreview />} />
+        <Route path='/property_owner_profile' element={<PropertyOwnerProfile />} />
+
       </Routes>
     </div>
   );
