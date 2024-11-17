@@ -1,5 +1,6 @@
 import React from 'react';
 import Categories from './categories';
+import SearchButton from './searchButton';
 
 const SearchBar = () => {
     return (
@@ -9,7 +10,7 @@ const SearchBar = () => {
             <input type="date" placeholder="Check-out" />
             <input type="number" placeholder="Number of people" />
             <Categories />
-            <button>Search</button>
+            <SearchButton />
         </div>
     );
 };
