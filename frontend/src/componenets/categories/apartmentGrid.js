@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from './card';
+import { Link } from 'react-router-dom';
 
 const apartments = [
     { name: 'Flat in Jasmin Building', stars: 4, price: '84', image: '/images/apartement.jpg' },
@@ -12,15 +13,18 @@ const apartments = [
 const ApartmentGrid = () => {
     return (
         <div className="apartment-grid">
-            {apartments.map((apartment, index) => (
-                <Card
-                    key={index}
-                    name={apartment.name}
-                    stars={apartment.stars}
-                    price={apartment.price}
-                    image={apartment.image}
-                />
-            ))}
+            <Link to="/details" style={{ textDecoration: 'none' }}>
+                {apartments.map((apartment, index) => (
+                    <Card
+                        key={index}
+                        name={apartment.name}
+                        stars={apartment.stars}
+                        price={apartment.price}
+                        image={apartment.image}
+                    />
+                ))}
+            </Link>
+
         </div>
     );
 };
