@@ -6,9 +6,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 
 const Reserv2 = () => {
-  const [checkInDate, setCheckInDate] = useState('');
-  const [checkOutDate, setCheckOutDate] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
+   const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState('');
   const [expDate, setExpDate] = useState('');
   const [cvv, setCvv] = useState('');
