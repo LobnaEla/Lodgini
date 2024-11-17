@@ -127,9 +127,9 @@ const Footer = () => {
             paddingRight: "20px", // Assurez-vous qu'il y ait un padding à droite
           }}
         >
-          <h3 style={{ fontSize: "14px", marginBottom: "10px", marginRight:'28%' }}>Get in Touch</h3>
+          <h3 style={{ fontSize: "14px", marginBottom: "10px", marginRight:'32%' }}>Get in Touch</h3>
           <ul style={{ paddingLeft: "0", listStyleType: "none" }}>
-            <li style={{ marginBottom: "5px" , marginRight:'5%'}}>
+            <li style={{ marginBottom: "5px" , marginRight:'8%'}}>
               <span
                 style={{
                   display: "inline-block",
@@ -177,7 +177,7 @@ const Footer = () => {
               </span>
               Lodgini@gmail.com
             </li>
-            <li style={{ marginBottom: "5px" , marginRight:'13%'}}>
+            <li style={{ marginBottom: "5px" , marginRight:'15%'}}>
               <span
                 style={{
                   display: "inline-block",
