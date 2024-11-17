@@ -35,7 +35,7 @@ const Reserv1 = () => {
 
       {/* Title and description */}
       <div style={{ textAlign: 'center', marginBottom: '2%' ,margintop:'0'}}>
-        <h2 style={{ color: '#16697a', fontWeight: 'bold' }}>Booking Information</h2>
+        <h2 style={{ color: '#023047', fontWeight: 'bold' }}>Booking Information</h2>
         <p style={{ color: '#d69e66', fontSize: '16px' }}>
           Please take a moment to review and confirm your selections
         </p>
