@@ -11,11 +11,11 @@ const Home = () => {
 
         {/* Image de couverture */}
         <img
-          src="../images/couverture.png"  // Remplacez par l'URL de votre image
+          src="../images/cover.png"  // Remplacez par l'URL de votre image
           alt="Image de couverture"
           style={{
 
-            width: '50%',  // L'image prend toute la largeur
+            width: '100% ',  // L'image prend toute la largeur
             height: '10%',  // Pour garder l'aspect de l'image
           }}
         />
