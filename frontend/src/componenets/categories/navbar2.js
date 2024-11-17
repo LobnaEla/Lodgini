@@ -149,6 +149,7 @@ const Navbar = () => {
                     style={buttonStyles}
                     onMouseEnter={(e) => (e.target.style.backgroundColor = '#0f4c59')}
                     onMouseLeave={(e) => (e.target.style.backgroundColor = '#16697a')}
+                    onClick={() => window.location.href = "../sign_up"}
                 >
                     Register
                 </button>
@@ -157,6 +158,7 @@ const Navbar = () => {
                     style={loginButtonStyles}
                     onMouseEnter={(e) => (e.target.style.backgroundColor = '#b2b5b2')}
                     onMouseLeave={(e) => (e.target.style.backgroundColor = '#ede7e3')}
+                    onClick={() => window.location.href = "../sign_in"}
                 >
                     Login
                 </button>

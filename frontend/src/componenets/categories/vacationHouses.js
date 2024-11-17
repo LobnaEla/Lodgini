@@ -17,11 +17,27 @@ const VacationHouses = () => {
                             Discover Sophisticated Living in Our Vacation Houses
                         </h1>
                     </section>
-                    <SearchBar />
-                    <div style={{ margin: '10px 0', padding: '5px 0', textAlign: 'center' }}>
-                        <Radio option1="Luxuriously furnished" option2="Modestly furnished" />
+                    <SearchBar defaultCategory="vacationHouses" />
+                    <div
+                        className="categories"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center', // Center horizontally
+                            marginTop: '20px', // Optional spacing above
+                        }}
+                    >
+                        <fieldset style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                            <div className="options-group">
+                                <input type="radio" id="Luxuriously furnished" name="option" defaultChecked />
+                                <label htmlFor="Luxuriously furnished">Luxuriously furnished</label>
+                            </div>
+                            <div className="options-group">
+                                <input type="radio" id="Modestly furnished" name="option" />
+                                <label htmlFor="Modestly furnished">Modestly furnished</label>
+                            </div>
+                        </fieldset>
                     </div>
-
                     <ApartmentGrid />
                 </main>
             </div>

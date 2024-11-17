@@ -135,7 +135,7 @@ const Home = () => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             padding: '10px 10px' // Optional: adds subtle shadow for depth
           }}>
-            <Link to="/VacationHouses" style={{ textDecoration: 'none' }}>
+            <Link to="/vacation_houses" style={{ textDecoration: 'none' }}>
               <img
                 src="../images/vacation.jpg"  // Replace with the actual URL of your image
                 alt="Vacation Houses"
