@@ -123,7 +123,7 @@ const Navbar = () => {
         </li>
         <li>
           <a
-            href="#about"
+            onClick={() => window.location.href = "../about"}
             style={linkStyles}
             onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
             onMouseLeave={(e) => (e.target.style.color = '#023047')}

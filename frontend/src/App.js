@@ -11,6 +11,7 @@ import Reserv1 from './componenets/reservation/reserv1';
 import Reserv2 from './componenets/reservation/reserv2';
 import Booked from './componenets/reservation/booked';
 import VacationHouses from './componenets/categories/vacationHouses';
+import { Addreview } from './componenets/profile/addreview';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path='/booking' element={<Reserv1 />} />
         <Route path='/payment' element={<Reserv2 />} />
         <Route path='/booked' element={<Booked />} />
+        <Route path='/Profile/Add_review' element={<Addreview />} />
       </Routes>
     </div>
   );
