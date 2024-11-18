@@ -120,7 +120,7 @@ const Details = () => {
                         <p style={{ fontSize: "16px", color: "#6c757d", marginBottom: "20px" }}>
                             per night
                         </p>
-                        <button className="button1">
+                        <button className="button1" onClick={() => window.location.href = "../booking"}>
                             Book Now!
                         </button>
                     </div>

@@ -180,7 +180,7 @@ const Reserv2 = () => {
             borderRadius: '5px',
             cursor: 'pointer',
           }}
-          onClick={handleNext} // Move to Step 2 after filling out the form
+          onClick={() => window.location.href = "../booked"}
         >
           Confirm Booking
         </button>
