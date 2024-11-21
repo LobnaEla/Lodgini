@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../home/navbar1';
 import Footer from '../home/footer';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 export const Signup = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,7 @@ export const Signup = () => {
     country: '',
     password: ''
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({
@@ -27,7 +28,7 @@ export const Signup = () => {
       const response = await axios.post('http://localhost:8000/sign_up/', formData);
       // Assuming the backend responds with a success message
       if (response.status === 201) {
-        alert('Registration successful!');
+        navigate('created');
         // Redirect or clear form after successful registration
         // window.location.href = '/login'; // Example redirection after successful signup
       }

@@ -1,5 +1,4 @@
 # views.py
-from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -12,5 +11,5 @@ def signup(request):
         serializer = UserProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()  # Sauvegarde l'utilisateur
-            return redirect('success')
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
