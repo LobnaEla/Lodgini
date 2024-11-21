@@ -1,7 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&display=swap');
 
 * {
   font-family: 'Poppins', sans-serif;
+}
+
+.title {
+  font-size: 40px;
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
+  color: #023047;
+}
+
+.sub-title {
+  font-size: 30px;
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
+  color: #023047;
 }
 
 .App {
@@ -72,10 +85,17 @@ body {
   display: inline;
 }
 
-.hero {
+.hero_apt {
   text-align: center;
   padding: 2rem;
   background: url('../public/images/apartement.jpg') no-repeat center/cover;
+  color: white;
+}
+
+.hero_vac {
+  text-align: center;
+  padding: 2rem;
+  background: url('../public/images/vacation.jpg') no-repeat center/cover;
   color: white;
 }
 
@@ -110,4 +130,432 @@ body {
   justify-content: space-between;
   padding: 1rem 2rem;
   background-color: #f4f4f4;
+}
+
+.discover {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  line-height: 1.4;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 0 20px;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.apartment-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.button1 {
+  position: relative;
+  border: none;
+  background-color: #4291A3;
+  color: white;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.button1 {
+  position: relative;
+  border: none;
+  background-color: #4291A3;
+  color: white;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.button1:hover {
+  background-color: white;
+  color: #4291A3;
+}
+
+.button1:active {
+  box-shadow: none;
+}
+
+.add-property-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.add-property-button {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background-color: #ffc677;
+  /* Base background color */
+  color: white;
+  /* Default "+" color */
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  /* Smooth hover animation */
+}
+
+.add-property-button::before {
+  content: "";
+  position: absolute;
+  background-color: white;
+  /* Hover background color */
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transform: translate(-100%, 100%);
+  /* Initially hidden */
+  z-index: 0;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  /* Smooth slide-in */
+}
+
+.add-property-button:hover::before {
+  transform: translate(0, 0);
+  /* Reveal white background */
+}
+
+.add-property-button span {
+  position: relative;
+  z-index: 1;
+  /* Keep "+" symbol above the sliding background */
+  color: white;
+  /* Default "+" color */
+  transition: color 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  /* Smooth color change */
+}
+
+.add-property-button:hover span {
+  color: #ffc677;
+}
+
+/* Reviews */
+.reviews {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow items to wrap to the next row */
+  gap: 1.5rem;
+  /* Space between cards */
+  justify-content: space-between;
+  /* Space items evenly */
+  padding: 1rem;
+}
+
+.reviews .card {
+  flex: 1 1 calc(33.333% - 1.5rem);
+  /* 3 items per row */
+  max-width: calc(33.333% - 1.5rem);
+  min-width: 250px;
+  /* Prevent cards from being too narrow */
+  height: 300px;
+  /* Fixed height for all cards */
+  box-sizing: border-box;
+  /* Includes padding and border in the card size */
+  display: flex;
+  flex-direction: column;
+  /* Ensure content stacks vertically */
+  justify-content: space-between;
+  /* Evenly space the content */
+  overflow: hidden;
+  /* Hide overflowing content */
+}
+
+.reviews .card .description {
+  flex-grow: 1;
+  /* Allow the description to take up available space */
+  overflow: hidden;
+  /* Prevent text overflow */
+  text-overflow: ellipsis;
+  /* Optional for trimming */
+  white-space: normal;
+  /* Allow text to wrap */
+  line-height: 1.4;
+  /* Improve readability with proper line spacing */
+}
+
+@media screen and (max-width: 768px) {
+  .reviews .card {
+    flex: 1 1 calc(50% - 1.5rem);
+    /* 2 items per row on smaller screens */
+    max-width: calc(50% - 1.5rem);
+    height: 300px;
+    /* Same height for consistency */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .reviews .card {
+    flex: 1 1 100%;
+    /* 1 item per row on small screens */
+    max-width: 100%;
+    height: auto;
+    /* Allow height to adjust on small screens */
+  }
+}
+
+/* Search Bar Styles */
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  /* Add spacing between inputs */
+  flex-wrap: wrap;
+  background-color: #f8f8f8;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Categories Styles */
+.categories {
+  display: flex;
+  align-items: center;
+}
+
+.categories fieldset {
+  border: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button-group {
+  flex-grow: 1;
+  margin: auto;
+}
+
+.button-group input[type="radio"] {
+  display: none;
+}
+
+.button-group label {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #ffc677;
+  /* Stroke color */
+  background-color: white;
+  color: #ffc677;
+  /* Text color for non-selected */
+  border-radius: 15px;
+  transition: all ease 0.2s;
+  text-align: center;
+  flex-grow: 1;
+  flex-basis: 0;
+  width: 140px;
+  /* Adjust width to fit the labels */
+  font-size: 13px;
+  margin: 5px;
+}
+
+.button-group input[type="radio"]:checked+label {
+  background-color: #ffc677;
+  color: white;
+}
+
+/* Furnishing options Styles */
+.categories {
+  display: flex;
+  align-items: center;
+}
+
+.categories fieldset {
+  border: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.options-group {
+  flex-grow: 1;
+  margin: auto;
+}
+
+.options-group input[type="radio"] {
+  display: none;
+}
+
+.options-group label {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #16869C;
+  /* Stroke color */
+  background-color: white;
+  color: #16869C;
+  /* Text color for non-selected */
+  border-radius: 15px;
+  transition: all ease 0.2s;
+  text-align: center;
+  flex-grow: 1;
+  flex-basis: 0;
+  width: 140px;
+  /* Adjust width to fit the labels */
+  font-size: 13px;
+  margin: 5px;
+}
+
+.options-group input[type="radio"]:checked+label {
+  background-color: #16869C;
+  color: white;
+}
+
+/* Add property */
+.add-property-page {
+  background-color: #f9f3ed;
+  padding: 2rem 1rem;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  text-align: left;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 1.8rem;
+    color: #333;
+  }
+
+  .property-type {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      background: #f0f0f0;
+      color: #555;
+      cursor: pointer;
+
+      &.active {
+        background: #ffca7a;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+
+  label {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+  }
+
+  input,
+  textarea {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  textarea {
+    resize: none;
+  }
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.photos input {
+  display: block;
+}
+
+.details {
+  .detail-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .detail {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .icon {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .cancel {
+    background: #ddd;
+    color: #555;
+  }
+
+  .confirm {
+    background: #ffca7a;
+    color: #fff;
+  }
 }

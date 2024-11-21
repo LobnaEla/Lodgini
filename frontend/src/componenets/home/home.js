@@ -11,11 +11,11 @@ const Home = () => {
 
         {/* Image de couverture */}
         <img
-          src="../images/couverture.png"  // Remplacez par l'URL de votre image
+          src="../images/cover.png"  // Remplacez par l'URL de votre image
           alt="Image de couverture"
           style={{
 
-            width: '50%',  // L'image prend toute la largeur
+            width: '100% ',  // L'image prend toute la largeur
             height: '10%',  // Pour garder l'aspect de l'image
           }}
         />
@@ -135,17 +135,19 @@ const Home = () => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             padding: '10px 10px' // Optional: adds subtle shadow for depth
           }}>
-            <img
-              src="../images/vacation.jpg"  // Replace with the actual URL of your image
-              alt="Vacation Houses"
-              style={{
-                width: '150px',  // Adjust the image size
-                height: '150px',
-                borderRadius: '15px',  // Rounded corners for the image
+            <Link to="/vacation_houses" style={{ textDecoration: 'none' }}>
+              <img
+                src="../images/vacation.jpg"  // Replace with the actual URL of your image
+                alt="Vacation Houses"
+                style={{
+                  width: '150px',  // Adjust the image size
+                  height: '150px',
+                  borderRadius: '15px',  // Rounded corners for the image
 
-              }}
-            />
-            <p style={{ fontSize: '18px', fontWeight: 'bold', color: '#000' }}>Vacation Houses</p>
+                }}
+              />
+              <p style={{ fontSize: '18px', fontWeight: 'bold', color: '#000' }}>Vacation Houses</p>
+            </Link>
           </div>
 
           {/* Apartments */}

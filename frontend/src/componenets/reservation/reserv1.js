@@ -168,6 +168,7 @@ const Reserv1 = () => {
               borderRadius: '5px',
               cursor: 'pointer',
             }}
+            onClick={() => window.location.href = "../payment"}
           >
             Book Now
           </button>

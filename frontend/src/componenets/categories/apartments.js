@@ -12,14 +12,31 @@ const Apartments = () => {
             <div>
                 <Navbar2 />
                 <main>
-                    <section className="hero" style={{ padding: '50px 0' }}>
-                        <h1 style={{ textAlign: 'center', fontSize: '2rem', color: '#333' }}>
+                    <section className="hero_apt" style={{ padding: '200px 0' }}>
+                        <h1 className='discover'>
                             Discover Sophisticated Living in Our Modern Apartments
                         </h1>
                     </section>
-                    <SearchBar />
-                    <div style={{ margin: '20px 0', textAlign: 'center' }}>
-                        <Radio option1="Luxuriously furnished" option2="Modestly furnished" />
+                    <SearchBar defaultCategory="apartments" />
+                    <div
+                        className="categories"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center', // Center horizontally
+                            marginTop: '20px', // Optional spacing above
+                        }}
+                    >
+                        <fieldset style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                            <div className="options-group">
+                                <input type="radio" id="Luxuriously furnished" name="option" defaultChecked />
+                                <label htmlFor="Luxuriously furnished">Luxuriously furnished</label>
+                            </div>
+                            <div className="options-group">
+                                <input type="radio" id="Modestly furnished" name="option" />
+                                <label htmlFor="Modestly furnished">Modestly furnished</label>
+                            </div>
+                        </fieldset>
                     </div>
                     <ApartmentGrid />
                 </main>
@@ -27,6 +44,6 @@ const Apartments = () => {
             <Footer />
         </div>
     );
-}
+};
 
 export default Apartments;

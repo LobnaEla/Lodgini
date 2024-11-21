@@ -7,7 +7,7 @@ export const Signupowner = () => {
     <div style={{ backgroundColor: '#ede7e3' }}>
       <Navbar />
       
-      <div style={{ display: 'flex', height: '100vh', gap:'10%' }}>
+      <div style={{ display: 'flex', height: '100vh', gap:'10%', marginBottom:'3%' }}>
         {/* Left side for image */}
         <div style={{
           flex: 1,
@@ -195,7 +195,7 @@ export const Signupowner = () => {
 
            {/* Additional links */}
             <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
-              <a href="/login" style={{ color: 'black', textDecoration: 'none',textDecoration: 'underline' }}>Login</a>
+              <a href="/Sign_in" style={{ color: 'black', textDecoration: 'none',textDecoration: 'underline' }}>Login</a>
             </p>
             
           </form>

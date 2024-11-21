@@ -103,7 +103,7 @@ const Navbar = () => {
             <ul style={linksStyles}>
                 <li>
                     <a
-                        href="#home"
+                        href="/"
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
@@ -113,7 +113,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <a
-                        href="#profile"
+                        href="/profile"
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
@@ -123,7 +123,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <a
-                        href="#about"
+                        onClick={() => window.location.href = "../about"}
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
@@ -133,7 +133,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <a
-                        href="#contact"
+                        href="#footer"
                         style={linkStyles}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
@@ -149,6 +149,7 @@ const Navbar = () => {
                     style={buttonStyles}
                     onMouseEnter={(e) => (e.target.style.backgroundColor = '#0f4c59')}
                     onMouseLeave={(e) => (e.target.style.backgroundColor = '#16697a')}
+                    onClick={() => window.location.href = "../sign_up"}
                 >
                     Register
                 </button>
@@ -157,6 +158,7 @@ const Navbar = () => {
                     style={loginButtonStyles}
                     onMouseEnter={(e) => (e.target.style.backgroundColor = '#b2b5b2')}
                     onMouseLeave={(e) => (e.target.style.backgroundColor = '#ede7e3')}
+                    onClick={() => window.location.href = "../sign_in"}
                 >
                     Login
                 </button>

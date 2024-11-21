@@ -18,9 +18,9 @@ const Radio = ({ option1, option2 }) => {
 
 const StyledWrapper = styled.div`
     display: flex;
-    justify-content: center;  /* Centers the filter switch */
-    align-items: center;
-    height: 100vh;  /* Centers vertically */
+    justify-content: center; /* Centers the filter switch horizontally */
+    align-items: center;    /* Centers the filter switch vertically within its container */
+    margin: 10px 0;         /* Adds a margin around the Radio component */
 
     .filter-switch {
         border: 2px solid #16869C;  /* Border color */
@@ -83,5 +83,6 @@ const StyledWrapper = styled.div`
         color: #7d7d7d;  /* Gray text for non-selected options */
     }
 `;
+
 
 export default Radio;

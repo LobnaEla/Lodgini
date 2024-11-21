@@ -82,7 +82,7 @@ const Navbar = () => {
     ...buttonStyles,
     color: '#16697a',
     backgroundColor: '#ede7e3',
-    padding: '8px 15px', 
+    padding: '8px 15px',
     fontSize: '14px'
   };
 
@@ -123,7 +123,7 @@ const Navbar = () => {
         </li>
         <li>
           <a
-            href="#about"
+            href="/about"
             style={linkStyles}
             onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
             onMouseLeave={(e) => (e.target.style.color = '#023047')}

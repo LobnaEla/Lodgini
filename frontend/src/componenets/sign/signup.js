@@ -7,7 +7,7 @@ export const Signup = () => {
     <div style={{ backgroundColor: '#ede7e3' }}>
       <Navbar />
       
-      <div style={{ display: 'flex', height: '100vh', gap:'10%' }}>
+      <div style={{ display: 'flex', height: '100vh', gap:'10%' ,  marginBottom:'3%',}}>
         {/* Left side for image */}
         <div style={{
           flex: 1,
@@ -63,11 +63,12 @@ export const Signup = () => {
           marginleft: '1000%',
           position: 'relative',
           zIndex: 2,
+         
         }}>
           <form style={{
             width: '100%',
             maxWidth: '350px',  // Réduit la largeur du formulaire
-            padding: '20px',
+            padding: '0 20px 0',
             paddingTop:'0',
             margintop:'0',
             borderRadius: '8px',
@@ -193,11 +194,11 @@ export const Signup = () => {
             </button>
 
            {/* Additional links */}
-            <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
+            <p style={{ textAlign: 'center', margin: '0', padding: '5px 0 0 0' }}>
               <a href="/sign_in" style={{ color: 'black', textDecoration: 'none',textDecoration: 'underline' }}>Login</a>
             </p>
             <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
-              <a href="/property-owner-register" style={{ color: 'black', textDecoration: 'none' ,textDecoration: 'underline'}}>Register as property owner</a>
+              <a href="/Sign_up_as_owner" style={{ color: 'black', textDecoration: 'none' ,textDecoration: 'underline'}}>Register as property owner</a>
             </p>
           </form>
         </div>
