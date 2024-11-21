@@ -99,7 +99,7 @@ export const Created = () => {
                 cursor: 'pointer',
                 textAlign: 'center',
               }}
-              onClick={() => window.location.href = "../booking"} // Lien vers la page de réservation
+              onClick={() => window.location.href = "/"} // Lien vers la page de réservation
             >
               Book Now
             </button>
