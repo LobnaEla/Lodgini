@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'colorfield', 
     'management'
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
