@@ -94,7 +94,7 @@ export const Signup = () => {
           <form onSubmit={handleSubmit} style={{
             width: '100%',
             maxWidth: '350px',
-            padding: '0 20px 0',
+            padding: '20px',
             paddingTop: '0',
             marginTop: '0',
             borderRadius: '8px',

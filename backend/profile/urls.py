@@ -4,5 +4,6 @@ from .views import *
 router = DefaultRouter()
 
 urlpatterns = [
-    path('sign_up/', signup, name='signup'), 
+    path('sign_up/', signup, name='signup'),
+    path('Sign_up_as_owner/', signupowner, name='signupowner'), 
 ]
