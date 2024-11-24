@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = [
+    'profile.authentication.EmailBackend',  # Replace with your actual path
+    'django.contrib.auth.backends.ModelBackend',  # Keep the default backend for other uses
+]
 
 # Application definition
 
@@ -44,7 +48,7 @@ INSTALLED_APPS = [
     'colorfield', 
     'management'
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS =  False 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,9 +65,9 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  
 ]
-
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'lodgini.urls'
-
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
