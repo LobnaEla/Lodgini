@@ -7,4 +7,5 @@ urlpatterns = [
     path('sign_up/', signup, name='signup'),
     path('Sign_up_as_owner/', signupowner, name='signupowner'), 
     path('Sign_in/', login_user, name='login_user'),
+     path('Sign_in_as_owner/', login_owner, name='login_owner'),
 ]
