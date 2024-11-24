@@ -3,7 +3,7 @@ import Axios from 'axios';
 import Navbar from '../home/navbar1';
 import Footer from '../home/footer';
 
-export const Signin = () => {
+export const Signinowner = () => {
   // State to manage form data and errors
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,17 +20,17 @@ export const Signin = () => {
     setError('');
 
     try {
-      // Make a POST request to Django API for login
+      // Make a POST request to Django API for login (Login as property owner)
       const response = await Axios.post(
-        'http://localhost:8000/Sign_in/', // Ensure the URL matches your Django endpoint
+        'http://localhost:8000/Sign_in_as_owner/', // URL for owner login endpoint
         {
           email,
           password,
         },
         { 
           headers: { 'Content-Type': 'application/json' },
-         withCredentials: true 
-        } // Include credentials for session management
+          withCredentials: true // Include credentials for session management
+        }
       );
 
       console.log(response);
@@ -38,23 +38,19 @@ export const Signin = () => {
       if (response.status === 200) {
         console.log('Login successful!');
         const userData = {
-          name: response.data.name, // Replace 'name' with the actual key returned by your API
-          email: email,};
-          localStorage.setItem('loggedInUser', JSON.stringify(userData));
-          setIsLoggedIn(true);
-          setUserName(response.data.name); 
-        // Redirect to the previous page or fallback to a default page
-        const previousPage = document.referrer;
-        if (previousPage && !previousPage.includes('/Sign_in')) { 
-            // Ensure we don't redirect back to the login page
-            window.location.href = previousPage;
-        } else {
-            // Fallback to a default page like the home page or dashboard
-            window.location.href = '/';
-        }
-    } else {
+          name: response.data.name, // Adjust based on your API response structure
+          email: email,
+        };
+        localStorage.setItem('loggedInOwner', JSON.stringify(userData));
+        setIsLoggedIn(true);
+        setUserName(response.data.name);
+        
+        // Redirect to the homepage or owner dashboard after successful login
+        window.location.href = '/property_owner_profile';
+        
+      } else {
         setError('Invalid login credentials.');
-    }
+      }
     } catch (err) {
       if (err.response) {
         // If error response from the server
@@ -142,7 +138,7 @@ export const Signin = () => {
               flexDirection: 'column',
             }}
           >
-            <h2 style={{ textAlign: 'center' }}>Login to Your Account</h2>
+            <h2 style={{ textAlign: 'center' }}>Login to Your Property Owner Account</h2>
 
             {error && (
               <p style={{ color: 'red', textAlign: 'center', marginBottom: '15px' }}>
@@ -200,36 +196,18 @@ export const Signin = () => {
               type="submit"
               style={{
                 width: '100%',
-                padding: '10px ',
+                padding: '10px',
                 backgroundColor: '#ffc677',
                 border: 'none',
                 color: 'white',
                 fontSize: '16px',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                marginBottom: '5%',
+                marginBottom: '2%',
               }}
             >
               Login
             </button>
-
-            <a
-              href="/Sign_in_as_owner"
-              style={{ 
-                width: '100%',
-                padding: '10px 0px',
-                backgroundColor: '#ffc677',
-                border: 'none',
-                marginBottom: '2%',
-                color: 'white',
-                fontSize: '16px',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                textDecoration:"none",
-              }}
-            >
-              Login Property Owner Account
-            </a>
 
             <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
               <a
@@ -248,4 +226,4 @@ export const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signinowner;

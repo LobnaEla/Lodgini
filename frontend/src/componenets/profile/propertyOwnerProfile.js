@@ -1,11 +1,30 @@
-import React from "react";
-import Navbar from "../home/navbar1";
+import React, { useEffect, useState } from "react";
+import Navbar from "../profile/navbaro";
 import Footer from "../home/footer";
-import ApartmentGrid from "../categories/apartmentGrid";
 import { useNavigate } from "react-router-dom";
+import ApartmentGrid from "../categories/apartmentGrid";
 
 const Profile = () => {
+    const [ownerData, setOwnerData] = useState({
+        name: '',
+        email: '',
+        phoneNumber: '',
+        country: '',
+        profilePicture: '',
+    });
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Charger les données du propriétaire depuis localStorage
+        const storedData = localStorage.getItem('loggedInOwner');
+        if (storedData) {
+            setOwnerData(JSON.parse(storedData));
+        } else {
+            // Si pas de données, rediriger l'utilisateur
+            navigate("/login");  // Remplacez par la bonne route de connexion
+        }
+    }, [navigate]);
+
     const handleAddPropertyClick = () => {
         navigate("/add-property");
     };
@@ -19,33 +38,33 @@ const Profile = () => {
             <main className="profile-page" style={{ backgroundColor: "#F9F3ED" }}>
                 <div className="container" style={{ padding: "2rem 1rem" }}>
                     {/* Profile Header */}
-                    <section style={{ marginBottom: "2rem" }}>
-                        <h1 className="title">
-                            Your Profile
-                        </h1>
+                    <section style={{ marginBottom: "5%" }}>
+                        <h1 className="title" style={{ marginBottom: "5%" }}>Your Profile</h1>
                         <div
                             className="profile-info"
                             style={{
-                                display: "flex",
-                                alignItems: "center",
-                                flexDirection: "column",
-                                gap: "1rem",
+                                display: "flex",          // Utilisation de flexbox pour aligner horizontalement
+                                alignItems: "center",     // Aligne les éléments verticalement au centre
+                                justifyContent: "space-between", // Espaces égaux entre avatar et form
+                                gap: "10%",              // Espacement entre l'avatar et le formulaire
+                                width: "100%",
                             }}
                         >
+                            {/* Avatar */}
                             <div
                                 className="avatar"
                                 style={{
-                                    width: "150px",
-                                    height: "150px",
+                                    width: "200px",
+                                    height: "200px",
                                     borderRadius: "50%",
                                     overflow: "hidden",
                                     border: "3px solid #ddd",
-                                    marginBottom: "1.5rem",
                                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                    marginLeft:'25%',
                                 }}
                             >
                                 <img
-                                    src="images/farah.jpg" // Update the path if necessary
+                                    src={ownerData.profilePicture || "images/default-avatar.jpg"}  // Avatar par défaut
                                     alt="Profile Avatar"
                                     style={{
                                         width: "100%",
@@ -54,10 +73,12 @@ const Profile = () => {
                                     }}
                                 />
                             </div>
-                            <div className="form">
+
+                            {/* Formulaire */}
+                            <div className="form" style={{ flex: 1 }}> {/* Utilisation de flex pour occuper le reste de l'espace */}
                                 <input
                                     type="text"
-                                    value="Farah Rebai"
+                                    value={ownerData.name}
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -71,7 +92,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="email"
-                                    value="farah.rebai@supcom.tn"
+                                    value={ownerData.email}
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -85,7 +106,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="tel"
-                                    value="+216 ••• •••"
+                                    value={ownerData.phoneNumber || 'Not provided'}
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -99,7 +120,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="text"
-                                    value="Sfax"
+                                    value={ownerData.country || 'Not provided'}
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -123,13 +144,12 @@ const Profile = () => {
                             <span> +</span>
                         </button>
                     </div>
-
                 </div>
-            </main >
+            </main>
 
             {/* Footer */}
-            < Footer />
-        </div >
+            <Footer />
+        </div>
     );
 };
 
