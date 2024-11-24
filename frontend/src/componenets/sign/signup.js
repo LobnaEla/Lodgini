@@ -94,7 +94,7 @@ export const Signup = () => {
           <form onSubmit={handleSubmit} style={{
             width: '100%',
             maxWidth: '350px',
-            padding: '0 20px 0',
+            padding: '20px',
             paddingTop: '0',
             marginTop: '0',
             borderRadius: '8px',
@@ -105,13 +105,13 @@ export const Signup = () => {
 
             {/* Name field */}
             <div style={{ marginBottom: '3%' }}>
-              <label htmlFor="name" style={{ display: 'block', marginBottom: '1%', textAlign: 'left' }}>Name</label>
+              <label htmlFor="name" style={{ display: 'block', marginBottom: '1%', textAlign: 'left' }}>Username</label>
               <input
                 type="text"
                 id="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Enter your name"
+                placeholder="Enter your username"
                 style={{
                   width: '100%',
                   padding: '10px',

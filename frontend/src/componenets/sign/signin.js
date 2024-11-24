@@ -1,114 +1,249 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Axios from 'axios';
 import Navbar from '../home/navbar1';
 import Footer from '../home/footer';
 
 export const Signin = () => {
+  // State to manage form data and errors
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Form is being submitted');
+
+    // Clear previous errors
+    setError('');
+
+    try {
+      // Make a POST request to Django API for login
+      const response = await Axios.post(
+        'http://localhost:8000/Sign_in/', // Ensure the URL matches your Django endpoint
+        {
+          email,
+          password,
+        },
+        { 
+          headers: { 'Content-Type': 'application/json' },
+         withCredentials: true 
+        } // Include credentials for session management
+      );
+
+      console.log(response);
+
+      if (response.status === 200) {
+        console.log('Login successful!');
+        const userData = {
+          name: response.data.name, // Replace 'name' with the actual key returned by your API
+          email: email,};
+          localStorage.setItem('loggedInUser', JSON.stringify(userData));
+          setIsLoggedIn(true);
+          setUserName(response.data.name); 
+        // Redirect to the previous page or fallback to a default page
+        const previousPage = document.referrer;
+        if (previousPage && !previousPage.includes('/Sign_in')) { 
+            // Ensure we don't redirect back to the login page
+            window.location.href = previousPage;
+        } else {
+            // Fallback to a default page like the home page or dashboard
+            window.location.href = '/';
+        }
+    } else {
+        setError('Invalid login credentials.');
+    }
+    } catch (err) {
+      if (err.response) {
+        // If error response from the server
+        setError(err.response.data.error || 'An error occurred. Please try again.');
+      } else {
+        // If no response (network issues, etc.)
+        setError('Network error. Please check your connection.');
+      }
+    }
+  };
+
   return (
     <div style={{ backgroundColor: '#ede7e3' }}>
       <Navbar />
-      
+
       <div style={{ display: 'flex', height: '100vh' }}>
-        {/* Partie gauche pour l'image */}
-        <div style={{
-          flex: 1,
-          position: 'relative',
-          height: '100%',
-        }}>
-          {/* Image de couverture */}
+        {/* Left side for image */}
+        <div
+          style={{
+            flex: 1,
+            position: 'relative',
+            height: '100%',
+          }}
+        >
           <img
-            src="../images/woman_grey.png"  // Remplacez par l'URL de votre image
-            alt="Image de couverture"
+            src="../images/woman_grey.png" // Image URL
+            alt="Cover Image"
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',  // Pour que l'image couvre toute la section
+              objectFit: 'cover',
               position: 'absolute',
               top: '0',
               left: '0',
             }}
           />
-          
-          {/* Rectangle semi-transparent centré par-dessus l'image */}
-          <div style={{
-            position: 'absolute',
-            top: '55%',  // Positionne le rectangle au centre vertical
-            left: '55%', // Positionne le rectangle au centre horizontal
-            transform: 'translate(-50%, -50%)', // Centre le rectangle parfaitement
-            width: '80%',
-            height: '80%',
-            backgroundColor: 'rgba(255, 255, 255, 0.6)',  // Fond blanc semi-transparent
-            borderRadius: '15px', // Coins arrondis
-            display: 'flex', // Utilise flexbox pour centrer le contenu
-            justifyContent: 'center', // Centre horizontalement
-            alignItems: 'center', // Centre verticalement
-            zIndex: 1,  // S'assure que le rectangle est au-dessus de l'image
-          }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '55%',
+              left: '55%',
+              transform: 'translate(-50%, -50%)',
+              width: '80%',
+              height: '80%',
+              backgroundColor: 'rgba(255, 255, 255, 0.6)',
+              borderRadius: '15px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 1,
+            }}
+          >
             <img
-              src="../images/lodgini.png"  // Remplacez par l'URL de votre image de logo
-              alt="Nom du site"
+              src="../images/lodgini.png" // Logo URL
+              alt="Site Logo"
               style={{
-                maxWidth: '60%',  // Vous pouvez ajuster la taille de l'image selon votre préférence
+                maxWidth: '60%',
                 height: 'auto',
               }}
             />
           </div>
         </div>
 
-        {/* Partie droite pour le formulaire */}
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '10px',
-          marginRight: '10%',
-          position: 'relative',
-          zIndex: 2,  // Positionne le formulaire au-dessus de l'image et du rectangle
-        }}>
-          <form style={{
-            width: '100%',
-            maxWidth: '400px',
-            padding: '20px',
-            borderRadius: '8px',
+        {/* Right side for form */}
+        <div
+          style={{
+            flex: 1,
             display: 'flex',
-            flexDirection: 'column',  // Permet de gérer les espacements entre les éléments
-          }}>
-            <h2 style={{ textAlign: 'center' }}>Login Account</h2>
-            
-            <div style={{ marginBottom: '25px' }}> {/* Augmenter l'espace entre les éléments */}
-              <label htmlFor="text" style={{ display: 'block', marginBottom: '5px', textAlign: 'left' }}>Username</label>
-              <input type="text" id="text" placeholder="Enter your username" style={{
-                width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc'
-              }} />
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '10px',
+            marginRight: '10%',
+            position: 'relative',
+            zIndex: 2,
+          }}
+        >
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              width: '100%',
+              maxWidth: '400px',
+              padding: '20px',
+              borderRadius: '8px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <h2 style={{ textAlign: 'center' }}>Login to Your Account</h2>
+
+            {error && (
+              <p style={{ color: 'red', textAlign: 'center', marginBottom: '15px' }}>
+                {error}
+              </p>
+            )}
+
+            <div style={{ marginBottom: '25px' }}>
+              <label
+                htmlFor="email"
+                style={{ display: 'block', marginBottom: '5px', textAlign: 'left' }}
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                }}
+                required
+              />
             </div>
-            
-            <div style={{ marginBottom: '25px' }}> {/* Augmenter l'espace entre les éléments */}
-              <label htmlFor="password" style={{ display: 'block', marginBottom: '5px', textAlign: 'left' }}>Password</label>
-              <input type="password" id="password" placeholder="Enter your password" style={{
-                width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc'
-              }} />
+
+            <div style={{ marginBottom: '25px' }}>
+              <label
+                htmlFor="password"
+                style={{ display: 'block', marginBottom: '5px', textAlign: 'left' }}
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                }}
+                required
+              />
             </div>
-            
-            <button type="submit" style={{
-              width: '100%', padding: '10px', backgroundColor: '#ffc677', border: 'none',
-              color: 'white', fontSize: '16px', borderRadius: '4px', cursor: 'pointer', marginBottom: '10%',
-            }}>Login</button>
-            
-            <button type="submit" style={{
-              width: '100%', padding: '10px', backgroundColor: '#ffc677', border: 'none', marginBottom: '10%',
-              color: 'white', fontSize: '16px', borderRadius: '4px', cursor: 'pointer',
-            }}>Login property owner account</button>
-            
+
+            <button
+              type="submit"
+              style={{
+                width: '100%',
+                padding: '10px',
+                backgroundColor: '#ffc677',
+                border: 'none',
+                color: 'white',
+                fontSize: '16px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginBottom: '10%',
+              }}
+            >
+              Login
+            </button>
+
+            <button
+              
+              style={{
+                width: '100%',
+                padding: '10px',
+                backgroundColor: '#ffc677',
+                border: 'none',
+                marginBottom: '10%',
+                color: 'white',
+                fontSize: '16px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              Login Property Owner Account
+            </button>
+
             <p style={{ textAlign: 'center', margin: '0', padding: '5px 0' }}>
-              <a href="../sign_up" style={{ color: 'black', textDecoration: 'none' ,textDecoration: 'underline'}}>Create an Account</a>
+              <a
+                href="../sign_up"
+                style={{ color: 'black', textDecoration: 'none', textDecoration: 'underline' }}
+              >
+                Create an Account
+              </a>
             </p>
           </form>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );
-}
+};
 
 export default Signin;
