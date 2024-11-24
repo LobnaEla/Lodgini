@@ -2,8 +2,96 @@ import Footer from './footer';
 import React from 'react';
 import Navbar from './navbar1';
 import { Link } from 'react-router-dom';
+import Card from '../categories/card';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Review from '../profile/review';
+import SearchBar1 from './searchBar1';
 
 const Home = () => {
+  const handleSearch = (query) => {
+    console.log("Search query:", query);
+    // Add logic to handle the search query
+  };
+
+  const discounts = [
+    {
+      id: 1,
+      image: "/images/apartement.jpg", // Replace with your image URLs
+      title: "20% Off on Luxury Hotels",
+      description: "Enjoy premium stays at discounted rates.",
+      validity: "Valid until 30th Nov 2024",
+    },
+    {
+      id: 2,
+      image: "/images/apartement.jpg",
+      title: "15% Off on Family Packages",
+      description: "Perfect for group and family trips.",
+      validity: "Valid until 15th Dec 2024",
+    },
+    {
+      id: 3,
+      image: "/images/apartement.jpg",
+      title: "Last Minute Deals - 25% Off",
+      description: "Book now and save big on your next trip!",
+      validity: "Limited-time offer",
+    },
+  ];
+
+  const popularAccommodations = [
+    { name: "Flat in Jasmin Building", stars: 4, price: "84", image: "/images/apartement.jpg" },
+    { name: "Appart’ Medina", stars: 5, price: "129", image: "/images/apartement.jpg" },
+    { name: "La Suite Zembra", stars: 3, price: "64", image: "/images/apartement.jpg" },
+    { name: "Le Patio Andalou", stars: 4, price: "156", image: "/images/apartement.jpg" },
+  ];
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  const reviews = [
+    {
+      name: "Lobna Elabed",
+      description: "Lodgini is the best",
+      stars: 5,
+      date: "2 days ago",
+      profileImageUrl: "images/lobna.jpeg",
+    },
+    {
+      name: "Lobna Elabed",
+      description: "Lodgini is the best",
+      stars: 3,
+      date: "1 week ago",
+      profileImageUrl: "images/lobna.jpeg",
+    },
+    {
+      name: "Lobna Elabed",
+      description: "Lodgini is the best",
+      stars: 1,
+      date: "1 month ago",
+      profileImageUrl: "images/lobna.jpeg",
+    },
+  ];
+
   return (
     <div style={{ backgroundColor: '#ede7e3' }}>
       <div style={{ position: 'relative' }}>
@@ -34,6 +122,9 @@ const Home = () => {
           }}
         />
       </div>
+
+      <SearchBar1 onSearch={handleSearch} />
+
       {/* New Section with Photo and Paragraph */}
       <div style={{ textAlign: 'center', paddingTop: '2%' }}>
         <img
@@ -109,15 +200,9 @@ const Home = () => {
       {/* Categories Section */}
       <div style={{ textAlign: 'center', marginTop: '2%' }}>
         {/* Title "Categories" */}
-        <h2 style={{
-          fontFamily: 'Baloo 2, sans-serif',
-          fontSize: '30px',
-          color: '#023047',
-          marginBottom: '4%',
-          fontWeight: 'bold',  // Ensure the title is bold
-        }}>
+        <h1 className='title'>
           Categories
-        </h2>
+        </h1>
 
         {/* Categories Section */}
         <div style={{
@@ -175,6 +260,50 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* Discounts */}
+      <div className="discounts-section">
+        <h2 className='title'>Exclusive Discounts</h2>
+        <div className="discounts-container">
+          {discounts.map((discount) => (
+            <div className="discount-card" key={discount.id}>
+              <img src={discount.image} alt={discount.title} className="discount-image" />
+              <div className="discount-info">
+                <h3 className="discount-title">{discount.title}</h3>
+                <p className="discount-description">{discount.description}</p>
+                <p className="discount-validity">{discount.validity}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Popular accommodations */}
+      <section className="popular-accommodations">
+        <h1 className='title'>Popular Accommodations</h1>
+        <Slider {...sliderSettings}>
+          {popularAccommodations.map((accommodation) => (
+            <Card key={accommodation.id} {...accommodation} />
+          ))}
+        </Slider>
+      </section>
+
+      {/* Reviews */}
+      <section style={{ marginBottom: "2rem" }}>
+        <h2 className="sub-title" style={{ color: "#16697A" }}>What<h2 className="sub-title"> Lodgini</h2> users are saying</h2>
+        <div className="reviews">
+          {reviews.map((review, index) => (
+            <Review
+              key={index}
+              description={review.description}
+              stars={review.stars}
+              date={review.date}
+              profileImageUrl={review.profileImageUrl}
+            />
+          ))}
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
