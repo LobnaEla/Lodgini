@@ -111,7 +111,7 @@ export const Signup = () => {
                 id="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Enter your name"
+                placeholder="Enter your username"
                 style={{
                   width: '100%',
                   padding: '10px',
