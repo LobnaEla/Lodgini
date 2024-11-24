@@ -105,7 +105,7 @@ export const Signup = () => {
 
             {/* Name field */}
             <div style={{ marginBottom: '3%' }}>
-              <label htmlFor="name" style={{ display: 'block', marginBottom: '1%', textAlign: 'left' }}>Name</label>
+              <label htmlFor="name" style={{ display: 'block', marginBottom: '1%', textAlign: 'left' }}>Username</label>
               <input
                 type="text"
                 id="name"
