@@ -16,6 +16,8 @@ import { Addreview } from './componenets/profile/addreview';
 import PropertyOwnerProfile from './componenets/profile/propertyOwnerProfile';
 import Profile from './componenets/profile/profile';
 import AddProperty from './componenets/profile/addProperty';
+import UpdateReservation from './componenets/reservation/updateReservation';
+import OwnerApartmentDetails from './componenets/Details/ownerApartmentDetails';
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
         <Route path='/profile/Add_review' element={<Addreview />} />
         <Route path='/property_owner_profile' element={<PropertyOwnerProfile />} />
         <Route path='/add_property' element={<AddProperty />} />
+        <Route path='/update_reservation' element={<UpdateReservation />} />
+        <Route path='/property_details' element={<OwnerApartmentDetails />} />
 
       </Routes>
     </div>
