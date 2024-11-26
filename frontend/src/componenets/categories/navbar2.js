@@ -83,7 +83,10 @@ const Navbar = () => {
         color: '#16697a',
         backgroundColor: 'white',
         padding: '8px 15px',
-        fontSize: '14px'
+        fontSize: '14px',
+        border: '1%',
+        borderColor:'#16697a',
+
     };
 
     return (
@@ -122,14 +125,18 @@ const Navbar = () => {
                     </a>
                 </li>
                 <li>
-                    <a
-                        onClick={() => window.location.href = "../about"}
-                        style={linkStyles}
+                <a
+                        onClick={() => window.location.href = "/about"}
+                        style={{
+                            ...linkStyles, 
+                            cursor: 'pointer' // Ajout du curseur de type main
+                        }}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
                         onMouseLeave={(e) => (e.target.style.color = '#023047')}
                     >
                         About Us
                     </a>
+
                 </li>
                 <li>
                     <a
@@ -156,8 +163,8 @@ const Navbar = () => {
 
                 <button
                     style={loginButtonStyles}
-                    onMouseEnter={(e) => (e.target.style.backgroundColor = '#b2b5b2')}
-                    onMouseLeave={(e) => (e.target.style.backgroundColor = '#ede7e3')}
+                    onMouseEnter={(e) => (e.target.style.backgroundColor = '#f5efeb')}
+                    onMouseLeave={(e) => (e.target.style.backgroundColor = 'white')}
                     onClick={() => window.location.href = "../sign_in"}
                 >
                     Login

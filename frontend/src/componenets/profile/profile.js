@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
 import ApartmentGrid from "../categories/apartmentGrid";
@@ -7,6 +7,20 @@ import Review from "./review";
 
 const Profile = () => {
     const navigate = useNavigate();
+    
+    // State to store user data
+    const [userData, setUserData] = useState(null);
+
+    // Get user data from localStorage if the user is logged in
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (storedUser) {
+            setUserData(storedUser);
+        } else {
+            navigate('/Sign_in'); // Redirect to login if not logged in
+        }
+    }, [navigate]);
+
     const handleAddReviewClick = () => {
         navigate("/Profile/Add_review");
     };
@@ -41,7 +55,9 @@ const Profile = () => {
         },
     ];
 
-
+    if (!userData) {
+        return <div>Loading...</div>; // Loading state until user data is available
+    }
 
     return (
         <div>
@@ -52,101 +68,104 @@ const Profile = () => {
             <main className="profile-page" style={{ backgroundColor: "#F9F3ED" }}>
                 <div className="container" style={{ padding: "2rem 1rem" }}>
                     {/* Profile Header */}
-                    <section style={{ marginBottom: "2rem" }}>
-                        <h1 className="title">
-                            Your Profile
-                        </h1>
+                    <section style={{ marginBottom: "5%" }}>
+                    <h1 className="title" style={{ marginBottom: "5%" }}>Your Profile</h1>
+                    <div
+                        className="profile-info"
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",  // Aligne les éléments sur la ligne
+                            alignItems: "center",  // Centrer verticalement
+                            gap: "10",
+                            width: "100%",  // Espace entre les éléments
+                        }}
+                    >
+                        {/* Photo (à gauche) */}
                         <div
-                            className="profile-info"
+                            className="avatar"
                             style={{
-                                display: "flex",
-                                alignItems: "center",
-                                flexDirection: "column",
-                                gap: "1rem",
+                                width: "200px",
+                                height: "200px",
+                                borderRadius: "50%",
+                                overflow: "hidden",
+                                border: "3px solid #ddd",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                marginLeft:'25%',
                             }}
                         >
-                            <div
-                                className="avatar"
+                            <img
+                                src={userData.profile_picture || "images/default-avatar.jpg"} // Photo de profil dynamique
+                                alt="Profile Avatar"
                                 style={{
-                                    width: "150px",
-                                    height: "150px",
-                                    borderRadius: "50%",
-                                    overflow: "hidden",
-                                    border: "3px solid #ddd",
-                                    marginBottom: "1.5rem",
-                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover", // S'assurer que l'image couvre toute la zone
                                 }}
-                            >
-                                <img
-                                    src="images/lobna.jpeg" // Update the path if necessary
-                                    alt="Profile Avatar"
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            </div>
-                            <div className="form">
-                                <input
-                                    type="text"
-                                    value="Lobna Elabed"
-                                    style={{
-                                        display: "block",
-                                        width: "100%",
-                                        maxWidth: "400px",
-                                        padding: "0.8rem",
-                                        marginBottom: "1rem",
-                                        borderRadius: "8px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                    readOnly
-                                />
-                                <input
-                                    type="email"
-                                    value="lobna.elabed@supcom.tn"
-                                    style={{
-                                        display: "block",
-                                        width: "100%",
-                                        maxWidth: "400px",
-                                        padding: "0.8rem",
-                                        marginBottom: "1rem",
-                                        borderRadius: "8px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                    readOnly
-                                />
-                                <input
-                                    type="tel"
-                                    value="+216 ••• •••"
-                                    style={{
-                                        display: "block",
-                                        width: "100%",
-                                        maxWidth: "400px",
-                                        padding: "0.8rem",
-                                        marginBottom: "1rem",
-                                        borderRadius: "8px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                    readOnly
-                                />
-                                <input
-                                    type="text"
-                                    value="Tunis"
-                                    style={{
-                                        display: "block",
-                                        width: "100%",
-                                        maxWidth: "400px",
-                                        padding: "0.8rem",
-                                        marginBottom: "1rem",
-                                        borderRadius: "8px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                    readOnly
-                                />
-                            </div>
+                            />
                         </div>
-                    </section>
+
+                        {/* Formulaire (à droite) */}
+                        <div className="form" style={{ flex: 1 }}>
+                            <input
+                                type="text"
+                                value={userData.name}
+                                style={{
+                                    display: "block",
+                                    width: "100%",
+                                    maxWidth: "400px",
+                                    padding: "0.8rem",
+                                    marginBottom: "1rem",
+                                    borderRadius: "8px",
+                                    border: "1px solid #ddd",
+                                }}
+                                readOnly
+                            />
+                            <input
+                                type="email"
+                                value={userData.email}
+                                style={{
+                                    display: "block",
+                                    width: "100%",
+                                    maxWidth: "400px",
+                                    padding: "0.8rem",
+                                    marginBottom: "1rem",
+                                    borderRadius: "8px",
+                                    border: "1px solid #ddd",
+                                }}
+                                readOnly
+                            />
+                            <input
+                                type="tel"
+                                value={userData.phone_number || "+216 ••• •••"}
+                                style={{
+                                    display: "block",
+                                    width: "100%",
+                                    maxWidth: "400px",
+                                    padding: "0.8rem",
+                                    marginBottom: "1rem",
+                                    borderRadius: "8px",
+                                    border: "1px solid #ddd",
+                                }}
+                                readOnly
+                            />
+                            <input
+                                type="text"
+                                value={userData.country || "Tunis"}
+                                style={{
+                                    display: "block",
+                                    width: "100%",
+                                    maxWidth: "400px",
+                                    padding: "0.8rem",
+                                    marginBottom: "1rem",
+                                    borderRadius: "8px",
+                                    border: "1px solid #ddd",
+                                }}
+                                readOnly
+                            />
+                        </div>
+                    </div>
+                </section>
+
 
                     {/* Booking History */}
                     <h2 className="title">Booking History</h2>
@@ -165,7 +184,7 @@ const Profile = () => {
                                     stars={review.stars}
                                     date={review.date}
                                     imageUrl={review.imageUrl}
-                                    profileImageUrl={review.profileImageUrl}
+                                    profileImageUrl={userData.profile_picture || "images/default-avatar.jpg"}
                                 />
                             ))}
                         </div>
@@ -174,11 +193,11 @@ const Profile = () => {
                         </button>
                     </section>
                 </div>
-            </main >
+            </main>
 
             {/* Footer */}
-            < Footer />
-        </div >
+            <Footer />
+        </div>
     );
 };
 

@@ -200,7 +200,7 @@ const Navbar = () => {
             </button>
             <button
               style={{ ...buttonStyles, color: '#16697a', backgroundColor: '#ede7e3' }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = '#b2b5b2')}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = '#e3dcd8')}
               onMouseLeave={(e) => (e.target.style.backgroundColor = '#ede7e3')}
               onClick={() => window.location.href = "../sign_in"}
             >
