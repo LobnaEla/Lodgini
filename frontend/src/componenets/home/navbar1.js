@@ -134,7 +134,7 @@ const Navbar = () => {
         </li>
         <li>
           <a
-            href="#profile"
+            href="/profile"
             style={linkStyles}
             onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
             onMouseLeave={(e) => (e.target.style.color = '#023047')}

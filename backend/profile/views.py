@@ -54,7 +54,11 @@ def login_user(request):
 
             # Verify the password if user is found
             if user and (password==user.password):
-                return JsonResponse({'message': 'Login successful!' , 'name': user.name }, status=200)
+                return JsonResponse({'message': 'Login successful!' , 'name': user.name,
+                    'email': user.email,
+                    'phone_number': user.phone_number,
+                    'country': user.country,
+                    'profile_picture': user.profile_picture.url if user.profile_picture else None }, status=200)
             else:
                 return JsonResponse({'error': 'Invalid email or password'}, status=400)
         except json.JSONDecodeError:
