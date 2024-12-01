@@ -559,3 +559,75 @@ body {
     color: #fff;
   }
 }
+
+.popular-accommodations {
+  padding: 30px;
+}
+
+.popular-accommodations h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.slick-slide {
+  padding: 10px;
+}
+
+.slick-prev,
+.slick-next {
+  color: #333;
+}
+
+.discounts-section {
+  padding: 2rem;
+  text-align: center;
+}
+
+.discounts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.discount-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.discount-card:hover {
+  transform: scale(1.05);
+}
+
+.discount-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.discount-info {
+  padding: 1rem;
+}
+
+.discount-title {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.discount-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.discount-validity {
+  font-size: 0.9rem;
+  color: #999;
+}

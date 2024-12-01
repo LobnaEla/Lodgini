@@ -7,43 +7,37 @@ from django.contrib.auth.models import User
 from profile.models import OwnerProfile,UserProfile
 class Property(models.Model):
     PROPERTY_TYPES = [
-        ('apartment', 'Apartment'),
-        ('vacation_home', 'Vacation Home'),
+        ('Apartment', 'Apartment'),
+        ('Vacation House', 'Vacation House'),
     ]
 
     FURNITURE_CHOICES = [
-        ('luxurious', 'Luxuriously Furnished'),
-        ('modest', 'Modestly Furnished'),
+        ('Luxuriously Furnished', 'Luxuriously Furnished'),
+        ('Modestly Furnished', 'Modestly Furnished'),
     ]
 
 
     # Basic property details
     name = models.CharField(max_length=255)
     description = models.TextField()
-    property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES)
-    furnishing_type = models.CharField(max_length=20, choices=FURNITURE_CHOICES, default='modest')
+    property_type = models.CharField(max_length=50, choices=PROPERTY_TYPES)
+    furnishing_type = models.CharField(max_length=50, choices=FURNITURE_CHOICES)
     location = models.CharField(max_length=255)
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
 
     # Property images
-    image1 = models.ImageField(upload_to='property_photos/', blank=False, null=True)
-    image2 = models.ImageField(upload_to='property_photos/', blank=True, null=True)
-    image3 = models.ImageField(upload_to='property_photos/', blank=True, null=True)
-
-    # Number of stars (rating)
-    number_of_stars = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], default=5)
-
+   
+   # Number of stars (rating)
+    number_of_stars = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], default=3)
     # Link to the owner (One-to-many relationship)
-    owner = models.ForeignKey(OwnerProfile, on_delete=models.CASCADE, related_name='properties')
-
+    owner = models.ForeignKey(OwnerProfile, on_delete=models.CASCADE, related_name='properties', default='1')
     # Property details (rooms, utilities, etc.)
     number_of_bedrooms = models.PositiveIntegerField()
     number_of_living_rooms = models.PositiveIntegerField()
     number_of_bathrooms = models.PositiveIntegerField()
     number_of_dining_rooms = models.PositiveIntegerField()
-
+    max_number_guests=models.PositiveIntegerField(default=4)
     wifi_speed = models.CharField(max_length=100, blank=True, null=True)
-    number_of_units_ready = models.PositiveIntegerField()
     number_of_refrigerators = models.PositiveIntegerField()
     number_of_tvs = models.PositiveIntegerField()
     class Meta:

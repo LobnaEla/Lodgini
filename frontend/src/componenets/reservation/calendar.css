@@ -1,0 +1,99 @@
+.calendar-reservation {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 60px 40px 60px;
+    margin: 20px 300px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.calendar-day {
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px;
+    transition: background-color 0.3s;
+}
+
+.calendar-day.Available {
+    background-color: #82C0CC;
+}
+
+.calendar-day.Non-available {
+    background-color: #16697A;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.calendar-day.Your-reservation-date {
+    background-color: #ffe7b3;
+}
+
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.legend-item {
+    align-items: center;
+    display: flex;
+    margin: 0 12px;
+}
+
+.legend-color {
+    border-radius: 4px;
+    height: 12px;
+    margin-right: 8px;
+    width: 12px;
+}
+
+.legend-color.available {
+    background-color: #c2e7f0;
+}
+
+.legend-color.non-available {
+    background-color: #8d9fac;
+}
+
+.legend-color.your-reservation {
+    background-color: #FFC677;
+}
+
+.calendar-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.calendar-actions button {
+    background-color: #FFC677;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 8px;
+    padding: 8px 16px;
+    transition: background-color 0.3s;
+}
+
+.calendar-actions button:hover {
+    background-color: #ebb161;
+}
+
+.calendar-actions button.cancel {
+    background-color: #ff6b6b;
+}
+
+.calendar-actions button.cancel:hover {
+    background-color: #e04848;
+}

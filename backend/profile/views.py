@@ -84,16 +84,18 @@ def login_owner(request):
 
             # Log the user object to see if it's found
             if user:
-                print(f"User found: {user.email}")
+                print(f"User found: {user.email} d'id {user.id}")
             else:
                 print("User not found")
 
             # Verify the password if user is found
             if user and (password==user.password):
+                request.session['owner_email'] = user.email
                 return JsonResponse({'message': 'Login successful!' ,  'name': user.name,
                     'email': user.email,
                     'phone_number': user.phone_number,
                     'country': user.country,
+                    'id': user.id,
                     'profile_picture': user.profile_picture.url if user.profile_picture else None}, status=200)
             else:
                 return JsonResponse({'error': 'Invalid email or password'}, status=400)
