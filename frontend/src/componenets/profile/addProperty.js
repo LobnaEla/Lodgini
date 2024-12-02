@@ -21,7 +21,7 @@ const AddProperty = () => {
         number_of_bathrooms: "",
         number_of_dining_rooms: "",
         max_number_guests: "",
-        furnishing_type: "", // Default value
+        furnishing_type: "",
         number_of_stars: "",
     });
     const navigate = useNavigate();
@@ -47,9 +47,15 @@ const AddProperty = () => {
 
     const handleChange = (e) => {
         const { id, value } = e.target;
+
+        // Ensure positive numbers for relevant fields
+        const updatedValue = id.includes("number") || id === "price_per_night"
+            ? Math.abs(value)  // Make sure the value is positive
+            : value;
+
         setFormData((prev) => ({
             ...prev,
-            [id]: id === "price_per_night" ? parseFloat(value) || "" : value,
+            [id]: id === "price_per_night" ? parseFloat(updatedValue) || "" : updatedValue,
         }));
     };
 
@@ -82,8 +88,12 @@ const AddProperty = () => {
 
         // Get the logged-in owner's email from localStorage
         const loggedInOwner = JSON.parse(localStorage.getItem("loggedInOwner"));
-       
-
+        payload.append("owner_email", loggedInOwner.email);
+        if (!loggedInOwner || !loggedInOwner.email) {
+            alert("Please log in to continue.");
+            navigate("/login");
+            return;
+        }
         try {
             // Axios POST request to the backend
             const response = await axios.post("http://localhost:8000/management/add_property/", payload, {
@@ -92,7 +102,7 @@ const AddProperty = () => {
                 },
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 alert("Property added successfully!");
                 navigate("/property_owner_profile");
             } else {
@@ -203,6 +213,7 @@ const AddProperty = () => {
                                 value={formData.price_per_night}
                                 onChange={handleChange}
                                 required
+                                min="0"
                             />
                         </div>
                         <div className="form-group">
@@ -216,6 +227,7 @@ const AddProperty = () => {
                                 value={formData.number_of_stars}
                                 onChange={handleChange}
                                 required
+                                
                             />
                         </div>
                         <div className="form-group details">
@@ -232,6 +244,7 @@ const AddProperty = () => {
                                         placeholder="Available number"
                                         value={formData.number_of_tvs}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                                 <div className="detail">
@@ -243,28 +256,31 @@ const AddProperty = () => {
                                         placeholder="Available number"
                                         value={formData.number_of_refrigerators}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                                 <div className="detail">
                                     <span className="icon">📶</span>
-                                    <label>Wifi</label>
+                                    <label>Wi-Fi speed (Mbps)</label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         id="wifi_speed"
                                         placeholder="Mbps"
                                         value={formData.wifi_speed}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                                 <div className="detail">
                                     <span className="icon">🛏️</span>
-                                    <label>Bedrooms</label>
+                                    <label>Number of Bedrooms</label>
                                     <input
                                         type="number"
                                         id="number_of_bedrooms"
-                                        placeholder="Number of bedrooms"
+                                        placeholder="Value"
                                         value={formData.number_of_bedrooms}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                                 <div className="detail">
@@ -273,9 +289,10 @@ const AddProperty = () => {
                                     <input
                                         type="number"
                                         id="number_of_living_rooms"
-                                        placeholder="Number of living rooms"
+                                        placeholder="Value"
                                         value={formData.number_of_living_rooms}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                                 <div className="detail">
@@ -284,9 +301,10 @@ const AddProperty = () => {
                                     <input
                                         type="number"
                                         id="number_of_bathrooms"
-                                        placeholder="Number of bathrooms"
+                                        placeholder="Value"
                                         value={formData.number_of_bathrooms}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                                 <div className="detail">
@@ -295,20 +313,22 @@ const AddProperty = () => {
                                     <input
                                         type="number"
                                         id="number_of_dining_rooms"
-                                        placeholder="Number of dining rooms"
+                                        placeholder="Value"
                                         value={formData.number_of_dining_rooms}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                                 <div className="detail">
                                     <span className="icon">👥</span>
-                                    <label>Number of Guests</label>
+                                    <label>Max Guests</label>
                                     <input
                                         type="number"
                                         id="max_number_guests"
-                                        placeholder="Max number of guests"
+                                        placeholder="Value"
                                         value={formData.max_number_guests}
                                         onChange={handleChange}
+                                        min="0"
                                     />
                                 </div>
                             </div>
