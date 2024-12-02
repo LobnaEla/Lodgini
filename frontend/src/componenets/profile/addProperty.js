@@ -82,8 +82,12 @@ const AddProperty = () => {
 
         // Get the logged-in owner's email from localStorage
         const loggedInOwner = JSON.parse(localStorage.getItem("loggedInOwner"));
-       
-
+        payload.append("owner_email", loggedInOwner.email);
+        if (!loggedInOwner || !loggedInOwner.email) {
+            alert("Please log in to continue.");
+            navigate("/login");
+            return;
+        }
         try {
             // Axios POST request to the backend
             const response = await axios.post("http://localhost:8000/management/add_property/", payload, {

@@ -31,6 +31,7 @@ class Property(models.Model):
     number_of_stars = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], default=3)
     # Link to the owner (One-to-many relationship)
     owner = models.ForeignKey(OwnerProfile, on_delete=models.CASCADE, related_name='properties', default='1')
+
     # Property details (rooms, utilities, etc.)
     number_of_bedrooms = models.PositiveIntegerField()
     number_of_living_rooms = models.PositiveIntegerField()
