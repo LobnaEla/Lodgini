@@ -24,13 +24,27 @@ class Property(models.Model):
     furnishing_type = models.CharField(max_length=50, choices=FURNITURE_CHOICES)
     location = models.CharField(max_length=255)
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
-
+    image1 = models.ImageField(
+        upload_to='properties/images/',
+        blank=False,
+        null=False,
+    )
+    image2 = models.ImageField(
+        upload_to='properties/images/',
+        blank=False,
+        null=False,
+    )
+    image3 = models.ImageField(
+        upload_to='properties/images/',
+        blank=True,
+        null=True
+    )
     # Property images
    
    # Number of stars (rating)
     number_of_stars = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], default=3)
     # Link to the owner (One-to-many relationship)
-    owner = models.ForeignKey(OwnerProfile, on_delete=models.CASCADE, related_name='properties', default='1')
+    owner = models.ForeignKey(OwnerProfile, on_delete=models.CASCADE, related_name='properties')
 
     # Property details (rooms, utilities, etc.)
     number_of_bedrooms = models.PositiveIntegerField()
@@ -38,7 +52,7 @@ class Property(models.Model):
     number_of_bathrooms = models.PositiveIntegerField()
     number_of_dining_rooms = models.PositiveIntegerField()
     max_number_guests=models.PositiveIntegerField(default=4)
-    wifi_speed = models.CharField(max_length=100, blank=True, null=True)
+    wifi_speed = models.CharField(max_length=100, blank=True, null=True,default=0)
     number_of_refrigerators = models.PositiveIntegerField()
     number_of_tvs = models.PositiveIntegerField()
     class Meta:
