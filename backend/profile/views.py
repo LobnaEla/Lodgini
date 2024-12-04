@@ -89,8 +89,13 @@ def login_owner(request):
             # Log the user object to see if it's found
             if user:
                 print(f"User found: {user.email} d'id {user.id}")
+                if user.profilepicture:
+                    print(f"Profile picture URL: {user.profilepicture.url}")
+                else:
+                    print("No profile picture available")
             else:
                 print("User not found")
+           
 
             # Verify the password if user is found
             if user and (password==user.password):
@@ -100,7 +105,8 @@ def login_owner(request):
                     'phone_number': user.phone_number,
                     'country': user.country,
                     'id': user.id,
-                    'profile_picture': user.profilepicture.url if user.profilepicture else None}, status=200)
+                   'profile_picture': request.build_absolute_uri(user.profilepicture.url) if user.profilepicture else None
+            }, status=200)
             else:
                 return JsonResponse({'error': 'Invalid email or password'}, status=400)
         except json.JSONDecodeError:
@@ -109,7 +115,7 @@ def login_owner(request):
     return JsonResponse({'error': 'Bad request'}, status=400)
 
 @csrf_exempt
-def update_profile_picture(request):
+def update_profile_picture_owner(request):
     if request.method == 'POST':
         user_email = request.POST.get('email')
         profilepicture = request.FILES.get('profile_picture')
@@ -140,13 +146,105 @@ def update_profile_picture(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
 
-def get_owner_profile(request, owner_id):
-    owner = get_object_or_404(OwnerProfile, id=owner_id)
-    owner_data = {
-        'name': owner.name,
-        'email': owner.email,
-        'phoneNumber': owner.phone_number,
-        'country': owner.country,
-        'profilePicture': owner.profilepicture.url if owner.profilepicture else None  # URL de l'image
-    }
-    return JsonResponse(owner_data)
+@csrf_exempt  # Pour autoriser les requêtes POST sans vérification CSRF (utile pour les tests, mais à gérer en production)
+def update_profile_owner(request):
+    try:
+        # Récupérer les données JSON envoyées dans la requête
+        data = json.loads(request.body)
+        
+        # Obtenez l'utilisateur connecté (ou trouvez un autre moyen de récupérer l'utilisateur)
+        email = data.get("email")
+        owner = OwnerProfile.objects.get(email=email)
+
+        # Mise à jour des champs
+        owner.name = data.get("name", owner.name)
+        owner.phone_number = data.get("phone_number", owner.phone_number)
+        owner.country = data.get("country", owner.country)
+
+        # Mise à jour de l'image si un fichier est envoyé
+
+        owner.save()
+
+        # Répondre avec le succès
+        return JsonResponse({
+            'success': True,
+            'message': 'Profile updated successfully',
+        })
+
+    except OwnerProfile.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'User not found'}, status=404)
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)}, status=400)
+    
+@csrf_exempt
+def update_profile_picture_user(request):
+    if request.method == 'POST':
+        user_email = request.POST.get('email')
+        profile_picture = request.FILES.get('profile_picture')
+
+        if not user_email or not profile_picture:
+            return JsonResponse({'success': False, 'message': 'Email or file not provided'}, status=400)
+
+        try:
+            # Fetch the user profile by email
+            user_profile = UserProfile.objects.get(email=user_email)
+
+            # Remove old profile picture if exists
+            if user_profile.profile_picture:
+                old_picture_path = user_profile.profile_picture.path
+                if os.path.exists(old_picture_path):
+                    os.remove(old_picture_path)
+
+            # Save the new profile picture
+            user_profile.profile_picture.save(profile_picture.name, profile_picture)
+            user_profile.save()
+
+            # Return the new profile picture URL as a response
+            return JsonResponse({'success': True, 'profilePictureUrl': user_profile.profile_picture.url})
+
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'User not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)}, status=500)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
+
+
+@csrf_exempt  # Disable CSRF check for this view (not recommended for production, only for testing purposes)
+def update_profile_user(request):
+    try:
+        # Parse the JSON data from the request
+        data = json.loads(request.body)
+
+        # Retrieve the email from the data to fetch the specific owner
+        email = data.get("email")
+        if not email:
+            return JsonResponse({'success': False, 'message': 'Email is required'}, status=400)
+
+        # Get the owner object from the database
+        user = UserProfile.objects.get(email=email)
+
+        # Update the fields with the provided data, if available
+        user.name = data.get("name", user.name)
+        user.phone_number = data.get("phone_number", user.phone_number)
+        user.country = data.get("country", user.country)
+
+               # Save the updated owner object
+        user.save()
+
+        # Return a success response
+        return JsonResponse({
+            'success': True,
+            'message': 'Profile updated successfully',
+            'profilePictureUrl': user.profile_picture.url if user.profile_picture else None,
+        })
+
+    except OwnerProfile.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'User not found'}, status=404)
+
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)}, status=500)
