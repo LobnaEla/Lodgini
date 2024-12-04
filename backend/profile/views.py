@@ -13,32 +13,35 @@ from rest_framework import status
 from .models import *
 from django.contrib.auth.models import User
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def signup(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         serializer = UserProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()  # Sauvegarde l'utilisateur
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def signupowner(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         serializer = OwnerProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()  # Sauvegarde l'utilisateur
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @csrf_exempt
 def login_user(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             # Load the data from the POST request
             data = json.loads(request.body)
-            email = data.get('email')
-            password = data.get('password')
+            email = data.get("email")
+            password = data.get("password")
 
             # Log the email received
             print(f"Received email: {email}")
@@ -53,28 +56,36 @@ def login_user(request):
                 print("User not found")
 
             # Verify the password if user is found
-            if user and (password==user.password):
-                return JsonResponse({'message': 'Login successful!' , 'name': user.name,
-                    'email': user.email,
-                    'phone_number': user.phone_number,
-                    'country': user.country,
-                    'profile_picture': user.profile_picture.url if user.profile_picture else None }, status=200)
+            if user and (password == user.password):
+                return JsonResponse(
+                    {
+                        "message": "Login successful!",
+                        "name": user.name,
+                        "email": user.email,
+                        "phone_number": user.phone_number,
+                        "country": user.country,
+                        "profile_picture": (
+                            user.profile_picture.url if user.profile_picture else None
+                        ),
+                    },
+                    status=200,
+                )
             else:
-                return JsonResponse({'error': 'Invalid email or password'}, status=400)
+                return JsonResponse({"error": "Invalid email or password"}, status=400)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-    return JsonResponse({'error': 'Bad request'}, status=400)
+    return JsonResponse({"error": "Bad request"}, status=400)
 
 
 @csrf_exempt
 def login_owner(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             # Load the data from the POST request
             data = json.loads(request.body)
-            email = data.get('email')
-            password = data.get('password')
+            email = data.get("email")
+            password = data.get("password")
 
             # Log the email received
             print(f"Received email: {email}")
@@ -84,22 +95,67 @@ def login_owner(request):
 
             # Log the user object to see if it's found
             if user:
-                print(f"User found: {user.email} d'id {user.id}")
+                print(f"User found: {user.email} with ID {user.id}")
+
+                if user and (password == user.password):
+                    # Store the owner information in the session
+                    request.session["logged_in_owner"] = {
+                        "id": user.id,
+                        "email": user.email,
+                        "name": user.name,
+                    }
+                    print(
+                        f"Stored in session: {request.session['logged_in_owner']}"
+                    )  # Debugging
+
+                    # Return the response
+                    return JsonResponse(
+                        {
+                            "message": "Login successful!",
+                            "id": user.id,  # Include the owner's ID
+                            "name": user.name,
+                            "email": user.email,
+                            "phone_number": user.phone_number,
+                            "country": user.country,
+                            "profile_picture": (
+                                user.profile_picture.url
+                                if user.profile_picture
+                                else None
+                            ),
+                        },
+                        status=200,
+                    )
+
             else:
                 print("User not found")
 
             # Verify the password if user is found
-            if user and (password==user.password):
-                request.session['owner_email'] = user.email
-                return JsonResponse({'message': 'Login successful!' ,  'name': user.name,
-                    'email': user.email,
-                    'phone_number': user.phone_number,
-                    'country': user.country,
-                    'id': user.id,
-                    'profile_picture': user.profile_picture.url if user.profile_picture else None}, status=200)
-            else:
-                return JsonResponse({'error': 'Invalid email or password'}, status=400)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            if user and (password == user.password):
+                # Store owner data in the session
+                request.session["logged_in_owner"] = {
+                    "id": user.id,
+                    "email": user.email,
+                    "name": user.name,
+                }
 
-    return JsonResponse({'error': 'Bad request'}, status=400)
+                # Return a JSON response with relevant user data
+                return JsonResponse(
+                    {
+                        "message": "Login successful!",
+                        "id": user.id,
+                        "name": user.name,
+                        "email": user.email,
+                        "phone_number": user.phone_number,
+                        "country": user.country,
+                        "profile_picture": (
+                            user.profile_picture.url if user.profile_picture else None
+                        ),
+                    },
+                    status=200,
+                )
+            else:
+                return JsonResponse({"error": "Invalid email or password"}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    return JsonResponse({"error": "Bad request"}, status=400)

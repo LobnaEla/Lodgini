@@ -3,6 +3,7 @@ import Navbar from "../profile/navbaro";
 import Footer from "../home/footer";
 import { useNavigate } from "react-router-dom";
 import ApartmentGrid from "../categories/apartmentGrid";
+import Properties from "./properties";
 
 const Profile = () => {
     const [ownerData, setOwnerData] = useState({
@@ -60,7 +61,7 @@ const Profile = () => {
                                     overflow: "hidden",
                                     border: "3px solid #ddd",
                                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                                    marginLeft:'25%',
+                                    marginLeft: '25%',
                                 }}
                             >
                                 <img
@@ -138,7 +139,7 @@ const Profile = () => {
 
                     {/* Your Properties */}
                     <h2 className="title">Your properties</h2>
-                    <ApartmentGrid />
+                    <Properties />
                     <div className="add-property-wrapper">
                         <button className="add-property-button" onClick={() => navigate("/add_property")}>
                             <span> +</span>
