@@ -39,7 +39,9 @@ export const Signin = () => {
         console.log('Login successful!');
         const userData = {
           name: response.data.name, // Replace 'name' with the actual key returned by your API
-          email: email,};
+          email: email,
+          phone_number: response.data.phone_number, // Assuming 'mobile' is part of the API response
+          country: response.data.country,};
           localStorage.setItem('loggedInUser', JSON.stringify(userData));
           setIsLoggedIn(true);
           setUserName(response.data.name); 

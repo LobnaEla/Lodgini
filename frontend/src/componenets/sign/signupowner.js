@@ -10,7 +10,7 @@ export const Signupowner = () => {
     email: '',
     phone_number: '',
     country: '',
-    password: ''
+    password: '',
   });
   const navigate = useNavigate();
 
