@@ -10,21 +10,29 @@ const Properties = () => {
     useEffect(() => {
         const fetchProperties = async () => {
             try {
+                // Fetch logged-in owner data from localStorage
                 const loggedInOwner = JSON.parse(localStorage.getItem('loggedInOwner'));
                 const ownerId = loggedInOwner?.id;
 
+                // If ownerId is not found in localStorage, log and stop execution
                 if (!ownerId) {
-                    setError("Owner ID not found.");
+                    console.log("Owner ID not found.");
+                    setError("Owner not logged in.");
                     return;
                 }
 
+                // Request properties for the owner
                 const response = await Axios.get(`http://localhost:8000/properties/${ownerId}/`);
+
                 if (response.status === 200) {
                     setProperties(response.data);
                 } else {
+                    console.log("Failed to fetch properties.");
                     setError("Failed to fetch properties.");
                 }
             } catch (err) {
+                console.log("An error occurred while fetching properties.");
+                console.log(err);
                 setError("An error occurred while fetching properties.");
             }
         };
@@ -32,9 +40,9 @@ const Properties = () => {
         fetchProperties();
     }, []);
 
-
     return (
         <div className="apartment-grid" style={gridStyle}>
+            {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
             {properties.length > 0 ? (
                 properties.map((apartment, index) => (
@@ -52,7 +60,7 @@ const Properties = () => {
                     </Link>
                 ))
             ) : (
-                <p>You do not have any properties yet.</p>
+                <p style={{ textAlign: "center" }}>You do not have any properties yet.</p>
             )}
         </div>
     );
