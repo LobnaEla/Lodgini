@@ -1,6 +1,10 @@
 # views.py
+import os
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
@@ -96,10 +100,53 @@ def login_owner(request):
                     'phone_number': user.phone_number,
                     'country': user.country,
                     'id': user.id,
-                    'profile_picture': user.profile_picture.url if user.profile_picture else None}, status=200)
+                    'profile_picture': user.profilepicture.url if user.profilepicture else None}, status=200)
             else:
                 return JsonResponse({'error': 'Invalid email or password'}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
     return JsonResponse({'error': 'Bad request'}, status=400)
+
+@csrf_exempt
+def update_profile_picture(request):
+    if request.method == 'POST':
+        user_email = request.POST.get('email')
+        profilepicture = request.FILES.get('profile_picture')
+
+        if not user_email or not profilepicture:
+            return JsonResponse({'success': False, 'message': 'Email or file not provided'}, status=400)
+
+        try:
+            owner_profile = OwnerProfile.objects.get(email=user_email)
+
+            # Supprimer l'ancienne photo si elle existe
+            if owner_profile.profilepicture:
+                old_picture_path = owner_profile.profilepicture.path
+                if os.path.exists(old_picture_path):
+                    os.remove(old_picture_path)
+
+            # Enregistrer la nouvelle photo
+            owner_profile.profilepicture.save(profilepicture.name, profilepicture)
+            owner_profile.save()
+            print(f"{owner_profile.profilepicture.url}")
+
+            return JsonResponse({'success': True, 'profilePictureUrl': owner_profile.profilepicture.url})
+
+        except OwnerProfile.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Owner not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)}, status=500)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
+
+def get_owner_profile(request, owner_id):
+    owner = get_object_or_404(OwnerProfile, id=owner_id)
+    owner_data = {
+        'name': owner.name,
+        'email': owner.email,
+        'phoneNumber': owner.phone_number,
+        'country': owner.country,
+        'profilePicture': owner.profilepicture.url if owner.profilepicture else None  # URL de l'image
+    }
+    return JsonResponse(owner_data)

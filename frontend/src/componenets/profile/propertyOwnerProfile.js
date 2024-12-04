@@ -3,6 +3,7 @@ import Navbar from "../profile/navbaro";
 import Footer from "../home/footer";
 import { useNavigate } from "react-router-dom";
 import ApartmentGrid from "../categories/apartmentGrid";
+import axios from 'axios';  // Import Axios
 
 const Profile = () => {
     const [ownerData, setOwnerData] = useState({
@@ -15,18 +16,66 @@ const Profile = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Charger les données du propriétaire depuis localStorage
+        // Get the owner ID from local storage
         const storedData = localStorage.getItem('loggedInOwner');
         if (storedData) {
-            setOwnerData(JSON.parse(storedData));
+            const data = JSON.parse(storedData);
+            const ownerId = data.id;  // Assuming 'id' is stored in the logged-in data
+
+            // Fetch the profile data from the backend
+            axios.get(`http://localhost:8000/owner_profile/${ownerId}/`)  // Adjust the URL as necessary
+                .then(response => {
+                    setOwnerData(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching owner profile:', error);
+                    alert('Failed to load profile data');
+                });
         } else {
-            // Si pas de données, rediriger l'utilisateur
-            navigate("/login");  // Remplacez par la bonne route de connexion
+            navigate("/property_owner_profile");
         }
     }, [navigate]);
 
     const handleAddPropertyClick = () => {
         navigate("/add-property");
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('profile_picture', file); // Append the selected image
+            formData.append('email', ownerData.email); // Ensure the email is passed
+
+            // Send the image to the backend using Axios
+            axios.post('http://localhost:8000/owner_profile/update_picture/', formData, {  // Replace with your API endpoint
+                headers: {
+                    'Content-Type': 'multipart/form-data',  // Required for file upload
+                }
+            })
+            .then(response => {
+                if (response.data.success) {
+                    // If the upload is successful, update the profile picture in state
+                    setOwnerData(prevData => ({
+                        ...prevData,
+                        profilePicture: response.data.profilePictureUrl,  // Update with the URL returned by the backend
+                    }));
+
+                    // Optionally, update the localStorage to reflect the new profile picture
+                    localStorage.setItem('loggedInOwner', JSON.stringify({
+                        ...ownerData,
+                        profilePicture: response.data.profilePictureUrl,
+                    }));
+                } else {
+                    // Handle the error case (e.g., show a message to the user)
+                    alert('Failed to upload image');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error uploading the image');
+            });
+        }
     };
 
     return (
@@ -43,10 +92,10 @@ const Profile = () => {
                         <div
                             className="profile-info"
                             style={{
-                                display: "flex",          // Utilisation de flexbox pour aligner horizontalement
-                                alignItems: "center",     // Aligne les éléments verticalement au centre
-                                justifyContent: "space-between", // Espaces égaux entre avatar et form
-                                gap: "10%",              // Espacement entre l'avatar et le formulaire
+                                display: "flex",          
+                                alignItems: "center",     
+                                justifyContent: "space-between", 
+                                gap: "10%",             
                                 width: "100%",
                             }}
                         >
@@ -60,11 +109,12 @@ const Profile = () => {
                                     overflow: "hidden",
                                     border: "3px solid #ddd",
                                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                                    marginLeft:'25%',
+                                    marginLeft: '25%',
+                                    position: "relative", 
                                 }}
                             >
                                 <img
-                                    src={ownerData.profilePicture || "images/default-avatar.jpg"}  // Avatar par défaut
+                                    src={ownerData.profilePicture ? `http://127.0.0.1:8000${ownerData.profilePicture}` : "images/default-avatar.jpg"}
                                     alt="Profile Avatar"
                                     style={{
                                         width: "100%",
@@ -72,10 +122,33 @@ const Profile = () => {
                                         objectFit: "cover",
                                     }}
                                 />
+                                {/* Pen Icon */}
+                                <label 
+                                    htmlFor="fileInput" 
+                                    style={{
+                                        position: "absolute",
+                                        top: "70%",  // Adjust the top position
+                                        right: "15%",  // Adjust the right position
+                                        cursor: "pointer",
+                                        backgroundColor: "white",
+                                        padding: "5px",
+                                        borderRadius: "50%",
+                                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                                    }}
+                                >
+                                    <i className="fa fa-pen" style={{ fontSize: "20px", color: "#16697A" }}></i>
+                                </label>
+                                {/* File Input (Hidden) */}
+                                <input
+                                    id="fileInput"
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    onChange={handleImageChange}
+                                />
                             </div>
 
-                            {/* Formulaire */}
-                            <div className="form" style={{ flex: 1 }}> {/* Utilisation de flex pour occuper le reste de l'espace */}
+                            {/* Profile Form */}
+                            <div className="form" style={{ flex: 1 }}>
                                 <input
                                     type="text"
                                     value={ownerData.name}
@@ -106,7 +179,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="tel"
-                                    value={ownerData.phoneNumber || 'Not provided'}
+                                    value={ownerData.phoneNumber || 'Mobile number not provided'}
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -120,7 +193,7 @@ const Profile = () => {
                                 />
                                 <input
                                     type="text"
-                                    value={ownerData.country || 'Not provided'}
+                                    value={ownerData.country || 'Country not provided'}
                                     style={{
                                         display: "block",
                                         width: "100%",
@@ -140,7 +213,7 @@ const Profile = () => {
                     <h2 className="title">Your properties</h2>
                     <ApartmentGrid />
                     <div className="add-property-wrapper">
-                        <button className="add-property-button" onClick={() => navigate("/add_property")}>
+                        <button className="add-property-button" onClick={() => navigate("/add-property")}>
                             <span> +</span>
                         </button>
                     </div>

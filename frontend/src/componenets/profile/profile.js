@@ -76,7 +76,7 @@ const Profile = () => {
                             display: "flex",
                             justifyContent: "space-between",  // Aligne les éléments sur la ligne
                             alignItems: "center",  // Centrer verticalement
-                            gap: "10",
+                            gap: "10%",
                             width: "100%",  // Espace entre les éléments
                         }}
                     >
