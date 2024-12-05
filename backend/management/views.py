@@ -80,20 +80,14 @@ def get_properties(request, owner_id):
     Get all properties for a specific owner using a GET request.
     """
     try:
-        owner_email = request.data.get("owner_email")
-        if not owner_email:
-            print({"error": "Owner ID not found"}, status=404)
+        # Fetch the owner by the provided owner_id
+        owner = OwnerProfile.objects.filter(id=owner_id).first()
 
-        # Use the owner_id for further processing
-        print({"message": f"Owner de mail {owner_email} found successfully!"})
         # Check if the owner exists
-        owner = OwnerProfile.objects.filter(email=owner_email).first()
         if not owner:
             return Response(
                 {"error": "Owner not found."}, status=status.HTTP_404_NOT_FOUND
             )
-        request.session["owner_email"] = owner.email
-        print(f"Session data after setting: {request.session.items()}")
 
         # Fetch properties for the owner
         properties = Property.objects.filter(owner=owner)

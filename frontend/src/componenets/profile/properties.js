@@ -9,30 +9,28 @@ const Properties = () => {
 
     useEffect(() => {
         const fetchProperties = async () => {
+            const storedData = localStorage.getItem('loggedInOwner');
+
             try {
-                // Fetch logged-in owner data from localStorage
-                const loggedInOwner = JSON.parse(localStorage.getItem('loggedInOwner'));
+                const loggedInOwner = storedData ? JSON.parse(storedData) : null;
                 const ownerId = loggedInOwner?.id;
 
-                // If ownerId is not found in localStorage, log and stop execution
                 if (!ownerId) {
-                    console.log("Owner ID not found.");
-                    setError("Owner not logged in.");
+                    setError("Owner ID is undefined. Please log in again.");
                     return;
                 }
 
                 // Request properties for the owner
+
                 const response = await Axios.get(`http://localhost:8000/management/properties/${ownerId}/`);
 
                 if (response.status === 200) {
                     setProperties(response.data);
                 } else {
-                    console.log("Failed to fetch properties.");
                     setError("Failed to fetch properties.");
                 }
             } catch (err) {
-                console.log("An error occurred while fetching properties.");
-                console.log(err);
+                console.error("Detailed error:", err);
                 setError("An error occurred while fetching properties.");
             }
         };
@@ -45,22 +43,22 @@ const Properties = () => {
             {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
             {properties.length > 0 ? (
-                properties.map((apartment, index) => (
+                properties.map((property) => (
                     <Link
                         to="/details"
                         style={{ textDecoration: "none" }}
-                        key={index}
+                        key={property.id}
                     >
                         <Card
-                            name={apartment.title} // Adjust property name based on your API response
-                            stars={apartment.stars || 4} // Add default value or adapt if `stars` exist
-                            price={apartment.price}
-                            image={apartment.image || "/images/default.jpg"} // Add default image if `image` doesn't exist
+                            name={property.name}
+                            stars={property.number_of_stars}
+                            price={property.price_per_night}
+                            image={`http://localhost:8000${property.image1}`}
                         />
                     </Link>
                 ))
             ) : (
-                <p style={{ textAlign: "center" }}>You do not have any properties yet.</p>
+                !error && <p style={{ textAlign: "center" }}>You do not have any properties yet.</p>
             )}
         </div>
     );
