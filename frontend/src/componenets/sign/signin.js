@@ -10,7 +10,7 @@ export const Signin = () => {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
-  
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,9 +27,9 @@ export const Signin = () => {
           email,
           password,
         },
-        { 
+        {
           headers: { 'Content-Type': 'application/json' },
-         withCredentials: true 
+          withCredentials: true
         } // Include credentials for session management
       );
 
@@ -39,22 +39,24 @@ export const Signin = () => {
         console.log('Login successful!');
         const userData = {
           name: response.data.name, // Replace 'name' with the actual key returned by your API
-          email: email,};
-          localStorage.setItem('loggedInUser', JSON.stringify(userData));
-          setIsLoggedIn(true);
-          setUserName(response.data.name); 
+          email: email,
+          id: response.data.id,
+        };
+        localStorage.setItem('loggedInUser', JSON.stringify(userData));
+        setIsLoggedIn(true);
+        setUserName(response.data.name);
         // Redirect to the previous page or fallback to a default page
         const previousPage = document.referrer;
-        if (previousPage && !previousPage.includes('/Sign_in')) { 
-            // Ensure we don't redirect back to the login page
-            window.location.href = previousPage;
+        if (previousPage && !previousPage.includes('/Sign_in')) {
+          // Ensure we don't redirect back to the login page
+          window.location.href = previousPage;
         } else {
-            // Fallback to a default page like the home page or dashboard
-            window.location.href = '/';
+          // Fallback to a default page like the home page or dashboard
+          window.location.href = '/';
         }
-    } else {
+      } else {
         setError('Invalid login credentials.');
-    }
+      }
     } catch (err) {
       if (err.response) {
         // If error response from the server
@@ -215,7 +217,7 @@ export const Signin = () => {
 
             <a
               href="/Sign_in_as_owner"
-              style={{ 
+              style={{
                 width: '100%',
                 padding: '10px 0px',
                 backgroundColor: '#ffc677',
@@ -225,7 +227,7 @@ export const Signin = () => {
                 fontSize: '16px',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                textDecoration:"none",
+                textDecoration: "none",
               }}
             >
               Login Property Owner Account

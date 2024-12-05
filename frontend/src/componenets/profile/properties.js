@@ -9,31 +9,30 @@ const Properties = () => {
 
     useEffect(() => {
         const fetchProperties = async () => {
-            try {
-                // Fetch logged-in owner data from localStorage
-                const loggedInOwner = JSON.parse(localStorage.getItem('loggedInOwner'));
-                const ownerId = loggedInOwner?.id;
+            // Debug: Check localStorage contents
+            const storedData = localStorage.getItem('loggedInOwner');
+            console.log("Stored localStorage data:", storedData);
 
-                // If ownerId is not found in localStorage, log and stop execution
+            try {
+                const loggedInOwner = storedData ? JSON.parse(storedData) : null;
+                console.log("Parsed loggedInOwner:", loggedInOwner);
+
+                const ownerId = loggedInOwner?.id;
+                console.log("Extracted ownerId:", ownerId);
+
                 if (!ownerId) {
-                    console.log("Owner ID not found.");
-                    setError("Owner not logged in.");
+                    console.error("Owner ID is undefined. Possible causes:");
+                    console.error("1. Login process didn't set localStorage correctly");
+                    console.error("2. 'loggedInOwner' key is incorrect");
+                    console.error("3. Login response doesn't include an 'id' field");
                     return;
                 }
 
-                // Request properties for the owner
-                const response = await Axios.get(`http://localhost:8000/properties/${ownerId}/`);
-
-                if (response.status === 200) {
-                    setProperties(response.data);
-                } else {
-                    console.log("Failed to fetch properties.");
-                    setError("Failed to fetch properties.");
-                }
+                // Rest of your existing fetch code
+                const response = await Axios.get(`http://localhost:8000/management/properties/${ownerId}/`);
+                // ... rest of the code
             } catch (err) {
-                console.log("An error occurred while fetching properties.");
-                console.log(err);
-                setError("An error occurred while fetching properties.");
+                console.error("Detailed error:", err);
             }
         };
 
