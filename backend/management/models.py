@@ -26,17 +26,17 @@ class Property(models.Model):
     location = models.CharField(max_length=255)
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
     image1 = models.ImageField(
-        upload_to='properties/images/',
+        upload_to='media/properties/images/',
         blank=False,
         null=False,
     )
     image2 = models.ImageField(
-        upload_to='properties/images/',
+        upload_to='media/properties/images/',
         blank=False,
         null=False,
     )
     image3 = models.ImageField(
-        upload_to='properties/images/',
+        upload_to='media/properties/images/',
         blank=True,
         null=True
     )

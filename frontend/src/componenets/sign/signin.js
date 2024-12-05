@@ -40,11 +40,19 @@ export const Signin = () => {
         const userData = {
           name: response.data.name, // Replace 'name' with the actual key returned by your API
           email: email,
+<<<<<<< HEAD
           id: response.data.id,
         };
         localStorage.setItem('loggedInUser', JSON.stringify(userData));
         setIsLoggedIn(true);
         setUserName(response.data.name);
+=======
+          phone_number: response.data.phone_number, // Assuming 'mobile' is part of the API response
+          country: response.data.country,};
+          localStorage.setItem('loggedInUser', JSON.stringify(userData));
+          setIsLoggedIn(true);
+          setUserName(response.data.name); 
+>>>>>>> b63e31be4b7c1151f50abb92deaa72946977043f
         // Redirect to the previous page or fallback to a default page
         const previousPage = document.referrer;
         if (previousPage && !previousPage.includes('/Sign_in')) {
