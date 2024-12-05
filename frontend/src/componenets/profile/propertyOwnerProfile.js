@@ -301,29 +301,21 @@ const Profile = () => {
                 </div>
             </div>
             </section>
-            {/* Property grid */}
-            <ApartmentGrid />
-            <br />
-            <button
-                onClick={handleAddPropertyClick}
-                style={{
-                    padding: "10px 20px",
-                    backgroundColor: "#FFB84D", // Button color
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                }}
-            >
-                Add New Property
-            </button>
+             {/* Your Properties */}
+             <h2 className="title">Your properties</h2>
+                    <ApartmentGrid />
+                    <div className="add-property-wrapper">
+                        <button className="add-property-button" onClick={() => navigate("/add_property")}>
+                            <span> +</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            {/* Footer */}
+            <Footer />
         </div>
-    </main>
-    <Footer />
-</div>
-
-);
+    );
 };
-
 
 export default Profile;
