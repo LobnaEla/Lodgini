@@ -3,6 +3,7 @@ import Navbar from "../profile/navbaro";
 import Footer from "../home/footer";
 import { useNavigate } from "react-router-dom";
 import ApartmentGrid from "../categories/apartmentGrid";
+import Properties from "./properties";
 
 const Profile = () => {
     const [ownerData, setOwnerData] = useState({
@@ -303,7 +304,7 @@ const Profile = () => {
             </section>
              {/* Your Properties */}
              <h2 className="title">Your properties</h2>
-                    <ApartmentGrid />
+                    <Properties />
                     <div className="add-property-wrapper">
                         <button className="add-property-button" onClick={() => navigate("/add_property")}>
                             <span> +</span>

@@ -22,7 +22,7 @@ const Properties = () => {
                 }
 
                 // Request properties for the owner
-                const response = await Axios.get(`http://localhost:8000/properties/${ownerId}/`);
+                const response = await Axios.get(`http://localhost:8000/management/properties/${ownerId}/`);
 
                 if (response.status === 200) {
                     setProperties(response.data);
