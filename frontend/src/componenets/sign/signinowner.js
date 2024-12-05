@@ -10,7 +10,7 @@ export const Signinowner = () => {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
-  
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ export const Signinowner = () => {
           email,
           password,
         },
-        { 
+        {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true // Include credentials for session management
         }
@@ -40,14 +40,15 @@ export const Signinowner = () => {
         const userData = {
           name: response.data.name, // Adjust based on your API response structure
           email: email,
+          id: response.data.id,
         };
         localStorage.setItem('loggedInOwner', JSON.stringify(userData));
         setIsLoggedIn(true);
         setUserName(response.data.name);
-        
+
         // Redirect to the homepage or owner dashboard after successful login
         window.location.href = '/property_owner_profile';
-        
+
       } else {
         setError('Invalid login credentials.');
       }
