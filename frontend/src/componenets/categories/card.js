@@ -11,11 +11,11 @@ const Card = ({ name, stars, price, image }) => {
         <div className="text">
           <p className="h3">{name}</p>
           <div className="stars">
-            {Array.from({ length: 5 }, (_, index) => (
+            {Array.from({ length: stars }, (_, index) => (
               <span key={index} className={`star ${index < stars ? 'filled' : ''}`}>&#9733;</span>
             ))}
           </div>
-          <p className="price">${price}</p>
+          <p className="price">{price} DT</p>
         </div>
       </div>
     </StyledWrapper>

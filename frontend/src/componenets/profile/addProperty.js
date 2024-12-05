@@ -178,8 +178,8 @@ const AddProperty = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label 
-                                htmlFor="location" 
+                            <label
+                                htmlFor="location"
                                 style={{ textAlign: 'left', fontSize: "20px", marginBottom: '3%' }}
                             >
                                 Location
@@ -205,7 +205,7 @@ const AddProperty = () => {
                                     backgroundRepeat: 'no-repeat',
                                     backgroundPosition: 'right 10px center',
                                     backgroundSize: '20px',
-                                    
+
                                 }}
                             >
                                 <option value="">Select Location</option>
@@ -271,7 +271,7 @@ const AddProperty = () => {
                                 onChange={handleChange}
                             ></textarea>
                         </div>
- 
+
                         <div className="form-group">
                             <label htmlFor="price_per_night" style={{ textAlign: 'left', fontSize: "20px", marginBottom: '3%' }}>Price per night (TND)</label>
                             <input
@@ -295,19 +295,19 @@ const AddProperty = () => {
                                 value={formData.number_of_stars}
                                 onChange={handleChange}
                                 required
-                                
+
                             />
                         </div>
                         <div className="form-group">
-                            <label 
-                                htmlFor="images" 
+                            <label
+                                htmlFor="images"
                                 style={{ textAlign: "left", fontSize: "20px", marginBottom: "3%" }}
                             >
                                 Photos (min 2 , max 3)
                             </label>
                             <div style={{ position: 'relative', display: 'inline-block' }}>
                                 {/* Masque l'input file réel */}
-                                <input 
+                                <input
                                     type="file"
                                     id="images"
                                     accept="image/*"
@@ -325,8 +325,8 @@ const AddProperty = () => {
                                     multiple
                                 />
                                 {/* Bouton personnalisé avec l'icône */}
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     style={{
                                         padding: '10px 20px',
                                         fontSize: '16px',
