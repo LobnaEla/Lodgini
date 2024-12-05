@@ -22,7 +22,7 @@ class OwnerProfile(models.Model):
     # Custom fields
     email = models.EmailField(unique=True, blank=False, null=False, default="default@example.com")
     password = models.CharField(max_length=128, blank=False, null=False,  default="default_password")
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profilepicture = models.ImageField(upload_to='profile_owner_pics/', blank=True, null=True)
     phone_number = models.CharField(max_length=8, blank=True, null=True)
     name = models.CharField(max_length=15, blank=False, null=True)
     country = models.CharField(max_length=15, blank=False, null=True)

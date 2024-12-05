@@ -11,7 +11,7 @@ export const Signupowner = () => {
     phone_number: '',
     country: '',
     password: '',
-    profile_picture: null
+    profile_picture: null,
   });
   const navigate = useNavigate();
 

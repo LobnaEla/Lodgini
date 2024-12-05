@@ -39,8 +39,11 @@ export const Signinowner = () => {
         console.log('Login successful!');
         const userData = {
           name: response.data.name, // Adjust based on your API response structure
-          email: email,
           id: response.data.id,
+          email: email, // Assuming 'email' is available in your component
+          phone_number: response.data.phone_number, // Assuming 'mobile' is part of the API response
+          country: response.data.country,
+          profilepicture: response.data.profilepicture, // Assuming 'country' is part of the API response
         };
         localStorage.setItem('loggedInOwner', JSON.stringify(userData));
         setIsLoggedIn(true);
