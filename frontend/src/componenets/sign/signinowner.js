@@ -43,7 +43,8 @@ export const Signinowner = () => {
           email: email, // Assuming 'email' is available in your component
           phone_number: response.data.phone_number, // Assuming 'mobile' is part of the API response
           country: response.data.country,
-          profilepicture: response.data.profilepicture, // Assuming 'country' is part of the API response
+          profilepicture: response.data.profilepicture,
+          id: response.data.id // Assuming 'country' is part of the API response
         };
         localStorage.setItem('loggedInOwner', JSON.stringify(userData));
         setIsLoggedIn(true);
