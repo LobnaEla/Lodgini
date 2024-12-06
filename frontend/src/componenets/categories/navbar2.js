@@ -8,7 +8,6 @@ const Navbar = () => {
         alignItems: 'center',
         padding: '1% 3%',
         backgroundColor: 'white',
-        fontFamily: "'Arial', sans-serif",
     };
 
     const logoStyles = {
@@ -85,7 +84,7 @@ const Navbar = () => {
         padding: '8px 15px',
         fontSize: '14px',
         border: '1%',
-        borderColor:'#16697a',
+        borderColor: '#16697a',
 
     };
 
@@ -125,10 +124,10 @@ const Navbar = () => {
                     </a>
                 </li>
                 <li>
-                <a
+                    <a
                         onClick={() => window.location.href = "/about"}
                         style={{
-                            ...linkStyles, 
+                            ...linkStyles,
                             cursor: 'pointer' // Ajout du curseur de type main
                         }}
                         onMouseEnter={(e) => (e.target.style.color = '#82c0cc')}
