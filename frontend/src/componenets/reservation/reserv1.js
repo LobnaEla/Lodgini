@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Footer from '../home/footer';
 
 const Reserv1 = () => {
   const [checkInDate, setCheckInDate] = useState('');
@@ -19,7 +20,7 @@ const Reserv1 = () => {
       <Navbar />
 
       {/* Stepper */}
-      <Box sx={{ width: '100%', padding: '20px 0', margin: '1% 0%',marginBottom:'0', marginLeft: '30%', width: '40%' }}>
+      <Box sx={{ width: '100%', padding: '20px 0', margin: '1% 0%', marginBottom: '0', marginLeft: '30%', width: '40%' }}>
         <Stepper activeStep={0} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={index}>
@@ -34,7 +35,7 @@ const Reserv1 = () => {
       </Box>
 
       {/* Title and description */}
-      <div style={{ textAlign: 'center', marginBottom: '2%' ,margintop:'0'}}>
+      <div style={{ textAlign: 'center', marginBottom: '2%', margintop: '0' }}>
         <h2 style={{ color: '#023047', fontWeight: 'bold' }}>Booking Information</h2>
         <p style={{ color: '#d69e66', fontSize: '16px' }}>
           Please take a moment to review and confirm your selections
@@ -42,7 +43,7 @@ const Reserv1 = () => {
       </div>
 
       {/* Main container */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', margin:'0' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', margin: '0' }}>
         {/* Container with two sections */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '800px', marginBottom: '1%' }}>
           {/* Left part */}
@@ -57,11 +58,11 @@ const Reserv1 = () => {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               }}
             />
-            
+
             {/* Maison Name and City */}
-            <div style={{ textAlign: 'left', marginTop: '1%' , marginLeft:'3%'}}>
+            <div style={{ textAlign: 'left', marginTop: '1%', marginLeft: '3%' }}>
               <h3 style={{ color: '#023047', fontWeight: 'bold' }}>Maison de Vacances</h3>
-              <p style={{ color: '#d69e66', fontSize: '14px', margin:'0 0' }}>Tunis, Tunisia</p>
+              <p style={{ color: '#d69e66', fontSize: '14px', margin: '0 0' }}>Tunis, Tunisia</p>
             </div>
           </div>
 
@@ -76,10 +77,10 @@ const Reserv1 = () => {
           ></div>
 
           {/* Right part */}
-          <div style={{ 
-            flex: 0.8, 
-            display: 'flex', 
-            flexDirection: 'column', 
+          <div style={{
+            flex: 0.8,
+            display: 'flex',
+            flexDirection: 'column',
             gap: '40px',
             marginTop: '-20px' // Adjust this value to move the section upwards
           }}>
@@ -144,7 +145,7 @@ const Reserv1 = () => {
         </div>
 
         {/* Center buttons */}
-        <div style={{ display: 'flex', gap: '10px', marginTop: '0px', marginBottom:'1%' }}>
+        <div style={{ display: 'flex', gap: '10px', marginTop: '0px', marginBottom: '1%' }}>
           <button
             style={{
               backgroundColor: 'white',
@@ -174,6 +175,9 @@ const Reserv1 = () => {
           </button>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

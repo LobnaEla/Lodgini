@@ -4,14 +4,15 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Footer from '../home/footer';
 
 const Reserv2 = () => {
-   const [cardNumber, setCardNumber] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState('');
   const [expDate, setExpDate] = useState('');
   const [cvv, setCvv] = useState('');
   const [activeStep, setActiveStep] = useState(0);  // Track the current step
-  
+
   const totalPrice = 500; // Example total price in DT
 
   // Define the handleNext function
@@ -23,9 +24,9 @@ const Reserv2 = () => {
   const steps = ['Step 1', 'Step 2'];
 
   return (
-    <div style={{ backgroundColor: '#ede7e3', paddingBottom:'2px'}}>
+    <div style={{ backgroundColor: '#ede7e3', paddingBottom: '2px' }}>
       <Navbar />
-  
+
       {/* Stepper */}
       <Box sx={{ width: '100%', padding: '20px 0', margin: '1% 0%', marginBottom: '0', marginLeft: '30%', width: '40%' }}>
         <Stepper activeStep={activeStep} alternativeLabel>
@@ -43,17 +44,17 @@ const Reserv2 = () => {
           ))}
         </Stepper>
       </Box>
-  
+
       {/* Title and description */}
       <div style={{ textAlign: 'center', marginBottom: '2%' }}>
         <h2 style={{ color: '#023047', fontWeight: 'bold' }}>Payment</h2>
         <p style={{ color: '#d69e66', fontSize: '16px' }}>
-        Kindly follow the instructions below
+          Kindly follow the instructions below
         </p>
       </div>
-  
+
       {/* Main container */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: '20px', margin: '0 30%', marginBottom:'2%' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: '20px', margin: '0 30%', marginBottom: '2%' }}>
         {/* Left part */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '-10px' }}>
           {/* Transfer Information */}
@@ -63,7 +64,7 @@ const Reserv2 = () => {
             <p style={{ color: '#023047', fontWeight: 'bold' }}>Total: {totalPrice} DT</p>
           </div>
         </div>
-  
+
         {/* Divider line */}
         <div
           style={{
@@ -73,7 +74,7 @@ const Reserv2 = () => {
             margin: '0 20px',
           }}
         ></div>
-  
+
         {/* Right part: Payment Form */}
         <div style={{ flex: 0.8, display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '-20px' }}>
           {/* Payment Form */}
@@ -153,9 +154,9 @@ const Reserv2 = () => {
           </div>
         </div>
       </div>
-  
+
       {/* Center buttons */}
-      <div style={{ display: 'flex', gap: '5%', marginTop: '30px', marginBottom: '30px', justifyContent: 'center', paddingBottom:'0%'}}>
+      <div style={{ display: 'flex', gap: '5%', marginTop: '30px', marginBottom: '30px', justifyContent: 'center', paddingBottom: '0%' }}>
         <button
           style={{
             backgroundColor: 'white',
@@ -185,6 +186,9 @@ const Reserv2 = () => {
           Confirm Booking
         </button>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
