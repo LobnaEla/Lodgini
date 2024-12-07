@@ -97,3 +97,19 @@ def get_properties(request, owner_id):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["GET"])
+def get_all_properties(request):
+    """
+    Get all properties irrespective of the owner.
+    """
+    try:
+        # Fetch all properties from the database
+        properties = Property.objects.all()
+        serializer = PropertySerializer(properties, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

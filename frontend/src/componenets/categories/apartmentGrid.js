@@ -1,29 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./card";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-const apartments = [
-    { name: "Flat in Jasmin Building", stars: 4, price: "84", image: "/images/apartement.jpg" },
-    { name: "Appart’ Medina", stars: 5, price: "129", image: "/images/apartement.jpg" },
-    { name: "La Suite Zembra", stars: 3, price: "64", image: "/images/apartement.jpg" },
-    { name: "Le Patio Andalou", stars: 4, price: "156", image: "/images/apartement.jpg" },
-    // Add more apartments here
-];
+const ApartmentGrid = ({ propertyType }) => {
+    const [properties, setProperties] = useState([]);
 
-const ApartmentGrid = () => {
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const response = await axios.get("http://localhost:8000/management/properties/");
+                const filteredProperties = response.data.filter(
+                    (property) => property.property_type === propertyType
+                );
+                setProperties(filteredProperties);
+            } catch (error) {
+                console.error("Error fetching properties:", error);
+            }
+        };
+
+        fetchProperties();
+    }, [propertyType]);
+
     return (
         <div className="apartment-grid" style={gridStyle}>
-            {apartments.map((apartment, index) => (
+            {properties.map((property, index) => (
                 <Link
                     to="/details"
                     style={{ textDecoration: "none" }}
                     key={index}
                 >
                     <Card
-                        name={apartment.name}
-                        stars={apartment.stars}
-                        price={apartment.price}
-                        image={apartment.image}
+                        name={property.name}
+                        stars={property.stars}
+                        price={property.price}
+                        image={property.image1} // Fallback image
                     />
                 </Link>
             ))}
