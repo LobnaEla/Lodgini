@@ -24,11 +24,11 @@ const ApartmentGrid = ({ propertyType }) => {
 
     return (
         <div className="apartment-grid" style={gridStyle}>
-            {properties.map((property, index) => (
+            {properties.map((property) => (
                 <Link
-                    to="/details"
+                    to={`/details/${property.owner}/${property.id}`}
                     style={{ textDecoration: "none" }}
-                    key={index}
+                    key={property.id}
                 >
                     <Card
                         name={property.name}

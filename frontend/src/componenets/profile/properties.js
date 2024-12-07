@@ -45,7 +45,7 @@ const Properties = () => {
             {properties.length > 0 ? (
                 properties.map((property) => (
                     <Link
-                        to="/property_details"
+                        to={`/details/${property.owner}/${property.id}`}
                         style={{ textDecoration: "none" }}
                         key={property.id}
                     >

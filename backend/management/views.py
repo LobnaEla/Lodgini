@@ -113,3 +113,21 @@ def get_all_properties(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["GET"])
+def get_property_details_by_owner(request, owner_id, property_id):
+    """
+    Get details of a specific property by its ID and owner ID.
+    """
+    try:
+        # Fetch property by owner and property ID
+        property_instance = Property.objects.get(id=property_id, owner_id=owner_id)
+        serializer = PropertySerializer(property_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Property.DoesNotExist:
+        return Response(
+            {"error": "Property not found for the given owner."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
