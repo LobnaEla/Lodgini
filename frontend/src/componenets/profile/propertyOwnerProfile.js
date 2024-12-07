@@ -11,7 +11,7 @@ const Profile = () => {
         email: '',
         phone_number: '',
         country: '',
-        profilepicture: '',
+        profile_picture: '',
     });
     const [isEditing, setIsEditing] = useState(false); // To manage the edit mode
     const navigate = useNavigate();
@@ -45,14 +45,14 @@ const Profile = () => {
                     if (data.success) {
                         setOwnerData((prevData) => ({
                             ...prevData,
-                            profilePicture: data.profilePictureUrl,
+                            profile_picture: data.profilePictureUrl,
                         }));
                         // Update the localStorage with the new profile picture
                         localStorage.setItem(
                             'loggedInOwner',
                             JSON.stringify({
                                 ...ownerData,
-                                profilePicture: data.profilePictureUrl,
+                                profile_picture: data.profilePictureUrl,
                             })
                         );
                     } else {
@@ -79,7 +79,7 @@ const Profile = () => {
             phone_number: ownerData.phone_number,
             country: ownerData.country,
             email: ownerData.email, // Always include the email
-            profilepicture: ownerData.profilepicture
+            profile_picture: ownerData.profile_picture
         };
 
         fetch('http://localhost:8000/owner_profile/update/', {
@@ -160,7 +160,7 @@ const Profile = () => {
                                 }}
                             >
                                 <img
-                                    src={ownerData.profilepicture ? `http://localhost:8000${ownerData.profilepicture}` : 'defaultImage.jpg'} alt="Profile Avatar"
+                                    src={ownerData.profile_picture ? `http://localhost:8000${ownerData.profile_picture}` : 'defaultImage.jpg'} alt="Profile Avatar"
                                     style={{
                                         width: "100%",
                                         height: "100%",
@@ -250,60 +250,60 @@ const Profile = () => {
                                     readOnly={!isEditing}
                                     onChange={(e) => handleInputChange(e, 'country')}
                                 />
-                                 {/* Edit/Save/Cancel buttons */}
-                    {!isEditing ? (
-                        <button
-                            onClick={handleEditClick}
-                            style={{
-                                padding: "10px 20px",
-                                backgroundColor: "#16697A", // Same color as your Edit button
-                                color: "white",
-                                border: "none",
-                                borderRadius: "5px",
-                            }}
-                        >
-                            Edit
-                        </button>
-                    ) : (
-                        <div style={{ marginTop: "1rem", display: "flex", gap: "15px", justifyContent: "flex-start", paddingLeft: "18%" }}>
-                                {/* Cancel button */}
-                                <button
-                                    onClick={handleCancelClick}
-                                    style={{
-                                        backgroundColor: 'white',
-                                        color: 'black',
-                                        border: '1px solid #ccc',
-                                        padding: '10px 20px',
-                                        fontSize: '14px',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer',
-                                    }}
-                                    onMouseEnter={(e) => e.target.style.backgroundColor = "#f4f4f4"}
-                                    onMouseLeave={(e) => e.target.style.backgroundColor = "white"}
-                                >
-                                    Cancel
-                                </button>
-                                {/* Save button */}
-                                <button
-                                    onClick={handleSaveClick}
-                                    style={{
-                                        backgroundColor: '#FFB84D', 
-                                        color: 'white',
-                                        border: 'none',
-                                        padding: '10px 20px',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    Save
-                                </button>
+                                {/* Edit/Save/Cancel buttons */}
+                                {!isEditing ? (
+                                    <button
+                                        onClick={handleEditClick}
+                                        style={{
+                                            padding: "10px 20px",
+                                            backgroundColor: "#16697A", // Same color as your Edit button
+                                            color: "white",
+                                            border: "none",
+                                            borderRadius: "5px",
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                ) : (
+                                    <div style={{ marginTop: "1rem", display: "flex", gap: "15px", justifyContent: "flex-start", paddingLeft: "18%" }}>
+                                        {/* Cancel button */}
+                                        <button
+                                            onClick={handleCancelClick}
+                                            style={{
+                                                backgroundColor: 'white',
+                                                color: 'black',
+                                                border: '1px solid #ccc',
+                                                padding: '10px 20px',
+                                                fontSize: '14px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                            }}
+                                            onMouseEnter={(e) => e.target.style.backgroundColor = "#f4f4f4"}
+                                            onMouseLeave={(e) => e.target.style.backgroundColor = "white"}
+                                        >
+                                            Cancel
+                                        </button>
+                                        {/* Save button */}
+                                        <button
+                                            onClick={handleSaveClick}
+                                            style={{
+                                                backgroundColor: '#FFB84D',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '10px 20px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            Save
+                                        </button>
+                                    </div>
+                                )}
                             </div>
-                    )}
-                </div>
-            </div>
-            </section>
-             {/* Your Properties */}
-             <h2 className="title">Your properties</h2>
+                        </div>
+                    </section>
+                    {/* Your Properties */}
+                    <h2 className="title">Your properties</h2>
                     <Properties />
                     <div className="add-property-wrapper">
                         <button className="add-property-button" onClick={() => navigate("/add_property")}>
