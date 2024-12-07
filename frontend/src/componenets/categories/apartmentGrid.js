@@ -32,9 +32,9 @@ const ApartmentGrid = ({ propertyType }) => {
                 >
                     <Card
                         name={property.name}
-                        stars={property.stars}
-                        price={property.price}
-                        image={property.image1} // Fallback image
+                        stars={property.number_of_stars}
+                        price={property.price_per_night}
+                        image={`http://localhost:8000${property.image1}`}
                     />
                 </Link>
             ))}
