@@ -1,34 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../home/navbar1';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Footer from '../home/footer';
+import { useParams } from 'react-router-dom'; 
+import axios from 'axios'; 
 
 const Reserv2 = () => {
+  const [numberOfDays, setNumberOfDays] = useState(0);
+  const [TotalPrice, setTotalPrice] = useState(0);
   const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState('');
   const [expDate, setExpDate] = useState('');
+  const { id, owner_id } = useParams();
   const [cvv, setCvv] = useState('');
-  const [activeStep, setActiveStep] = useState(0);  // Track the current step
+  const [activeStep, setActiveStep] = useState(0); // Track the current step
+  const [property, setProperty] = useState(null); // Property data state
+  
+  useEffect(() => {
+    // Get the number of days from sessionStorage
+    const storedTotalPrice = sessionStorage.getItem('TotalPrice');
+    if (storedTotalPrice) {
+      setTotalPrice(Number(storedTotalPrice)); // Ensure it's treated as a number
+    }
+  }, []);
+  
+  
+  useEffect(() => {
+    // Get the number of days from sessionStorage
+    const storedNumberOfDays = sessionStorage.getItem('numberOfDays');
+    if (storedNumberOfDays) {
+      setNumberOfDays(Number(storedNumberOfDays)); // Ensure it's treated as a number
+    }
+  }, []);
+  
+  const fetchPropertyDetails = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
+      setProperty(response.data);
+    } catch (error) {
+      console.error("Error fetching property details:", error);
+    }
+  };
 
-  const totalPrice = 500; // Example total price in DT
+  useEffect(() => {
+    fetchPropertyDetails(); // Fetch property details when the component mounts
+  }, []);
+  
+  // Steps for the Stepper
+  const steps = ['Step 1', 'Step 2'];
 
   // Define the handleNext function
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1); // Increment activeStep by 1
   };
 
-  // Steps for the Stepper
-  const steps = ['Step 1', 'Step 2'];
-
   return (
     <div style={{ backgroundColor: '#ede7e3', paddingBottom: '2px' }}>
       <Navbar />
 
       {/* Stepper */}
-      <Box sx={{ width: '100%', padding: '20px 0', margin: '1% 0%', marginBottom: '0', marginLeft: '30%', width: '40%' }}>
+      <Box sx={{ padding: '20px 0', margin: '1% 0%', marginBottom: '0', marginLeft: '30%', width: '40%' }}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={index}>
@@ -60,8 +94,10 @@ const Reserv2 = () => {
           {/* Transfer Information */}
           <div style={{ textAlign: 'left', marginLeft: '3%' }}>
             <h3 style={{ color: '#023047', fontWeight: 'bold' }}>Transfer Lodgini:</h3>
-            <p style={{ color: '#d69e66', fontSize: '14px', margin: '0 0' }}>2 Days at Maison Bella</p>
-            <p style={{ color: '#023047', fontWeight: 'bold' }}>Total: {totalPrice} DT</p>
+            <p style={{ color: '#d69e66', fontSize: '14px', margin: '0 0' }}>
+              {numberOfDays} {numberOfDays === 1 ? 'Day' : 'Days'} at {property ? property.name : 'Loading...'}
+            </p>
+            <p style={{ color: '#023047', fontWeight: 'bold' }}>Total: {TotalPrice} DT</p>
           </div>
         </div>
 

@@ -1,19 +1,62 @@
-import React, { useState } from 'react';
 import Navbar from '../home/navbar1';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Footer from '../home/footer';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Reserv1 = () => {
+  const [numberOfDays, setNumberOfDays] = useState(0);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
-  const [imageSrc] = useState('../images/vacation.jpg'); // Default image
-  const totalPrice = 200; // Example dynamic price
+  const [totalPrice, setTotalPrice] = useState(0);
+  const { id, owner_id } = useParams();
+  const [property, setProperty] = useState(null);
 
   // Steps for the Stepper
   const steps = ['Step 1', 'Step 2'];
+
+  useEffect(() => {
+    // Fetch property details from the API
+    
+    const fetchPropertyDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
+        setProperty(response.data);
+      } catch (error) {
+        console.error("Error fetching property details:", error);
+      }
+    };
+
+    fetchPropertyDetails();
+  }, [id, owner_id]);
+  useEffect(() => {
+    if (checkInDate && checkOutDate) {
+      const checkIn = new Date(checkInDate);
+      const checkOut = new Date(checkOutDate);
+  
+      const timeDifference = checkOut - checkIn;
+      const dayDifference = timeDifference / (1000 * 3600 * 24);
+  
+      if (dayDifference > 0) {
+        setNumberOfDays(dayDifference); 
+        setTotalPrice(dayDifference * property.price_per_night);  // Ensure 'property' is loaded first
+        sessionStorage.setItem('numberOfDays', dayDifference);
+      } else {
+        setNumberOfDays(0); 
+        setTotalPrice(0); 
+        sessionStorage.removeItem('numberOfDays');
+      }
+    }
+  }, [checkInDate, checkOutDate, property]);  // Ensure the useEffect watches for changes in 'property'
+  
+
+  if (!property) {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <div style={{ backgroundColor: '#ede7e3' }}>
@@ -49,8 +92,8 @@ const Reserv1 = () => {
           {/* Left part */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <img
-              src={imageSrc}
-              alt="Reservation Illustration"
+              src={property?.image1 ? `http://localhost:8000${property.image1}` : '../images/vacation.jpg'}
+              alt="property photo"
               style={{
                 maxWidth: '80%',
                 height: 'auto',
@@ -60,10 +103,12 @@ const Reserv1 = () => {
             />
 
             {/* Maison Name and City */}
-            <div style={{ textAlign: 'left', marginTop: '1%', marginLeft: '3%' }}>
-              <h3 style={{ color: '#023047', fontWeight: 'bold' }}>Maison de Vacances</h3>
-              <p style={{ color: '#d69e66', fontSize: '14px', margin: '0 0' }}>Tunis, Tunisia</p>
-            </div>
+            {property && (
+              <div style={{ textAlign: 'left', marginTop: '1%', marginLeft: '3%' }}>
+                <h3 style={{ color: '#023047', fontWeight: 'bold' }}>{property.name}</h3>
+                <p style={{ color: '#d69e66', fontSize: '14px', margin: '0 0' }}>{property.location}, Tunisia</p>
+              </div>
+            )}
           </div>
 
           {/* Divider line */}
@@ -169,7 +214,14 @@ const Reserv1 = () => {
               borderRadius: '5px',
               cursor: 'pointer',
             }}
-            onClick={() => window.location.href = "../payment"}
+            onClick={() => {
+              if (checkInDate && checkOutDate) {
+                sessionStorage.setItem('TotalPrice', totalPrice);
+                window.location.href = `/payment/${owner_id}/${id}`;
+              } else {
+                alert('Please select both check-in and check-out dates.');
+              }
+            }}
           >
             Book Now
           </button>
