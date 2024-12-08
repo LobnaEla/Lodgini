@@ -18,8 +18,32 @@ const Reserv2 = () => {
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1); // Increment activeStep by 1
   };
+  const handleConfirmBooking = async () => {
+    try {
+      const bookingData = {
+        checkInDate,
+        checkOutDate,
+        totalPrice: totalPrice,
+      };
 
-  // Steps for the Stepper
+      // Send POST request with axios
+      const response = await axios.post('http://localhost:8000/management/create_booking/', bookingData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        // Handle successful booking creation
+        window.location.href = '../booked'; // Redirect to the booked page
+      } else {
+        alert('Failed to create booking');
+      }
+    } catch (error) {
+      console.error('There was an error creating the booking:', error);
+      alert('An error occurred while confirming the booking.');
+    }
+  };
   const steps = ['Step 1', 'Step 2'];
 
   return (
@@ -180,7 +204,7 @@ const Reserv2 = () => {
             borderRadius: '5px',
             cursor: 'pointer',
           }}
-          onClick={() => window.location.href = "../booked"}
+          onClick={handleConfirmBooking}
         >
           Confirm Booking
         </button>
