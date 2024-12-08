@@ -52,7 +52,7 @@ def login_user(request):
 
             # Log the user object to see if it's found
             if user:
-                print(f"User found: {user.email}")
+                print(f"User found: {user.email}  d'id {user.id}")
             else:
                 print("User not found")
 

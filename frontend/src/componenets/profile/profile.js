@@ -61,8 +61,8 @@ const Profile = () => {
         const file = e.target.files[0];
         if (file) {
             const formData = new FormData();
-            formData.append('profile_picture', file); // Append the selected image
-            formData.append('email', userData.email); // Ensure the email is passed
+            formData.append('profile_picture', file); 
+            formData.append('email', userData.email); 
 
             // Simulate a backend call to update the profile picture
             fetch('http://localhost:8000/update_profile_picture/', {

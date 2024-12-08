@@ -4,11 +4,13 @@ import axios from "axios";
 import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 
 const Details = () => {
     const { id, owner_id } = useParams();
     const [property, setProperty] = useState(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         // Fetch property details from the API
         const fetchPropertyDetails = async () => {
@@ -136,13 +138,13 @@ const Details = () => {
                             <button
                                 className="button1"
                                 onClick={() => {
-                                    const isLoggedIn = localStorage.getItem("loggedInUser"); 
+                                    const isLoggedIn = localStorage.getItem("loggedInUser");
                                     if (isLoggedIn) {
-                                        window.location.href = `/booking/${owner_id}/${id}`; // Pass actual params
+                                      navigate(`/booking/${owner_id}/${id}`); // Navigate with parameters
                                     } else {
-                                    window.location.href = "/Sign_in";
+                                      navigate("/Sign_in"); // Navigate to the Sign-in page
                                     }
-                                }}
+                                  }}
                                 >
                                 Book Now!
                                 </button>

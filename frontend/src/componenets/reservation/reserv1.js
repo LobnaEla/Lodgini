@@ -7,6 +7,8 @@ import Footer from '../home/footer';
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 
 const Reserv1 = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
@@ -18,6 +20,7 @@ const Reserv1 = () => {
 
   // Steps for the Stepper
   const steps = ['Step 1', 'Step 2'];
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch property details from the API
@@ -33,6 +36,7 @@ const Reserv1 = () => {
 
     fetchPropertyDetails();
   }, [id, owner_id]);
+    
   useEffect(() => {
     if (checkInDate && checkOutDate) {
       const checkIn = new Date(checkInDate);
@@ -52,8 +56,20 @@ const Reserv1 = () => {
       }
     }
   }, [checkInDate, checkOutDate, property]);  // Ensure the useEffect watches for changes in 'property'
-  
-
+  useEffect(() => {
+    if (checkInDate) {
+      localStorage.setItem('checkInDate', checkInDate);
+    }
+    if (checkOutDate) {
+      localStorage.setItem('checkOutDate', checkOutDate);
+    }
+    if (owner_id) {
+      localStorage.setItem('owner_id', owner_id);
+    }
+    if (id) {
+      localStorage.setItem('property_id', id);
+    }
+  }, [checkInDate, checkOutDate, owner_id, id]);
   if (!property) {
     return <div>Loading...</div>; 
   }
@@ -217,7 +233,9 @@ const Reserv1 = () => {
             onClick={() => {
               if (checkInDate && checkOutDate) {
                 sessionStorage.setItem('TotalPrice', totalPrice);
-                window.location.href = `/payment/${owner_id}/${id}`;
+
+                
+                navigate(`/payment/${owner_id}/${id}`); 
               } else {
                 alert('Please select both check-in and check-out dates.');
               }

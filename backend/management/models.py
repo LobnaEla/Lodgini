@@ -115,18 +115,11 @@ class Booking(models.Model):
     )
 
     def __str__(self):
-        return f"Booking for {self.property.name} by {self.user.username}"
+        return f"Booking for {self.property.name}"
 
     def save(self, *args, **kwargs):
         """
         When a booking is saved, ensure the property is marked as unavailable for that date range.
         """
         super().save(*args, **kwargs)
-        # Mark the date range as unavailable for future bookings
-        # Create unavailable dates for each day in the booking range
-        current_date = self.start_date
-        while current_date <= self.end_date:
-            PropertyUnavailableDate.objects.get_or_create(
-                property=self.property, start_date=current_date, end_date=current_date
-            )
-            current_date += timedelta(days=1)
+     

@@ -1,10 +1,18 @@
+from ast import parse
+import json
 from django.http import JsonResponse
 from django.shortcuts import render
-from .models import Property, OwnerProfile
+from .models import *
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .serializers import PropertySerializer
+from datetime import timedelta
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.utils.dateparse import parse_date
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 @api_view(["POST"])
@@ -69,9 +77,76 @@ def add_property(request):
         )
 
     print("Owner email not provided in request")  # Debugging line
-    return Response(
-        {"error": "Owner email is required"}, status=status.HTTP_400_BAD_REQUEST
-    )
+    return Response({'error': 'Owner email is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def create_booking(request, owner_id, property_id):
+    if request.method == 'POST':
+        # Parse the JSON data sent in the request
+        try:
+            data = json.loads(request.body)
+            check_in_date = data.get('checkInDate')
+            check_out_date = data.get('checkOutDate')
+            total_price = data.get('TotalPrice')           
+            user_id = data.get('user_id')
+            print(f"{data}")
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+        # Parse dates
+        try:
+            check_in_date = parse(check_in_date).date()
+            check_out_date = parse(check_out_date).date()
+        except Exception:
+            return JsonResponse({'error': 'Invalid date format.'}, status=400)
+
+        # Ensure the dates are valid
+        if not check_in_date or not check_out_date:
+            return JsonResponse({'error': 'Missing check-in or check-out date.'}, status=400)
+
+        if check_in_date >= check_out_date:
+            return JsonResponse({'error': 'Check-in date must be before check-out date.'}, status=400)
+
+        try:
+            property = Property.objects.get(id=property_id)
+        except Property.DoesNotExist:
+            return JsonResponse({'error': 'Property not found.'}, status=404)
+
+        # Check for property availability
+        unavailable_dates = PropertyUnavailableDate.objects.filter(
+            property=property,
+            start_date__lte=check_out_date,
+            end_date__gte=check_in_date
+        )
+        if unavailable_dates.exists():
+            return JsonResponse({'error': 'The property is not available for the selected dates.'}, status=400)
+
+        # Handle the user profile based on authentication
+        if request.user.is_authenticated:
+            try:
+                user_profile = UserProfile.objects.get(id=user_id)
+            except UserProfile.DoesNotExist:
+                return JsonResponse({'error': 'User profile not found.'}, status=404)
+        else:
+            return JsonResponse({'error': 'User must be logged in to make a booking.'}, status=401)
+
+        # Proceed with booking creation
+        booking = Booking(
+            user=user_profile,
+            property=property,
+            start_date=check_in_date,
+            end_date=check_out_date,
+            total_price=total_price,
+            status="Confirmed"
+        )
+        booking.save()
+
+        # Mark the property as unavailable for the selected dates
+        # You might want to add logic here to update the availability of the property
+
+        return JsonResponse({'message': 'Booking confirmed successfully!'}, status=200)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
 @api_view(["GET"])
