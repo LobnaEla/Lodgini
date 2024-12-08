@@ -206,3 +206,44 @@ def get_property_details_by_owner(request, owner_id, property_id):
             {"error": "Property not found for the given owner."},
             status=status.HTTP_404_NOT_FOUND,
         )
+
+
+@api_view(["PUT"])
+def update_property(request, owner_id, property_id):
+    """
+    Update a specific property by its ID and owner ID.
+    """
+    try:
+        # Fetch property by owner and property ID
+        property_instance = Property.objects.get(id=property_id, owner_id=owner_id)
+
+        # Create a mutable copy of the request data
+        update_data = request.data.copy()
+
+        # Remove stars from updateable fields
+        if "number_of_stars" in update_data:
+            del update_data["number_of_stars"]
+
+        # Handle file uploads
+        for img_field in ["image1", "image2", "image3"]:
+            if img_field in request.FILES:
+                setattr(property_instance, img_field, request.FILES[img_field])
+
+        # Serialize and update
+        serializer = PropertySerializer(
+            property_instance, data=update_data, partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Property.DoesNotExist:
+        return Response(
+            {"error": "Property not found for the given owner."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

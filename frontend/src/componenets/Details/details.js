@@ -147,7 +147,7 @@ const Details = () => {
                                   }}
                                 >
                                 Book Now!
-                                </button>
+                            </button>
                         </div>
                     </div>
 
