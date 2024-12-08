@@ -1,33 +1,102 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../home/navbar1';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Footer from '../home/footer';
+import { useParams } from 'react-router-dom'; 
+import axios from 'axios'; 
 
 const Reserv2 = () => {
-   const [cardNumber, setCardNumber] = useState('');
+  const [numberOfDays, setNumberOfDays] = useState(0);
+  const [TotalPrice, setTotalPrice] = useState(0);
+  const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState('');
   const [expDate, setExpDate] = useState('');
+  const [checkInDate, setCheckInDate] = useState(localStorage.getItem('checkInDate') ); 
+  const [checkOutDate, setCheckOutDate] = useState(localStorage.getItem('checkOutDate')); 
+  const { id, owner_id } = useParams();
   const [cvv, setCvv] = useState('');
-  const [activeStep, setActiveStep] = useState(0);  // Track the current step
+  const [activeStep, setActiveStep] = useState(0); // Track the current step
+  const [property, setProperty] = useState(null); // Property data state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userID, setUserID] = useState(null);
+
+  useEffect(() => {
+    // Get the number of days from sessionStorage
+    const storedTotalPrice = sessionStorage.getItem('TotalPrice');
+    if (storedTotalPrice) {
+      setTotalPrice(Number(storedTotalPrice)); // Ensure it's treated as a number
+    }
+  }, []);
   
-  const totalPrice = 500; // Example total price in DT
+  
+  useEffect(() => {
+    // Get the number of days from sessionStorage
+    const storedNumberOfDays = sessionStorage.getItem('numberOfDays');
+    if (storedNumberOfDays) {
+      setNumberOfDays(Number(storedNumberOfDays)); // Ensure it's treated as a number
+    }
+    const storedCheckInDate = sessionStorage.getItem('checkInDate');
+    if (storedCheckInDate) {
+      setCheckInDate(Number(storedCheckInDate)); // Ensure it's treated as a number
+    }
+    const storedCheckOutDate = sessionStorage.getItem('checkOutDate');
+    if (storedCheckOutDate) {
+      setCheckOutDate(Number(storedCheckOutDate)); // Ensure it's treated as a number
+    }
+  }, []);
+  
+  const fetchPropertyDetails = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
+      setProperty(response.data);
+    } catch (error) {
+      console.error("Error fetching property details:", error);
+    }
+  };
+
+  // Simulate fetching user data (replace with actual API call or context)
+
+  useEffect(() => {
+    fetchPropertyDetails(); // Fetch property details when the component mounts
+  }, []);
+  
+  // Steps for the Stepper
+  const steps = ['Step 1', 'Step 2'];
 
   // Define the handleNext function
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1); // Increment activeStep by 1
   };
+  
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (loggedInUser) {
+      setUserID(loggedInUser.name); // Récupère l'ID de l'utilisateur depuis localStorage
+    }
+  }, []);
+
   const handleConfirmBooking = async () => {
+    if (!userID) {
+      console.log("User not logged in!");
+      return; // Si l'utilisateur n'est pas connecté, empêcher la réservation
+    }
+
     try {
+     
       const bookingData = {
         checkInDate,
         checkOutDate,
-        totalPrice: totalPrice,
+        TotalPrice,
+        owner_id,   
+        property_id: id,
+        user_id: 1,
       };
-
+      console.log( bookingData);
       // Send POST request with axios
-      const response = await axios.post('http://localhost:8000/management/create_booking/', bookingData, {
+      const response = await axios.post(`http://localhost:8000/management/create_booking/${owner_id}/${id}/`, bookingData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -44,14 +113,12 @@ const Reserv2 = () => {
       alert('An error occurred while confirming the booking.');
     }
   };
-  const steps = ['Step 1', 'Step 2'];
-
   return (
-    <div style={{ backgroundColor: '#ede7e3', paddingBottom:'2px'}}>
+    <div style={{ backgroundColor: '#ede7e3', paddingBottom: '2px' }}>
       <Navbar />
-  
+
       {/* Stepper */}
-      <Box sx={{ width: '100%', padding: '20px 0', margin: '1% 0%', marginBottom: '0', marginLeft: '30%', width: '40%' }}>
+      <Box sx={{ padding: '20px 0', margin: '1% 0%', marginBottom: '0', marginLeft: '30%', width: '40%' }}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={index}>
@@ -67,27 +134,29 @@ const Reserv2 = () => {
           ))}
         </Stepper>
       </Box>
-  
+
       {/* Title and description */}
       <div style={{ textAlign: 'center', marginBottom: '2%' }}>
         <h2 style={{ color: '#023047', fontWeight: 'bold' }}>Payment</h2>
         <p style={{ color: '#d69e66', fontSize: '16px' }}>
-        Kindly follow the instructions below
+          Kindly follow the instructions below
         </p>
       </div>
-  
+
       {/* Main container */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: '20px', margin: '0 30%', marginBottom:'2%' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: '20px', margin: '0 30%', marginBottom: '2%' }}>
         {/* Left part */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '-10px' }}>
           {/* Transfer Information */}
           <div style={{ textAlign: 'left', marginLeft: '3%' }}>
             <h3 style={{ color: '#023047', fontWeight: 'bold' }}>Transfer Lodgini:</h3>
-            <p style={{ color: '#d69e66', fontSize: '14px', margin: '0 0' }}>2 Days at Maison Bella</p>
-            <p style={{ color: '#023047', fontWeight: 'bold' }}>Total: {totalPrice} DT</p>
+            <p style={{ color: '#d69e66', fontSize: '14px', margin: '0 0' }}>
+              {numberOfDays} {numberOfDays === 1 ? 'Day' : 'Days'} at {property ? property.name : 'Loading...'}
+            </p>
+            <p style={{ color: '#023047', fontWeight: 'bold' }}>Total: {TotalPrice} DT</p>
           </div>
         </div>
-  
+
         {/* Divider line */}
         <div
           style={{
@@ -97,7 +166,7 @@ const Reserv2 = () => {
             margin: '0 20px',
           }}
         ></div>
-  
+
         {/* Right part: Payment Form */}
         <div style={{ flex: 0.8, display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '-20px' }}>
           {/* Payment Form */}
@@ -177,9 +246,9 @@ const Reserv2 = () => {
           </div>
         </div>
       </div>
-  
+
       {/* Center buttons */}
-      <div style={{ display: 'flex', gap: '5%', marginTop: '30px', marginBottom: '30px', justifyContent: 'center', paddingBottom:'0%'}}>
+      <div style={{ display: 'flex', gap: '5%', marginTop: '30px', marginBottom: '30px', justifyContent: 'center', paddingBottom: '0%' }}>
         <button
           style={{
             backgroundColor: 'white',
@@ -209,6 +278,9 @@ const Reserv2 = () => {
           Confirm Booking
         </button>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

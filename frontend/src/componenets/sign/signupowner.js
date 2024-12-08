@@ -11,6 +11,7 @@ export const Signupowner = () => {
     phone_number: '',
     country: '',
     password: '',
+    profile_picture: null,
   });
   const navigate = useNavigate();
 
@@ -32,6 +33,16 @@ export const Signupowner = () => {
         navigate('/sign_up/created');
         // Redirect or clear form after successful registration
         // window.location.href = '/login'; // Example redirection after successful signup
+        // Save logged-in owner data to localStorage after successful login
+        localStorage.setItem('loggedInOwner', JSON.stringify({
+          id: response.data.id,
+          email: formData.email,
+          name: formData.name,
+          phone_number: formData.phone_number,
+          country: formData.country,
+          profile_picture: formData.profile_picture ? formData.profile_picture : null
+        }));
+
       }
     } catch (error) {
       console.error('There was an error!', error);
@@ -192,8 +203,8 @@ export const Signupowner = () => {
                 }}
               />
             </div>
-             {/* Terms and conditions text */}
-             <p style={{ textAlign: 'center' }}>
+            {/* Terms and conditions text */}
+            <p style={{ textAlign: 'center' }}>
               By signing up you agree to the{' '}
               <a href="/terms" style={{ color: '#16697a' }}>terms and conditions</a> of Lodgini.
             </p>

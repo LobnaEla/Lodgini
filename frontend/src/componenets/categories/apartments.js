@@ -38,7 +38,7 @@ const Apartments = () => {
                             </div>
                         </fieldset>
                     </div>
-                    <ApartmentGrid />
+                    <ApartmentGrid propertyType="Apartment" />
                 </main>
             </div>
             <Footer />

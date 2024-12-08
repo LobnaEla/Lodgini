@@ -1,0 +1,24 @@
+/* Slider Customization */
+
+/* Change the color of the next/prev buttons */
+.slick-prev{
+      /* Set your desired button color */
+    border-radius: 50%;
+    font-size: 1px;
+    padding: 10px;
+    z-index: 10; 
+    margin-left: 48%;/* Ensure buttons are visible */
+  }
+  .slick-next{
+    /* Set your desired button color */
+  border-radius: 50%;
+  font-size: 1px;
+  padding: 10px;
+  z-index: 10; 
+  margin-right: 48%;
+  /* Ensure buttons are visible */
+} /* Optional: Hover effect on the buttons */
+
+  
+
+  

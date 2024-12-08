@@ -8,12 +8,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Review from '../profile/review';
 import SearchBar1 from './searchBar1';
-
+import '../home/sliderStyles.css';
 const Home = () => {
   const handleSearch = (query) => {
     console.log("Search query:", query);
     // Add logic to handle the search query
   };
+
 
   const discounts = [
     {
@@ -47,10 +48,10 @@ const Home = () => {
   ];
 
   const sliderSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4.5,
     slidesToScroll: 1,
     responsive: [
       {
@@ -279,7 +280,7 @@ const Home = () => {
       </div>
 
       {/* Popular accommodations */}
-      <section className="popular-accommodations">
+      <section className="popular-accommodations" style={{ marginBottom: "2rem", padding:'0', height: '450px'}}>
         <h1 className='title'>Popular Accommodations</h1>
         <Slider {...sliderSettings}>
           {popularAccommodations.map((accommodation) => (
@@ -289,9 +290,13 @@ const Home = () => {
       </section>
 
       {/* Reviews */}
-      <section style={{ marginBottom: "2rem" }}>
-        <h2 className="sub-title" style={{ color: "#16697A" }}>What<h2 className="sub-title"> Lodgini</h2> users are saying</h2>
-        <div className="reviews">
+      <section style={{ marginBottom: "2rem", marginTop:'0' }}>
+        <div className="sub-title" style={{ display:'flex', textAlign:'center' , marginLeft:'35%'}}>
+          <h2 className="sub-title"  style={{ color: "#16697A" , marginRight:'1%'}}> What  </h2>
+          <h2 className="sub-title" style ={{marginRight:'1%'}}> Lodgini</h2>
+          <h2 className="sub-title" style={{ color: "#16697A" }}> users are saying ?</h2>
+        </div>
+       <div className="reviews">
           {reviews.map((review, index) => (
             <Review
               key={index}

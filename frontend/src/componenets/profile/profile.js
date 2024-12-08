@@ -61,8 +61,8 @@ const Profile = () => {
         const file = e.target.files[0];
         if (file) {
             const formData = new FormData();
-            formData.append('profile_picture', file); // Append the selected image
-            formData.append('email', userData.email); // Ensure the email is passed
+            formData.append('profile_picture', file); 
+            formData.append('email', userData.email); 
 
             // Simulate a backend call to update the profile picture
             fetch('http://localhost:8000/update_profile_picture/', {
@@ -153,8 +153,8 @@ const Profile = () => {
     if (!userData) {
         return <div>Loading...</div>; // Loading state until user data is available
     }
-return (
-    <div>
+    return (
+        <div>
             <Navbar />
             <main className="profile-page" style={{ backgroundColor: "#F9F3ED" }}>
                 <div className="container" style={{ padding: "2rem 1rem" }}>
@@ -276,58 +276,58 @@ return (
                                     readOnly={!isEditing}
                                     onChange={(e) => handleInputChange(e, 'country')}
                                 />
-                                 {/* Edit/Save/Cancel buttons */}
-                    {!isEditing ? (
-                        <button
-                            onClick={handleEditClick}
-                            style={{
-                                padding: "10px 20px",
-                                backgroundColor: "#16697A", // Same color as your Edit button
-                                color: "white",
-                                border: "none",
-                                borderRadius: "5px",
-                            }}
-                        >
-                            Edit
-                        </button>
-                    ) : (
-                        <div style={{ marginTop: "1rem", display: "flex", gap: "15px", justifyContent: "flex-start", paddingLeft: "18%" }}>
-                                {/* Cancel button */}
-                                <button
-                                    onClick={handleCancelClick}
-                                    style={{
-                                        backgroundColor: 'white',
-                                        color: 'black',
-                                        border: '1px solid #ccc',
-                                        padding: '10px 20px',
-                                        fontSize: '14px',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer',
-                                    }}
-                                    onMouseEnter={(e) => e.target.style.backgroundColor = "#f4f4f4"}
-                                    onMouseLeave={(e) => e.target.style.backgroundColor = "white"}
-                                >
-                                    Cancel
-                                </button>
-                                {/* Save button */}
-                                <button
-                                    onClick={handleSaveClick}
-                                    style={{
-                                        backgroundColor: '#FFB84D', 
-                                        color: 'white',
-                                        border: 'none',
-                                        padding: '10px 20px',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    Save
-                                </button>
+                                {/* Edit/Save/Cancel buttons */}
+                                {!isEditing ? (
+                                    <button
+                                        onClick={handleEditClick}
+                                        style={{
+                                            padding: "10px 20px",
+                                            backgroundColor: "#16697A", // Same color as your Edit button
+                                            color: "white",
+                                            border: "none",
+                                            borderRadius: "5px",
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                ) : (
+                                    <div style={{ marginTop: "1rem", display: "flex", gap: "15px", justifyContent: "flex-start", paddingLeft: "18%" }}>
+                                        {/* Cancel button */}
+                                        <button
+                                            onClick={handleCancelClick}
+                                            style={{
+                                                backgroundColor: 'white',
+                                                color: 'black',
+                                                border: '1px solid #ccc',
+                                                padding: '10px 20px',
+                                                fontSize: '14px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                            }}
+                                            onMouseEnter={(e) => e.target.style.backgroundColor = "#f4f4f4"}
+                                            onMouseLeave={(e) => e.target.style.backgroundColor = "white"}
+                                        >
+                                            Cancel
+                                        </button>
+                                        {/* Save button */}
+                                        <button
+                                            onClick={handleSaveClick}
+                                            style={{
+                                                backgroundColor: '#FFB84D',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '10px 20px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            Save
+                                        </button>
+                                    </div>
+                                )}
                             </div>
-                    )}
-                </div>
-            </div>
-            </section>
+                        </div>
+                    </section>
                     {/* Booking History */}
                     <h2 className="title">Booking History</h2>
                     <ApartmentGrid />

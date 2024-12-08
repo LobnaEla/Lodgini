@@ -111,7 +111,7 @@ const Navbar = () => {
     <nav style={navbarStyles}>
       {/* Logo Section */}
       <div style={logoStyles}>
-        <img src="./images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
+        <img src="../../images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
       </div>
 
       {/* Search Bar Section */}
@@ -194,7 +194,7 @@ const Navbar = () => {
               style={buttonStyles}
               onMouseEnter={(e) => (e.target.style.backgroundColor = '#0f4c59')}
               onMouseLeave={(e) => (e.target.style.backgroundColor = '#16697a')}
-              onClick={() => window.location.href = "../sign_up"}
+              onClick={() => window.location.href = "../../sign_up"}
             >
               Register
             </button>
@@ -202,7 +202,7 @@ const Navbar = () => {
               style={{ ...buttonStyles, color: '#16697a', backgroundColor: '#ede7e3' }}
               onMouseEnter={(e) => (e.target.style.backgroundColor = '#e3dcd8')}
               onMouseLeave={(e) => (e.target.style.backgroundColor = '#ede7e3')}
-              onClick={() => window.location.href = "../sign_in"}
+              onClick={() => window.location.href = "../../sign_in"}
             >
               Login
             </button>
