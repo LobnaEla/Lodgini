@@ -5,9 +5,12 @@ import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
 import OwnerCalendar from './ownerCalendar';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Details = () => {
+    const navigate = useNavigate();
     const { id, owner_id } = useParams();
     const [property, setProperty] = useState(null);
 
@@ -135,8 +138,11 @@ const Details = () => {
                             <p style={{ fontSize: "16px", color: "#6c757d", marginBottom: "20px" }}>
                                 per night
                             </p>
-                            <button className="button1" onClick={() => window.location.href = "../booking"}>
-                                Book Now!
+                            <button
+                                className="button1"
+                                onClick={() => navigate(`/property_details/${owner_id}/${id}/update`)}
+                            >
+                                Edit
                             </button>
                         </div>
                     </div>
