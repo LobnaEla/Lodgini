@@ -12,4 +12,9 @@ urlpatterns = [
         get_property_details_by_owner,
         name="get_property_details_by_owner",
     ),
+    path(
+        "properties/<int:owner_id>/<int:property_id>/update/",
+        update_property,
+        name="update_property",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
