@@ -12,4 +12,5 @@ urlpatterns = [
         get_property_details_by_owner,
         name="get_property_details_by_owner",
     ),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

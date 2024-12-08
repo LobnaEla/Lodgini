@@ -13,7 +13,7 @@ const Details = () => {
         // Fetch property details from the API
         const fetchPropertyDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`); // Replace with your endpoint
+                const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
                 setProperty(response.data);
             } catch (error) {
                 console.error("Error fetching property details:", error);
@@ -133,9 +133,19 @@ const Details = () => {
                             <p style={{ fontSize: "16px", color: "#6c757d", marginBottom: "20px" }}>
                                 per night
                             </p>
-                            <button className="button1" onClick={() => window.location.href = "../booking"}>
+                            <button
+                                className="button1"
+                                onClick={() => {
+                                    const isLoggedIn = localStorage.getItem("loggedInUser"); 
+                                    if (isLoggedIn) {
+                                        window.location.href = `/booking/${owner_id}/${id}`; // Pass actual params
+                                    } else {
+                                    window.location.href = "/Sign_in";
+                                    }
+                                }}
+                                >
                                 Book Now!
-                            </button>
+                                </button>
                         </div>
                     </div>
 

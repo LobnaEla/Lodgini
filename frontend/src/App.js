@@ -33,9 +33,9 @@ function App() {
         <Route path='/Sign_up' element={<Signup />} />
         <Route path='/Sign_up_as_owner' element={<Signupowner />} />
         <Route path='/sign_up/created' element={<Created />} />
-        <Route path='/booking' element={<Reserv1 />} />
-        <Route path='/payment' element={<Reserv2 />} />
-        <Route path='/booked' element={<Booked />} />
+        <Route path='/booking/:owner_id/:id' element={<Reserv1 />} />
+        <Route path='/payment/:owner_id/:id' element={<Reserv2 />} />
+        <Route path='/booked/:owner_id/:id' element={<Booked />} />
         <Route path='/details/:owner_id/:id' element={<Details />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/profile/Add_review' element={<Addreview />} />
