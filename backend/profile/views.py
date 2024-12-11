@@ -63,6 +63,7 @@ def login_user(request):
                     'email': user.email,
                     'phone_number': user.phone_number,
                     'country': user.country,
+                    'id': user.id,
                     'profile_picture': user.profile_picture.url if user.profile_picture else None }, status=200)
             else:
                 return JsonResponse({'error': 'Invalid email or password'}, status=400)
