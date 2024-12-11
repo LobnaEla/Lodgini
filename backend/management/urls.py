@@ -13,6 +13,8 @@ urlpatterns =[
         get_property_details_by_owner,
         name="get_property_details_by_owner",
     ),
+    path('bookings/<int:user_id>/', get_bookings, name='get_bookings'),
+
     path(
         "properties/<int:owner_id>/<int:property_id>/update/",
         update_property,

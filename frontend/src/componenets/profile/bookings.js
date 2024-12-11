@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import './bookings.css'; // Importez votre fichier CSS ici si nécessaire
 import styled from 'styled-components';
+import './bookings.css'; // Importez votre fichier CSS ici si nécessaire
 import { Link } from "react-router-dom"; // Importez le Link de react-router-dom pour la navigation
 
 const Bookings = () => {

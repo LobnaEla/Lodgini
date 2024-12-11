@@ -42,7 +42,7 @@ function App() {
         <Route path='/profile/Add_review' element={<Addreview />} />
         <Route path='/property_owner_profile' element={<PropertyOwnerProfile />} />
         <Route path='/add_property' element={<AddProperty />} />
-        <Route path='/update_reservation' element={<UpdateReservation />} />
+        <Route path='/update_reservation/:id' element={<UpdateReservation />} />
         <Route path='/property_details/:owner_id/:id' element={<OwnerApartmentDetails />} />
         <Route path='/property_details/:owner_id/:id/update' element={<EditDetails />} />
 
