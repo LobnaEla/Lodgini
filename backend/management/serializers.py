@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Property
+from .models import *
 
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,3 +11,8 @@ class PropertySerializer(serializers.ModelSerializer):
         if not data.get('price_per_night'):
             raise serializers.ValidationError("Price per night is required.")
         return data
+class BookingSerializer(serializers.ModelSerializer):
+    property = PropertySerializer() 
+    class Meta:
+        model = Booking
+        fields = '__all__'
