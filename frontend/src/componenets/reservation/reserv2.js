@@ -87,9 +87,9 @@ const Reserv2 = () => {
     try {
      
       const bookingData = {
-        checkInDate,
-        checkOutDate,
-        TotalPrice,
+        check_in_date: checkInDate,   // Renamed
+        check_out_date: checkOutDate, // Renamed
+        total_price: TotalPrice,     // Renamed
         owner_id,   
         property_id: id,
         user_id: 1,
@@ -104,12 +104,11 @@ const Reserv2 = () => {
 
       if (response.status === 200) {
         // Handle successful booking creation
-        window.location.href = '../booked'; // Redirect to the booked page
+        window.location.href = '/booked'; // Redirect to the booked page
       } else {
         alert('Failed to create booking');
       }
     } catch (error) {
-      console.error('There was an error creating the booking:', error);
       alert('An error occurred while confirming the booking.');
     }
   };

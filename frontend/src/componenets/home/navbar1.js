@@ -111,7 +111,7 @@ const Navbar = () => {
     <nav style={navbarStyles}>
       {/* Logo Section */}
       <div style={logoStyles}>
-        <img src="../../images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
+        <img src="../../../images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
       </div>
 
       {/* Search Bar Section */}

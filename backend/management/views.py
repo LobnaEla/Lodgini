@@ -85,31 +85,24 @@ def create_booking(request, owner_id, property_id):
         # Parse the JSON data sent in the request
         try:
             data = json.loads(request.body)
-            check_in_date = data.get('checkInDate')
-            check_out_date = data.get('checkOutDate')
-            total_price = data.get('TotalPrice')           
-            user_id = data.get('user_id')
-            print(f"{data}")
+            print(f"Received booking data: {data}")
+            check_in_date = data.get('check_in_date')
+            check_out_date = data.get('check_out_date')
+            total_price = data.get('total_price')           
+            user_id = int(data.get('user_id'))
+            owner_id = int(owner_id)
+            property_id = int(property_id)
+
         except json.JSONDecodeError:
+            print("no1")
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
 
-        # Parse dates
-        try:
-            check_in_date = parse(check_in_date).date()
-            check_out_date = parse(check_out_date).date()
-        except Exception:
-            return JsonResponse({'error': 'Invalid date format.'}, status=400)
 
         # Ensure the dates are valid
-        if not check_in_date or not check_out_date:
-            return JsonResponse({'error': 'Missing check-in or check-out date.'}, status=400)
-
-        if check_in_date >= check_out_date:
-            return JsonResponse({'error': 'Check-in date must be before check-out date.'}, status=400)
-
         try:
             property = Property.objects.get(id=property_id)
         except Property.DoesNotExist:
+            print("no3")
             return JsonResponse({'error': 'Property not found.'}, status=404)
 
         # Check for property availability
@@ -119,17 +112,11 @@ def create_booking(request, owner_id, property_id):
             end_date__gte=check_in_date
         )
         if unavailable_dates.exists():
+            print("no4")
             return JsonResponse({'error': 'The property is not available for the selected dates.'}, status=400)
 
         # Handle the user profile based on authentication
-        if request.user.is_authenticated:
-            try:
-                user_profile = UserProfile.objects.get(id=user_id)
-            except UserProfile.DoesNotExist:
-                return JsonResponse({'error': 'User profile not found.'}, status=404)
-        else:
-            return JsonResponse({'error': 'User must be logged in to make a booking.'}, status=401)
-
+        user_profile = UserProfile.objects.get(id=user_id)
         # Proceed with booking creation
         booking = Booking(
             user=user_profile,
@@ -143,7 +130,7 @@ def create_booking(request, owner_id, property_id):
 
         # Mark the property as unavailable for the selected dates
         # You might want to add logic here to update the availability of the property
-
+        print("off")
         return JsonResponse({'message': 'Booking confirmed successfully!'}, status=200)
 
     return JsonResponse({'error': 'Invalid request method.'}, status=400)

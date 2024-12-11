@@ -36,7 +36,7 @@ function App() {
         <Route path='/sign_up/created' element={<Created />} />
         <Route path='/booking/:owner_id/:id' element={<Reserv1 />} />
         <Route path='/payment/:owner_id/:id' element={<Reserv2 />} />
-        <Route path='/booked/:owner_id/:id' element={<Booked />} />
+        <Route path='/booked' element={<Booked />} />
         <Route path='/details/:owner_id/:id' element={<Details />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/profile/Add_review' element={<Addreview />} />
