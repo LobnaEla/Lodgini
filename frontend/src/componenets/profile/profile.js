@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
-import ApartmentGrid from "../categories/apartmentGrid";
+import ApartmentGrid from "../categories/apartmentGrid1";
 import { useNavigate } from "react-router-dom";
 import Review from "./review";
+import Bookings from "./bookings";
+
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -156,6 +158,8 @@ const Profile = () => {
     if (!userData) {
         return <div>Loading...</div>; // Loading state until user data is available
     }
+    console.log(`${userData.id}`)
+
     return (
         <div>
             <Navbar />
@@ -334,7 +338,7 @@ const Profile = () => {
                     </section>
                     {/* Booking History */}
                     <h2 className="title">Booking History</h2>
-                    <ApartmentGrid />
+                    <Bookings />
 
                     {/* Reviews History */}
                     <section style={{ marginBottom: "2rem" }}>
