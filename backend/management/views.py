@@ -231,3 +231,29 @@ def update_property(request, owner_id, property_id):
         )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(["GET"])
+def get_bookings(request, user_id):
+    """
+    Get all bookings for a specific user using a GET request.
+    """
+    try:
+        # Fetch the user by the provided user_id
+        user = UserProfile.objects.filter(id=user_id).first()
+
+        # Check if the user exists
+        if not user:
+            return Response(
+                {"error": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Fetch bookings for the user
+        bookings = Booking.objects.filter(user=user)
+        
+        # Serialize the bookings
+        serializer = BookingSerializer(bookings, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
