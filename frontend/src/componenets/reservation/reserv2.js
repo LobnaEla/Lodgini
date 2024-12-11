@@ -5,11 +5,12 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Footer from '../home/footer';
-import { useParams } from 'react-router-dom'; 
+import { useParams, useNavigate } from 'react-router-dom'; 
 import axios from 'axios'; 
 
 const Reserv2 = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
+  const navigate = useNavigate();
   const [TotalPrice, setTotalPrice] = useState(0);
   const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState('');
@@ -21,7 +22,7 @@ const Reserv2 = () => {
   const [activeStep, setActiveStep] = useState(0); // Track the current step
   const [property, setProperty] = useState(null); // Property data state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userID, setUserID] = useState(null);
+  const [user_email, setuser_email] = useState(null);
 
   useEffect(() => {
     // Get the number of days from sessionStorage
@@ -74,15 +75,16 @@ const Reserv2 = () => {
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     if (loggedInUser) {
-      setUserID(loggedInUser.name); // Récupère l'ID de l'utilisateur depuis localStorage
+      setuser_email(loggedInUser.email); // Récupère l'ID de l'utilisateur depuis localStorage
     }
   }, []);
 
   const handleConfirmBooking = async () => {
-    if (!userID) {
+    if (!user_email) {
       console.log("User not logged in!");
-      return; // Si l'utilisateur n'est pas connecté, empêcher la réservation
+      return; 
     }
+    else{console.log("user logged in")}
 
     try {
      
@@ -92,7 +94,7 @@ const Reserv2 = () => {
         total_price: TotalPrice,     // Renamed
         owner_id,   
         property_id: id,
-        user_id: 1,
+        user_email: user_email,
       };
       console.log( bookingData);
       // Send POST request with axios
@@ -109,9 +111,10 @@ const Reserv2 = () => {
         alert('Failed to create booking');
       }
     } catch (error) {
-      alert('An error occurred while confirming the booking.');
-    }
-  };
+      console.error('Error:', error.message);
+    alert(`Error: ${error.message}`);
+  }
+};
   return (
     <div style={{ backgroundColor: '#ede7e3', paddingBottom: '2px' }}>
       <Navbar />
@@ -258,9 +261,9 @@ const Reserv2 = () => {
             borderRadius: '5px',
             cursor: 'pointer',
           }}
-          onClick={() => setActiveStep(0)} // Optionally, reset step to 0
+          onClick={() => navigate(-1)}
         >
-          Cancel
+          Previous
         </button>
         <button
           style={{

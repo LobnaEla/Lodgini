@@ -119,7 +119,6 @@ class Booking(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        When a booking is saved, ensure the property is marked as unavailable for that date range.
         """
         super().save(*args, **kwargs)
      
