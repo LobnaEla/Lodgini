@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
-import ApartmentGrid from "../categories/apartmentGrid1";
 import { useNavigate } from "react-router-dom";
 import Review from "./review";
 import Bookings from "./bookings";
