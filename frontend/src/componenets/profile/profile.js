@@ -55,8 +55,6 @@ const Profile = () => {
     const handleAddReviewClick = () => {
         navigate("/Profile/Add_review");
     };
-
-    // Handle Profile Picture Change
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -74,14 +72,13 @@ const Profile = () => {
                     if (data.success) {
                         setUserData((prevData) => ({
                             ...prevData,
-                            profilePicture: data.profilePictureUrl,
+                            profile_picture: data.profilePictureUrl,
                         }));
-                        // Update the localStorage with the new profile picture
                         localStorage.setItem(
                             'loggedInUser',
                             JSON.stringify({
                                 ...userData,
-                                profilePicture: data.profilePictureUrl,
+                                profile_picture: data.profilePictureUrl,
                             })
                         );
                     } else {
@@ -120,9 +117,15 @@ const Profile = () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    setUserData(updatedData); // Update the local state with the new data
-                    localStorage.setItem('loggedInUser', JSON.stringify(updatedData)); // Save updated data to localStorage
-                    setIsEditing(false); // Disable editing
+                    setUserData((prevData) => ({
+                        ...prevData,
+                        profile_picture: data.profilePictureUrl || prevData.profile_picture, // Assurez-vous de conserver l'image si elle n'a pas changé
+                    }));
+                    localStorage.setItem('loggedInUser', JSON.stringify({
+                        ...updatedData,
+                        profile_picture: data.profilePictureUrl || userData.profile_picture, // Assurez-vous de conserver l'image
+                    }));
+                    setIsEditing(false); // Désactiver l'édition
                 } else {
                     alert('Failed to update profile');
                 }
@@ -185,13 +188,14 @@ const Profile = () => {
                                 }}
                             >
                                 <img
-                                    src={userData.profile_picture}
+                                    src={userData.profile_picture ? `http://localhost:8000${userData.profile_picture}`  : '../../../public/images/default-avatar.jpg'} 
                                     alt="Profile Avatar"
                                     style={{
                                         width: "100%",
                                         height: "100%",
                                         objectFit: "cover",
                                     }}
+
                                 />
                                 <label
                                     htmlFor="fileInput"

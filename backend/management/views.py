@@ -89,12 +89,11 @@ def create_booking(request, owner_id, property_id):
             check_in_date = data.get('check_in_date')
             check_out_date = data.get('check_out_date')
             total_price = data.get('total_price')           
-            user_id = int(data.get('user_id'))
+            user_email = data.get('user_email')
             owner_id = int(owner_id)
             property_id = int(property_id)
 
         except json.JSONDecodeError:
-            print("no1")
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
 
 
@@ -102,7 +101,6 @@ def create_booking(request, owner_id, property_id):
         try:
             property = Property.objects.get(id=property_id)
         except Property.DoesNotExist:
-            print("no3")
             return JsonResponse({'error': 'Property not found.'}, status=404)
 
         # Check for property availability
@@ -112,12 +110,9 @@ def create_booking(request, owner_id, property_id):
             end_date__gte=check_in_date
         )
         if unavailable_dates.exists():
-            print("no4")
             return JsonResponse({'error': 'The property is not available for the selected dates.'}, status=400)
 
-        # Handle the user profile based on authentication
-        user_profile = UserProfile.objects.get(id=user_id)
-        # Proceed with booking creation
+        user_profile = UserProfile.objects.get(email=user_email)
         booking = Booking(
             user=user_profile,
             property=property,
@@ -127,10 +122,12 @@ def create_booking(request, owner_id, property_id):
             status="Confirmed"
         )
         booking.save()
+        PropertyUnavailableDate.objects.create(
+            property=property,
+            start_date=check_in_date,
+            end_date=check_out_date
+        )
 
-        # Mark the property as unavailable for the selected dates
-        # You might want to add logic here to update the availability of the property
-        print("off")
         return JsonResponse({'message': 'Booking confirmed successfully!'}, status=200)
 
     return JsonResponse({'error': 'Invalid request method.'}, status=400)

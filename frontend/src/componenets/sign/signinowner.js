@@ -43,7 +43,7 @@ export const Signinowner = () => {
           email: email, // Assuming 'email' is available in your component
           phone_number: response.data.phone_number, // Assuming 'mobile' is part of the API response
           country: response.data.country,
-          profilepicture: response.data.profilepicture,
+          profile_picture: response.data.profile_picture,
           id: response.data.id // Assuming 'country' is part of the API response
         };
         localStorage.setItem('loggedInOwner', JSON.stringify(userData));
@@ -66,7 +66,6 @@ export const Signinowner = () => {
       }
     }
   };
-
   return (
     <div style={{ backgroundColor: '#ede7e3' }}>
       <Navbar />

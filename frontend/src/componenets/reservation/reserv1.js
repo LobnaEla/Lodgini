@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const Reserv1 = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
   const [checkInDate, setCheckInDate] = useState('');
+  const navigate = useNavigate();
   const [checkOutDate, setCheckOutDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
   const { id, owner_id } = useParams();
@@ -20,7 +21,6 @@ const Reserv1 = () => {
 
   // Steps for the Stepper
   const steps = ['Step 1', 'Step 2'];
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch property details from the API
@@ -216,9 +216,10 @@ const Reserv1 = () => {
               fontSize: '14px',
               borderRadius: '5px',
               cursor: 'pointer',
-            }}
+            }}   
+              onClick={() => navigate(-1)}
           >
-            Cancel
+            Previous
           </button>
           <button
             style={{

@@ -44,6 +44,7 @@ export const Signin = () => {
           id: response.data.id,
           phone_number: response.data.phone_number, // Assuming 'mobile' is part of the API response
           country: response.data.country,
+          profile_picture:response.data.profile_picture,
         };
         
         localStorage.setItem('loggedInUser', JSON.stringify(userData));
