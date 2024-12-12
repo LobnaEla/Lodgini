@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
 import { useNavigate } from "react-router-dom";
-import Review from "./review";
+import Review1 from "./reviews1";
 import Bookings from "./bookings";
-
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -23,39 +22,10 @@ const Profile = () => {
         }
     }, [navigate]);
 
-    const reviews = [
-        {
-            name: "Lobna Elabed",
-            propertyName: "Luxury Apartment Downtown",
-            description: "This place is absolutely amazing! Highly recommended.",
-            stars: 5,
-            date: "2 days ago",
-            imageUrl: "images/apartment.jpg",
-            profileImageUrl: "images/lobna.jpeg",
-        },
-        {
-            name: "Lobna Elabed",
-            propertyName: "Cozy Cottage Near the Lake",
-            description: "Not bad, but could be better. The staff was helpful.",
-            stars: 3,
-            date: "1 week ago",
-            imageUrl: "images/vacation.jpg",
-            profileImageUrl: "images/lobna.jpeg",
-        },
-        {
-            name: "Lobna Elabed",
-            propertyName: "Beachside Villa",
-            description: "Terrible experience. Would not recommend.",
-            stars: 1,
-            date: "1 month ago",
-            imageUrl: "images/vacation.jpg",
-            profileImageUrl: "images/lobna.jpeg",
-        },
-    ];
-
     const handleAddReviewClick = () => {
         navigate("/Profile/Add_review");
     };
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -157,7 +127,6 @@ const Profile = () => {
     if (!userData) {
         return <div>Loading...</div>; // Loading state until user data is available
     }
-    console.log(`${userData.id}`)
 
     return (
         <div>
@@ -176,7 +145,6 @@ const Profile = () => {
                                 width: "100%",
                             }}
                         >
-
                             <div
                                 className="avatar"
                                 style={{
@@ -198,7 +166,6 @@ const Profile = () => {
                                         height: "100%",
                                         objectFit: "cover",
                                     }}
-
                                 />
                                 <label
                                     htmlFor="fileInput"
@@ -335,6 +302,7 @@ const Profile = () => {
                             </div>
                         </div>
                     </section>
+
                     {/* Booking History */}
                     <h2 className="title">Booking History</h2>
                     <Bookings />
@@ -343,18 +311,7 @@ const Profile = () => {
                     <section style={{ marginBottom: "2rem" }}>
                         <h2 className="title">Reviews History</h2>
                         <div className="reviews">
-                            {reviews.map((review, index) => (
-                                <Review
-                                    key={index}
-                                    name={review.name}
-                                    propertyName={review.propertyName}
-                                    description={review.description}
-                                    stars={review.stars}
-                                    date={review.date}
-                                    imageUrl={review.imageUrl}
-                                    profileImageUrl={review.profileImageUrl}
-                                />
-                            ))}
+                            <Review1 userId={userData.id} />
                         </div>
                         <button onClick={handleAddReviewClick} className="button1">
                             Write Review

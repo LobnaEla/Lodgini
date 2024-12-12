@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.utils.dateparse import parse_date
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.timezone import now
 
 
 
@@ -257,3 +258,86 @@ def get_bookings(request, user_id):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def get_user_reserved_properties(request, user_id):
+    """
+    Récupérer les propriétés réservées par l'utilisateur connecté dont la date de début est passée.
+    """
+    try:
+        # Assurez-vous que l'utilisateur est authentifié
+        print(request)
+
+        # Trouver le UserProfile associé à l'utilisateur connecté
+        try:
+            user_profile =  UserProfile.objects.filter(id=user_id).first()
+        except UserProfile.DoesNotExist:
+            return Response({"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Filtrer les réservations
+        bookings = Booking.objects.filter(
+            user=user_profile, 
+            start_date__lte=now().date(),  
+            status="Confirmed"  
+        )
+
+        # Récupérer les propriétés
+        properties = [booking.property for booking in bookings]
+        property_data = [{"id": prop.id, "name": prop.name} for prop in properties]
+        print(property_data)
+        return Response(property_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def create_review(request):
+   
+    try:
+        user_id = request.data.get('user_id')
+        property_id = request.data.get('property_id')
+        review_text = request.data.get('review')
+        stars = request.data.get('stars')
+        print(request)
+        # Vérification des données
+        if not user_id or not property_id or not review_text or not stars:
+            return Response({"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Récupérer l'utilisateur et la propriété
+        user = UserProfile.objects.filter(id=user_id).first()
+        property_obj = Property.objects.filter(id=property_id).first()
+
+        if not user:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        if not property_obj:
+            return Response({"error": "Property not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Créer la review
+        review = Review.objects.create(
+            user=user,
+            property=property_obj,
+            review=review_text,
+            stars=stars
+        )
+
+        return Response({"message": "Review created successfully", "review_id": review.id}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def get_user_reviews(request, user_id):
+    """
+    Récupérer toutes les critiques de l'utilisateur connecté
+    """
+    try:
+        reviews = Review.objects.filter(user__id=user_id)  # Filter reviews based on user ID
+        review_data = [
+            {
+                'property': review.property.name,
+                'review': review.review,
+                'stars': review.stars,
+                'created_at': review.created_at,
+            }
+            for review in reviews
+        ]
+        return Response(review_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
