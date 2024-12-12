@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
-from profile.models import OwnerProfile, UserProfile
+from profile.models import *
 
 
 class Property(models.Model):
@@ -122,3 +122,22 @@ class Booking(models.Model):
         """
         super().save(*args, **kwargs)
      
+class Review(models.Model):
+    property = models.ForeignKey(
+        Property, 
+        on_delete=models.CASCADE, 
+        related_name='reviews'
+    )  # Clé étrangère vers Property (le bien à reviewer)
+    user = models.ForeignKey(
+        UserProfile, 
+        on_delete=models.CASCADE, 
+        related_name='reviews'
+    )  # Clé étrangère vers User (l'utilisateur qui fait la review)
+    review = models.TextField()  # Champ pour le contenu de la review
+    created_at = models.DateTimeField(auto_now_add=True)
+    stars = models.IntegerField(
+        default=1,
+        choices=[(i, f"{i} Star{'s' if i > 1 else ''}") for i in range(1, 6)])  # Date de création
+
+    def __str__(self):
+        return f"Review by {self.user.name} for {self.property.name}"

@@ -13,8 +13,11 @@ urlpatterns =[
         get_property_details_by_owner,
         name="get_property_details_by_owner",
     ),
-    path('bookings/<int:user_id>/', get_bookings, name='get_bookings'),
+    path('user_reviews/<int:user_id>/', get_user_reviews, name='get_user_reviews'),
 
+    path('create_review/', create_review, name='create_review'),
+    path('bookings/<int:user_id>/', get_bookings, name='get_bookings'),
+    path('reserved_properties/<int:user_id>/', get_user_reserved_properties, name='reserved-properties'),
     path(
         "properties/<int:owner_id>/<int:property_id>/update/",
         update_property,

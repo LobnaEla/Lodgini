@@ -127,7 +127,7 @@ const Reserv2 = () => {
               <StepLabel
                 StepIconProps={{
                   style: {
-                    color: index === 0 && activeStep === 0 ? '43D649' : '#d69e66', // Green for Step 1
+                    color: index === 0 && activeStep === 0 ? '#43D649' : '#d69e66', 
                     fontWeight: 'bold',
                   },
                 }}
