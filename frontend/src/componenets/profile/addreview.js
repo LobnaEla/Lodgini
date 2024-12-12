@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Footer from '../home/footer';
 import Navbar from '../home/navbar1';
+import { useNavigate } from 'react-router-dom'; 
 
 export const Addreview = () => {
   const [rating, setRating] = useState(0);
@@ -13,6 +14,7 @@ export const Addreview = () => {
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
   const userId = loggedInUser?.id;
 
+  const navigate = useNavigate();
   const handlePropertyChange = (event) => {
     setSelectedProperty(event.target.value);
   };
@@ -43,6 +45,9 @@ export const Addreview = () => {
       setReviewText('');
       setRating(0);
       setSelectedProperty(null);
+      setTimeout(() => {
+        navigate(-1); 
+      }, 1000); 
     } catch (error) {
       console.error('Error creating review:', error);
       setMessage('Failed to add review. Please try again.');
