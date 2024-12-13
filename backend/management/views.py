@@ -1,10 +1,18 @@
+from ast import parse
+import json
 from django.http import JsonResponse
 from django.shortcuts import render
-from .models import Property, OwnerProfile
+from .models import *
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .serializers import PropertySerializer
+from .serializers import *
+from datetime import timedelta
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.utils.dateparse import parse_date
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.timezone import now
 
 
 @api_view(["POST"])
@@ -74,6 +82,60 @@ def add_property(request):
     )
 
 
+@csrf_exempt
+def create_booking(request, owner_id, property_id):
+    if request.method == "POST":
+        # Parse the JSON data sent in the request
+        try:
+            data = json.loads(request.body)
+            print(f"Received booking data: {data}")
+            check_in_date = data.get("check_in_date")
+            check_out_date = data.get("check_out_date")
+            total_price = data.get("total_price")
+            user_email = data.get("user_email")
+            owner_id = int(owner_id)
+            property_id = int(property_id)
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+        # Ensure the dates are valid
+        try:
+            property = Property.objects.get(id=property_id)
+        except Property.DoesNotExist:
+            return JsonResponse({"error": "Property not found."}, status=404)
+
+        # Check for property availability
+        unavailable_dates = PropertyUnavailableDate.objects.filter(
+            property=property,
+            start_date__lte=check_out_date,
+            end_date__gte=check_in_date,
+        )
+        if unavailable_dates.exists():
+            return JsonResponse(
+                {"error": "The property is not available for the selected dates."},
+                status=400,
+            )
+
+        user_profile = UserProfile.objects.get(email=user_email)
+        booking = Booking(
+            user=user_profile,
+            property=property,
+            start_date=check_in_date,
+            end_date=check_out_date,
+            total_price=total_price,
+            status="Confirmed",
+        )
+        booking.save()
+        PropertyUnavailableDate.objects.create(
+            property=property, start_date=check_in_date, end_date=check_out_date
+        )
+
+        return JsonResponse({"message": "Booking confirmed successfully!"}, status=200)
+
+    return JsonResponse({"error": "Invalid request method."}, status=400)
+
+
 @api_view(["GET"])
 def get_properties(request):
     """
@@ -82,7 +144,8 @@ def get_properties(request):
     try:
         # Fetch all properties from the database
         properties = Property.objects.all()
-        serializer = PropertySerializer(properties, many=True)
+        print(properties)
+        serializer = PropertySerializer1(properties, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -172,3 +235,192 @@ def delete_property(request, property_id):
         )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["GET"])
+def get_bookings(request, user_id):
+    """
+    Get all bookings for a specific user using a GET request.
+    """
+    try:
+        # Fetch the user by the provided user_id
+        user = UserProfile.objects.filter(id=user_id).first()
+
+        # Check if the user exists
+        if not user:
+            return Response(
+                {"error": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Fetch bookings for the user
+        bookings = Booking.objects.filter(user=user)
+
+        # Serialize the bookings
+        serializer = BookingSerializer(bookings, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["GET"])
+def get_user_reserved_properties(request, user_id):
+    """
+    Récupérer les propriétés réservées par l'utilisateur connecté dont la date de début est passée.
+    """
+    try:
+        # Assurez-vous que l'utilisateur est authentifié
+        print(request)
+
+        # Trouver le UserProfile associé à l'utilisateur connecté
+        try:
+            user_profile = UserProfile.objects.filter(id=user_id).first()
+        except UserProfile.DoesNotExist:
+            return Response(
+                {"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Filtrer les réservations
+        bookings = Booking.objects.filter(
+            user=user_profile, start_date__lte=now().date(), status="Confirmed"
+        )
+
+        # Récupérer les propriétés
+        properties = [booking.property for booking in bookings]
+        property_data = [{"id": prop.id, "name": prop.name} for prop in properties]
+        print(property_data)
+        return Response(property_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
+def create_review(request):
+
+    try:
+        user_id = request.data.get("user_id")
+        about_lodgini = request.data.get("about_lodgini", False)
+        if not about_lodgini:
+            property_id = request.data.get("property_id")
+        review_text = request.data.get("review")
+        stars = request.data.get("stars")
+        print(request.data)
+        # Vérification des données
+        if not user_id or not review_text or not stars:
+            return Response(
+                {"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # If the review is about a property, we must have a valid property_id
+        if not about_lodgini and not property_id:
+            return Response(
+                {"error": "Property ID is required for property reviews"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Retrieve the user
+        user = UserProfile.objects.filter(id=user_id).first()
+        if not user:
+            return Response(
+                {"error": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Retrieve the property if the review is not about Lodgini
+        if not about_lodgini:
+            property_obj = Property.objects.filter(id=property_id).first()
+            if not property_obj:
+                return Response(
+                    {"error": "Property not found"}, status=status.HTTP_404_NOT_FOUND
+                )
+        else:
+            property_obj = None  # No property needed for Lodgini review
+
+        # Creating the review
+        review = Review.objects.create(
+            user=user,
+            property=property_obj,  # Will be None if about_lodgini is True
+            review=review_text,
+            stars=stars,
+            about_lodgini=about_lodgini,
+        )
+
+        # Success response
+        return Response(
+            {"message": "Review created successfully", "review_id": review.id},
+            status=status.HTTP_201_CREATED,
+        )
+
+    except Exception as e:
+        # Log the exception for debugging
+        print("Error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["GET"])
+def get_user_reviews(request, user_id):
+    """
+    Récupérer toutes les critiques de l'utilisateur connecté
+    """
+    try:
+        reviews = Review.objects.filter(
+            user__id=user_id
+        )  # Filter reviews based on user ID
+        review_data = [
+            {
+                "property": "Lodgini" if review.about_lodgini else review.property.name,
+                "review": review.review,
+                "stars": review.stars,
+                "created_at": review.created_at,
+            }
+            for review in reviews
+        ]
+        return Response(review_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def get_lodgini_reviews(request):
+    try:
+        reviews = Review.objects.filter(about_lodgini=True)
+        reviews_data = [
+            {
+                "name": review.user.name,
+                "description": review.review,
+                "stars": review.stars,
+                "date": review.created_at.isoformat(),
+                "profileImageUrl": (
+                    review.user.profile_picture.url
+                    if review.user.profile_picture
+                    else ""
+                ),  # Convert to URL
+            }
+            for review in reviews
+        ]
+        print(f"reviews are: {reviews}")
+        return JsonResponse(reviews_data, safe=False, status=200)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+def get_property_reviews(request, property_id):
+    try:
+        reviews = Review.objects.filter(property_id=property_id, about_lodgini=False)
+        reviews_data = [
+            {
+                "user": review.user.name,
+                "review": review.review,
+                "stars": review.stars,
+                "created_at": review.created_at,
+                "profileImageUrl": (
+                    review.user.profile_picture.url
+                    if review.user.profile_picture
+                    else ""
+                ),  # Convert to URL
+            }
+            for review in reviews
+        ]
+        print(reviews)
+        return JsonResponse({"reviews": reviews_data}, safe=False, status=200)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)

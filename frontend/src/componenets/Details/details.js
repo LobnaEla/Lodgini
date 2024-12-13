@@ -4,6 +4,8 @@ import axios from "axios";
 import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import Review from "./reviews2";
 
 const Details = () => {
     const { id } = useParams();
@@ -11,6 +13,8 @@ const Details = () => {
     const [isLoading, setIsLoading] = useState(true);
 
 
+    const [reviews, setReviews] = useState([]);
+    const navigate = useNavigate();
     useEffect(() => {
         // Fetch property details from the API
         const fetchPropertyDetails = async () => {
@@ -25,9 +29,20 @@ const Details = () => {
                 setIsLoading(false);
             }
         };
+        const fetchPropertyReviews = async () => {
+            try {
+                const response = await axios.get(
+                    `http://localhost:8000/management/reviews/property/${id}/`
+                );
+                setReviews(response.data.reviews);
+            } catch (error) {
+                console.error("Error fetching reviews:", error);
+            }
+        };
 
+        fetchPropertyReviews();
         fetchPropertyDetails();
-    }, [id]);
+    }, [id, owner_id]);
 
     if (isLoading) {
         return (
@@ -156,9 +171,9 @@ const Details = () => {
                                 onClick={() => {
                                     const isLoggedIn = localStorage.getItem("loggedInUser");
                                     if (isLoggedIn) {
-                                        window.location.href = `/booking/${id}`; // Pass actual params
+                                        navigate(`/booking/${id}`); // Navigate with parameters
                                     } else {
-                                        window.location.href = "/Sign_in";
+                                        navigate("/Sign_in"); // Navigate to the Sign-in page
                                     }
                                 }}
                             >
@@ -202,7 +217,36 @@ const Details = () => {
                         ))}
                     </div>
                 </div>
-
+                <div style={{ marginTop: "40px", marginBottom: "50px", marginLeft: "85px", marginright: "85px" }}>
+                    <h2
+                        style={{
+                            fontSize: "24px",
+                            fontWeight: "bold",
+                            marginBottom: "20px",
+                            color: "#333",
+                        }}
+                    >
+                        Reviews
+                    </h2>
+                    {reviews.length === 0 ? (
+                        <p style={{ fontSize: "16px", color: "#666" }}>
+                            No reviews available for this property.
+                        </p>
+                    ) : (
+                        <div >
+                            {reviews.map((review, index) => (
+                                <Review
+                                    key={index}
+                                    name={review.user}
+                                    description={review.review}
+                                    stars={review.stars}
+                                    date={review.created_at}
+                                    profileImageUrl={review.profileImageUrl}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
                 <Footer />
             </div>
         </StyledWrapper >
@@ -217,7 +261,7 @@ const StyledWrapper = styled.div`
 
 .star {
     color: #FAA935;
-    font - size: 18px;
+    font - size: 100px;
 }
 .star.filled {
     color: #FAA935;

@@ -129,7 +129,7 @@ const Profile = () => {
     const handleAddPropertyClick = () => {
         navigate("/add-property");
     };
-
+    console.log(`${ownerData.profile_picture}`)
     return (
         <div>
             <Navbar />

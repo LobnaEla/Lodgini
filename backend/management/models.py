@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
-from profile.models import OwnerProfile, UserProfile
+from profile.models import *
 
 
 class Property(models.Model):
@@ -115,18 +115,35 @@ class Booking(models.Model):
     )
 
     def __str__(self):
-        return f"Booking for {self.property.name} by {self.user.username}"
+        return f"Booking for {self.property.name}"
 
     def save(self, *args, **kwargs):
         """
-        When a booking is saved, ensure the property is marked as unavailable for that date range.
         """
         super().save(*args, **kwargs)
-        # Mark the date range as unavailable for future bookings
-        # Create unavailable dates for each day in the booking range
-        current_date = self.start_date
-        while current_date <= self.end_date:
-            PropertyUnavailableDate.objects.get_or_create(
-                property=self.property, start_date=current_date, end_date=current_date
-            )
-            current_date += timedelta(days=1)
+     
+class Review(models.Model):
+    property = models.ForeignKey(
+        Property, 
+        on_delete=models.CASCADE, 
+        related_name='reviews',
+        null=True,  # Rendre nullable si la critique peut être pour Lodgini
+        blank=True
+    )  # Clé étrangère vers Property (le bien à reviewer)
+    user = models.ForeignKey(
+        UserProfile, 
+        on_delete=models.CASCADE, 
+        related_name='reviews'
+    )  # Clé étrangère vers User (l'utilisateur qui fait la review)
+    review = models.TextField()  # Champ pour le contenu de la review
+    created_at = models.DateTimeField(auto_now_add=True)
+    about_lodgini = models.BooleanField(default=False)
+    stars = models.IntegerField(
+        default=1,
+        choices=[(i, f"{i} Star{'s' if i > 1 else ''}") for i in range(1, 6)])  # Date de création
+
+    def __str__(self):
+        if not self.about_lodgini:
+            return f"Review by {self.user.name} for {self.property.name}"
+        else:
+            return f"Review by {self.user.name} about lodgini"

@@ -5,19 +5,29 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Footer from '../home/footer';
+<<<<<<< HEAD
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+=======
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+>>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
 
 const Reserv2 = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
+  const navigate = useNavigate();
   const [TotalPrice, setTotalPrice] = useState(0);
   const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState('');
   const [expDate, setExpDate] = useState('');
-  const { id } = useParams();
+  const [checkInDate, setCheckInDate] = useState(localStorage.getItem('checkInDate'));
+  const [checkOutDate, setCheckOutDate] = useState(localStorage.getItem('checkOutDate'));
+  const { id, owner_id } = useParams();
   const [cvv, setCvv] = useState('');
   const [activeStep, setActiveStep] = useState(0); // Track the current step
   const [property, setProperty] = useState(null); // Property data state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user_email, setuser_email] = useState(null);
 
   useEffect(() => {
     // Get the number of days from sessionStorage
@@ -34,6 +44,14 @@ const Reserv2 = () => {
     if (storedNumberOfDays) {
       setNumberOfDays(Number(storedNumberOfDays)); // Ensure it's treated as a number
     }
+    const storedCheckInDate = sessionStorage.getItem('checkInDate');
+    if (storedCheckInDate) {
+      setCheckInDate(Number(storedCheckInDate)); // Ensure it's treated as a number
+    }
+    const storedCheckOutDate = sessionStorage.getItem('checkOutDate');
+    if (storedCheckOutDate) {
+      setCheckOutDate(Number(storedCheckOutDate)); // Ensure it's treated as a number
+    }
   }, []);
 
   const fetchPropertyDetails = async () => {
@@ -44,6 +62,8 @@ const Reserv2 = () => {
       console.error("Error fetching property details:", error);
     }
   };
+
+  // Simulate fetching user data (replace with actual API call or context)
 
   useEffect(() => {
     fetchPropertyDetails(); // Fetch property details when the component mounts
@@ -57,6 +77,49 @@ const Reserv2 = () => {
     setActiveStep((prevStep) => prevStep + 1); // Increment activeStep by 1
   };
 
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (loggedInUser) {
+      setuser_email(loggedInUser.email); // Récupère l'ID de l'utilisateur depuis localStorage
+    }
+  }, []);
+
+  const handleConfirmBooking = async () => {
+    if (!user_email) {
+      console.log("User not logged in!");
+      return;
+    }
+    else { console.log("user logged in") }
+
+    try {
+
+      const bookingData = {
+        check_in_date: checkInDate,   // Renamed
+        check_out_date: checkOutDate, // Renamed
+        total_price: TotalPrice,     // Renamed
+        owner_id,
+        property_id: id,
+        user_email: user_email,
+      };
+      console.log(bookingData);
+      // Send POST request with axios
+      const response = await axios.post(`http://localhost:8000/management/create_booking/${id}/`, bookingData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        // Handle successful booking creation
+        window.location.href = '/booked'; // Redirect to the booked page
+      } else {
+        alert('Failed to create booking');
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      alert(`Error: ${error.message}`);
+    }
+  };
   return (
     <div style={{ backgroundColor: '#ede7e3', paddingBottom: '2px' }}>
       <Navbar />
@@ -69,7 +132,7 @@ const Reserv2 = () => {
               <StepLabel
                 StepIconProps={{
                   style: {
-                    color: index === 0 && activeStep === 0 ? '43D649' : '#d69e66', // Green for Step 1
+                    color: index === 0 && activeStep === 0 ? '#43D649' : '#d69e66',
                     fontWeight: 'bold',
                   },
                 }}
@@ -203,9 +266,9 @@ const Reserv2 = () => {
             borderRadius: '5px',
             cursor: 'pointer',
           }}
-          onClick={() => setActiveStep(0)} // Optionally, reset step to 0
+          onClick={() => navigate(-1)}
         >
-          Cancel
+          Previous
         </button>
         <button
           style={{
@@ -217,7 +280,11 @@ const Reserv2 = () => {
             borderRadius: '5px',
             cursor: 'pointer',
           }}
+<<<<<<< HEAD
           onClick={() => window.location.href = `/booked/${id}`}
+=======
+          onClick={handleConfirmBooking}
+>>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
         >
           Confirm Booking
         </button>

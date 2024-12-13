@@ -55,11 +55,13 @@ def login_user(request):
 
             # Log the user object to see if it's found
             if user:
-                print(f"User found: {user.email}")
+                print(f"User found: {user.email}  d'id {user.id}")
             else:
                 print("User not found")
+            print(f"{user.profile_picture}")
 
             # Verify the password if user is found
+<<<<<<< HEAD
             if user and (password == user.password):
                 return JsonResponse(
                     {
@@ -74,6 +76,15 @@ def login_user(request):
                     },
                     status=200,
                 )
+=======
+            if user and (password==user.password):
+                return JsonResponse({'message': 'Login successful!' , 'name': user.name,
+                    'email': user.email,
+                    'phone_number': user.phone_number,
+                    'country': user.country,
+                    'id': user.id,
+                    'profile_picture': user.profile_picture.url if user.profile_picture else None }, status=200)
+>>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
             else:
                 return JsonResponse({"error": "Invalid email or password"}, status=400)
         except json.JSONDecodeError:
@@ -236,6 +247,7 @@ def update_profile_picture_user(request):
             # Save the new profile picture
             user_profile.profile_picture.save(profile_picture.name, profile_picture)
             user_profile.save()
+            print(f"{profile_picture}")
 
             # Return the new profile picture URL as a response
             return JsonResponse(
@@ -275,7 +287,6 @@ def update_profile_user(request):
 
         # Save the updated owner object
         user.save()
-
         # Return a success response
         return JsonResponse(
             {

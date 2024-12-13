@@ -1,6 +1,7 @@
 import Footer from './footer';
 import React, { useEffect, useState } from "react";
 import Navbar from './navbar1';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../categories/card';
 import Slider from "react-slick";
@@ -9,14 +10,23 @@ import "slick-carousel/slick/slick-theme.css";
 import Review from '../profile/review';
 import SearchBar1 from './searchBar1';
 import '../home/sliderStyles.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
+  const [reviews, setReviews] = useState([]);
   const handleSearch = (query) => {
     console.log("Search query:", query);
     // Add logic to handle the search query
   };
-
+  const navigate = useNavigate();
+  const handleCardClick = (owner_id, id) => {
+    navigate(`/details/${owner_id}/${id}`);
+  };
+  const [popularAccommodations, setPopularAccommodations] = useState([]);
 
   const discounts = [
     {
@@ -42,13 +52,6 @@ const Home = () => {
     },
   ];
 
-  const popularAccommodations = [
-    { name: "Flat in Jasmin Building", stars: 4, price: "84", image: "/images/apartement.jpg" },
-    { name: "Appart’ Medina", stars: 5, price: "129", image: "/images/apartement.jpg" },
-    { name: "La Suite Zembra", stars: 3, price: "64", image: "/images/apartement.jpg" },
-    { name: "Le Patio Andalou", stars: 4, price: "156", image: "/images/apartement.jpg" },
-  ];
-
   const sliderSettings = {
     dots: false,
     infinite: true,
@@ -70,30 +73,43 @@ const Home = () => {
       },
     ],
   };
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/management/lodgini_reviews/'); // L'URL de l'API
+        console.log('Reviews:', response.data);
+        setReviews(response.data);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
 
-  const reviews = [
-    {
-      name: "Lobna Elabed",
-      description: "Lodgini is the best",
-      stars: 5,
-      date: "2 days ago",
-      profileImageUrl: "images/lobna.jpeg",
-    },
-    {
-      name: "Lobna Elabed",
-      description: "Lodgini is the best",
-      stars: 3,
-      date: "1 week ago",
-      profileImageUrl: "images/lobna.jpeg",
-    },
-    {
-      name: "Lobna Elabed",
-      description: "Lodgini is the best",
-      stars: 1,
-      date: "1 month ago",
-      profileImageUrl: "images/lobna.jpeg",
-    },
-  ];
+    fetchReviews();
+  }, []);
+
+  useEffect(() => {
+    const fetchAccommodations = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/management/properties/");
+        const accommodations = response.data.map(item => ({
+          id: item.id,
+          name: item.name,
+          stars: item.number_of_stars || 4, // Default value if stars are not provided
+          price: item.price_per_night,
+          owner_id: item.owner_id,
+          image: item.image1
+            ? `http://localhost:8000${item.image1}` // Concatenate base URL with relative path
+            : '/images/apartement.jpg',
+        }));
+        console.log(accommodations)
+        setPopularAccommodations(accommodations);
+      } catch (error) {
+        console.error("Error fetching accommodations:", error);
+      }
+    };
+
+    fetchAccommodations();
+  }, []);
 
   return (
     <div style={{ backgroundColor: '#ede7e3' }}>
@@ -180,6 +196,7 @@ const Home = () => {
               height: '100px',
               marginBottom: '5px', // Espacement entre l'image et le texte
             }}
+
           />
           <p style={{ color: '#16697a', fontSize: '20px', fontWeight: 'bold' }}>Client Service</p>
         </div>
@@ -213,10 +230,10 @@ const Home = () => {
           justifyContent: 'center',
           gap: '150px',
           marginTop: '20px',
-
+          transition: 'transform 0.3s ease',
         }}>
           {/* Vacation Houses */}
-          <div style={{
+          <div className="discount-card" style={{
             textAlign: 'center',
             backgroundColor: 'white',  // White background
             borderRadius: '15px',  // Rounded corners for the div
@@ -228,8 +245,8 @@ const Home = () => {
                 src="../images/vacation.jpg"  // Replace with the actual URL of your image
                 alt="Vacation Houses"
                 style={{
-                  width: '150px',  // Adjust the image size
-                  height: '150px',
+                  width: '200px',  // Adjust the image size
+                  height: '200px',
                   borderRadius: '15px',  // Rounded corners for the image
 
                 }}
@@ -239,7 +256,7 @@ const Home = () => {
           </div>
 
           {/* Apartments */}
-          <div style={{
+          <div className="discount-card" style={{
             textAlign: 'center',
             backgroundColor: 'white',  // White background
             borderRadius: '15px',  // Rounded corners for the div
@@ -251,8 +268,8 @@ const Home = () => {
                 src="../images/apartement.jpg"  // Replace with the actual URL of your image
                 alt="Apartments"
                 style={{
-                  width: '150px',  // Adjust the image size
-                  height: '150px',
+                  width: '200px',  // Adjust the image size
+                  height: '200px',
                   borderRadius: '15px',  // Rounded corners for the image
 
                 }}
@@ -283,16 +300,41 @@ const Home = () => {
 
       {/* Popular accommodations */}
       <section className="popular-accommodations" style={{ marginBottom: "2rem", padding: '0', height: '450px' }}>
+<<<<<<< HEAD
         <h1 className='title'>Popular Accommodations</h1>
         <Slider {...sliderSettings}>
           {popularAccommodations.map((accommodation) => (
             <Card key={accommodation.id} {...accommodation} />
           ))}
         </Slider>
-      </section>
+=======
+        <h1 className="title">Popular Accommodations</h1>
+        {popularAccommodations.length > 0 ? (
+           <Slider {...sliderSettings}>
+           {popularAccommodations.map(accommodation => (
+             <div
+               key={accommodation.id}
+               onClick={() => handleCardClick(accommodation.owner_id, accommodation.id)}
+               style={{ cursor: 'pointer' }} // Indique que l'élément est cliquable
+             >
+               <Card
+                 id={accommodation.id}
+                 name={accommodation.name}
+                 stars={accommodation.stars}
+                 price={accommodation.price}
+                 image={accommodation.image}
+               />
+             </div>
+           ))}
+         </Slider>
+        ) : (
+          <p style={{ textAlign: 'center', color: '#666' }}>Loading popular accommodations...</p>
+        )}
+>>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
+      </section >
 
-      {/* Reviews */}
-      <section style={{ marginBottom: "2rem", marginTop: '0' }}>
+  {/* Reviews */ }
+  < section style = {{ marginBottom: "2rem", marginTop: '0' }}>
         <div className="sub-title" style={{ display: 'flex', textAlign: 'center', marginLeft: '35%' }}>
           <h2 className="sub-title" style={{ color: "#16697A", marginRight: '1%' }}> What  </h2>
           <h2 className="sub-title" style={{ marginRight: '1%' }}> Lodgini</h2>
@@ -302,6 +344,7 @@ const Home = () => {
           {reviews.map((review, index) => (
             <Review
               key={index}
+              name={review.name}
               description={review.description}
               stars={review.stars}
               date={review.date}
@@ -309,10 +352,10 @@ const Home = () => {
             />
           ))}
         </div>
-      </section>
+      </section >
 
-      <Footer />
-    </div>
+  <Footer />
+    </div >
   );
 };
 
