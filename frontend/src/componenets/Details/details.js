@@ -6,25 +6,41 @@ import Footer from "../home/footer";
 import styled from 'styled-components';
 
 const Details = () => {
-    const { id, owner_id } = useParams();
+    const { id } = useParams();
     const [property, setProperty] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
         // Fetch property details from the API
         const fetchPropertyDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
+                setIsLoading(true);
+                const response = await axios.get(`http://localhost:8000/management/properties/${id}`);
                 setProperty(response.data);
             } catch (error) {
                 console.error("Error fetching property details:", error);
+            }
+            finally {
+                setIsLoading(false);
             }
         };
 
         fetchPropertyDetails();
     }, [id]);
 
-    if (!property) {
-        return <p>Loading property details...</p>;
+    if (isLoading) {
+        return (
+            <div className="loader-container">
+                <section className="dots-container">
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                </section>
+            </div>
+        );
     }
 
     const stars = property.number_of_stars;
@@ -110,11 +126,13 @@ const Details = () => {
                         <div
                             style={{
                                 flex: 1,
-                                padding: "20px",
+                                padding: "20px 20px 40px 20px",
                                 backgroundColor: "#ffffff",
                                 borderRadius: "10px",
                                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                                 textAlign: "center",
+                                alignItems: "center",
+                                justifyItems: "center",
                             }}
                         >
                             <p style={{ fontSize: "18px", fontWeight: "bold", color: "#023047", fontFamily: 'Baloo Bhaijaan 2' }}>
@@ -138,7 +156,7 @@ const Details = () => {
                                 onClick={() => {
                                     const isLoggedIn = localStorage.getItem("loggedInUser");
                                     if (isLoggedIn) {
-                                        window.location.href = `/booking/${owner_id}/${id}`; // Pass actual params
+                                        window.location.href = `/booking/${id}`; // Pass actual params
                                     } else {
                                         window.location.href = "/Sign_in";
                                     }

@@ -92,7 +92,11 @@ const Navbar = () => {
         <nav style={navbarStyles}>
             {/* Logo Section */}
             <div style={logoStyles}>
-                <img src="./images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
+                <a
+                    href="/"
+                >
+                    <img src="./images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
+                </a>
             </div>
 
             {/* Search Bar Section with Material-UI Search Icon */}

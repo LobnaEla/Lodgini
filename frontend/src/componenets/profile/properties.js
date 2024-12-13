@@ -5,47 +5,70 @@ import Axios from "axios";
 
 const Properties = () => {
     const [properties, setProperties] = useState([]);
+    const [ownerId, setOwnerId] = useState(null);
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        const storedData = localStorage.getItem('loggedInOwner');
         const fetchProperties = async () => {
-            const storedData = localStorage.getItem('loggedInOwner');
-
             try {
-                const loggedInOwner = storedData ? JSON.parse(storedData) : null;
-                const ownerId = loggedInOwner?.id;
+                setIsLoading(true);
 
-                if (!ownerId) {
+                const loggedInOwner = storedData ? JSON.parse(storedData) : null;
+                setOwnerId(loggedInOwner?.id);
+
+                if (!loggedInOwner?.id) {
                     setError("Owner ID is undefined. Please log in again.");
                     return;
                 }
 
-                // Request properties for the owner
-
-                const response = await Axios.get(`http://localhost:8000/management/properties/${ownerId}/`);
-
+                const response = await Axios.get("http://localhost:8000/management/properties/");
                 if (response.status === 200) {
-                    setProperties(response.data);
+                    setProperties(response.data);  // Save all properties
                 } else {
                     setError("Failed to fetch properties.");
                 }
-            } catch (err) {
-                console.error("Detailed error:", err);
+            } catch (error) {
+                console.error("Detailed error:", error);
                 setError("An error occurred while fetching properties.");
+            } finally {
+                setIsLoading(false);
             }
         };
 
         fetchProperties();
     }, []);
 
+    // Filter properties based on owner id
+    const OwnerProperties = ownerId
+        ? properties.filter((property) => property.owner === ownerId)
+        : []; // If no owner, return all properties
+
+    console.log("Owner properties:", OwnerProperties);
+
+    if (isLoading) {
+        return (
+            <div className="loader-container">
+                <section className="dots-container">
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                </section>
+            </div>
+        );
+    }
+
     return (
         <div className="apartment-grid" style={gridStyle}>
             {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-            {properties.length > 0 ? (
-                properties.map((property) => (
+            {OwnerProperties.length > 0 ? (
+                OwnerProperties.map((property) => (
                     <Link
-                        to={`/property_details/${property.owner}/${property.id}`}
+                        to={`/property_details/${property.id}`}
                         style={{ textDecoration: "none" }}
                         key={property.id}
                     >

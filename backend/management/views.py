@@ -75,32 +75,7 @@ def add_property(request):
 
 
 @api_view(["GET"])
-def get_properties(request, owner_id):
-    """
-    Get all properties for a specific owner using a GET request.
-    """
-    try:
-        # Fetch the owner by the provided owner_id
-        owner = OwnerProfile.objects.filter(id=owner_id).first()
-
-        # Check if the owner exists
-        if not owner:
-            return Response(
-                {"error": "Owner not found."}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        # Fetch properties for the owner
-        properties = Property.objects.filter(owner=owner)
-        serializer = PropertySerializer(properties, many=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-@api_view(["GET"])
-def get_all_properties(request):
+def get_properties(request):
     """
     Get all properties irrespective of the owner.
     """
@@ -116,13 +91,13 @@ def get_all_properties(request):
 
 
 @api_view(["GET"])
-def get_property_details_by_owner(request, owner_id, property_id):
+def get_property_details(request, property_id):
     """
     Get details of a specific property by its ID and owner ID.
     """
     try:
         # Fetch property by owner and property ID
-        property_instance = Property.objects.get(id=property_id, owner_id=owner_id)
+        property_instance = Property.objects.get(id=property_id)
         serializer = PropertySerializer(property_instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -134,13 +109,13 @@ def get_property_details_by_owner(request, owner_id, property_id):
 
 
 @api_view(["PUT"])
-def update_property(request, owner_id, property_id):
+def update_property(request, property_id):
     """
     Update a specific property by its ID and owner ID.
     """
     try:
         # Fetch property by owner and property ID
-        property_instance = Property.objects.get(id=property_id, owner_id=owner_id)
+        property_instance = Property.objects.get(id=property_id)
 
         # Create a mutable copy of the request data
         update_data = request.data.copy()
@@ -164,6 +139,31 @@ def update_property(request, owner_id, property_id):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Property.DoesNotExist:
+        return Response(
+            {"error": "Property not found for the given owner."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["DELETE"])
+def delete_property(request, property_id):
+    """
+    Delete a specific property by its ID and owner ID.
+    """
+    try:
+        # Fetch property by owner and property ID
+        property_instance = Property.objects.get(id=property_id)
+
+        # Delete the property
+        property_instance.delete()
+
+        return Response(
+            {"message": "Property successfully deleted."}, status=status.HTTP_200_OK
+        )
 
     except Property.DoesNotExist:
         return Response(

@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../home/navbar1";
+import Navbar from "../profile/navbaro";
 import Footer from "../home/footer";
 import OwnerCalendar from './ownerCalendar';
 import styled from 'styled-components';
 
 const EditDetails = () => {
-    const { id, owner_id } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
     const [property, setProperty] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     // State for form fields
     const [formData, setFormData] = useState({
@@ -39,7 +40,8 @@ const EditDetails = () => {
     useEffect(() => {
         const fetchPropertyDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
+                setIsLoading(true);
+                const response = await axios.get(`http://localhost:8000/management/properties/${id}`);
                 setProperty(response.data);
 
                 // Populate form data
@@ -61,10 +63,27 @@ const EditDetails = () => {
             } catch (error) {
                 console.error("Error fetching property details:", error);
             }
+            finally {
+                setIsLoading(false);
+            }
         };
 
         fetchPropertyDetails();
-    }, [id, owner_id]);
+    }, [id]);
+
+    if (isLoading) {
+        return (
+            <div className="loader-container">
+                <section className="dots-container">
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                </section>
+            </div>
+        );
+    }
 
     // Handle input changes
     const handleInputChange = (e) => {
@@ -107,7 +126,7 @@ const EditDetails = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:8000/management/properties/${owner_id}/${id}/update/`,
+                `http://localhost:8000/management/properties/${id}/update/`,
                 formDataToSubmit,
                 {
                     headers: {
@@ -117,10 +136,32 @@ const EditDetails = () => {
             );
 
             // Navigate back to details or refresh
-            navigate(`/property_details/${owner_id}/${id}`);
+            navigate(`/property_details/${id}`);
         } catch (error) {
             console.error("Error updating property:", error);
             alert("Failed to update property. Please try again.");
+        }
+    };
+
+    // Handle Cancel 
+    const handleCancel = () => {
+        // Navigate back to property details without saving changes
+        navigate(`/property_details/${id}`);
+    };
+
+    // Handle Delete Property
+    const handleDelete = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this property? This action cannot be undone.");
+
+        if (confirmDelete) {
+            try {
+                await axios.delete(`http://localhost:8000/management/properties/${id}/delete/`);
+
+                navigate(`/property_owner_profile`);
+            } catch (error) {
+                console.error("Error deleting property:", error);
+                alert("Failed to delete property. Please try again.");
+            }
         }
     };
 
@@ -214,7 +255,16 @@ const EditDetails = () => {
                             </div>
 
                             {/* Pricing Section */}
-                            <div style={{ flex: 1 }}>
+                            <div style={{
+                                flex: 1,
+                                padding: "20px 20px 40px 20px",
+                                backgroundColor: "#ffffff",
+                                borderRadius: "10px",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                textAlign: "center",
+                                alignItems: "center",
+                                justifyItems: "center",
+                            }}>
                                 <div style={{
                                     padding: "20px",
                                     backgroundColor: "#ffffff",
@@ -233,8 +283,26 @@ const EditDetails = () => {
                                             width: "100%"
                                         }}
                                     />
-                                    <button type="submit" className="button1">
+
+                                    <button
+                                        type="submit"
+                                        className="button1"
+                                    >
                                         Save Changes
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="button2"
+                                        onClick={handleCancel}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="button-del"
+                                        onClick={handleDelete}
+                                    >
+                                        Delete Property
                                     </button>
                                 </div>
                             </div>
@@ -295,8 +363,20 @@ const StyledWrapper = styled.div`
 .button1 {
     width: 100%;
     padding: 10px;
-    background-color: #4291A3;
-    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.button2 {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.button-del {
+    width: 100%;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     margin-top: 10px;

@@ -6,6 +6,8 @@ import ApartmentGrid from "../categories/apartmentGrid";
 import Properties from "./properties";
 
 const Profile = () => {
+    const [isLoading, setIsLoading] = useState(true);
+
     const [ownerData, setOwnerData] = useState({
         name: '',
         email: '',
@@ -160,7 +162,7 @@ const Profile = () => {
                                 }}
                             >
                                 <img
-                                    src={ownerData.profile_picture ? `http://localhost:8000${ownerData.profile_picture}` : 'defaultImage.jpg'} alt="Profile Avatar"
+                                    src={ownerData.profile_picture ? `http://localhost:8000${ownerData.profile_picture}` : 'defaultImage.jpg'}
                                     style={{
                                         width: "100%",
                                         height: "100%",
@@ -254,12 +256,13 @@ const Profile = () => {
                                 {!isEditing ? (
                                     <button
                                         onClick={handleEditClick}
+                                        className="button1"
                                         style={{
-                                            padding: "10px 20px",
-                                            backgroundColor: "#16697A", // Same color as your Edit button
-                                            color: "white",
-                                            border: "none",
-                                            borderRadius: "5px",
+                                            alignItems: "center",
+                                            justifyItems: "center",
+                                            textAlign: "center",
+                                            padding: "8px 25px",
+                                            fontSize: "14px"
                                         }}
                                     >
                                         Edit
@@ -269,16 +272,15 @@ const Profile = () => {
                                         {/* Cancel button */}
                                         <button
                                             onClick={handleCancelClick}
+                                            className="button4"
                                             style={{
-                                                backgroundColor: 'white',
-                                                color: 'black',
-                                                border: '1px solid #ccc',
-                                                padding: '10px 20px',
-                                                fontSize: '14px',
-                                                borderRadius: '5px',
-                                                cursor: 'pointer',
+                                                alignItems: "center",
+                                                justifyItems: "center",
+                                                textAlign: "center",
+                                                padding: "8px 25px",
+                                                fontSize: "14px"
                                             }}
-                                            onMouseEnter={(e) => e.target.style.backgroundColor = "#f4f4f4"}
+                                            onMouseEnter={(e) => e.target.style.backgroundColor = "#ffc677"}
                                             onMouseLeave={(e) => e.target.style.backgroundColor = "white"}
                                         >
                                             Cancel
@@ -286,13 +288,13 @@ const Profile = () => {
                                         {/* Save button */}
                                         <button
                                             onClick={handleSaveClick}
+                                            className="button3"
                                             style={{
-                                                backgroundColor: '#FFB84D',
-                                                color: 'white',
-                                                border: 'none',
-                                                padding: '10px 20px',
-                                                borderRadius: '5px',
-                                                cursor: 'pointer',
+                                                alignItems: "center",
+                                                justifyItems: "center",
+                                                textAlign: "center",
+                                                padding: "8px 25px",
+                                                fontSize: "14px"
                                             }}
                                         >
                                             Save

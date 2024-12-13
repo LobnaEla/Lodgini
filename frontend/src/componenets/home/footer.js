@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div id='footer'style={{ backgroundColor: "#ead2ac", padding: "10px 0" }}>
+    <div id='footer' style={{ backgroundColor: "#ead2ac", padding: "10px 0" }}>
       <div
         style={{
           display: "flex",
@@ -29,12 +29,12 @@ const Footer = () => {
                   display: "inline-block",
                   backgroundColor: "#FAA935",  // Couleur jaune #FAA935
                   borderRadius: "50%",
-                  padding: "8px", // Ajuster le padding pour avoir un cercle
+                  padding: "4px", // Ajuster le padding pour avoir un cercle
                   width: "30px", // Taille fixe
                   height: "30px", // Taille fixe
                   textAlign: "center", // Centrer l'icône
                   lineHeight: "30px", // Centrer l'icône verticalement
-                  marginRight: "6px",
+                  marginRight: "10px",
                 }}
               >
                 <i
@@ -53,12 +53,12 @@ const Footer = () => {
                   display: "inline-block",
                   backgroundColor: "#FAA935",
                   borderRadius: "50%",
-                  padding: "8px", // Ajuster le padding
+                  padding: "4px", // Ajuster le padding
                   width: "30px", // Taille fixe
                   height: "30px", // Taille fixe
                   textAlign: "center", // Centrer l'icône
                   lineHeight: "30px", // Centrer l'icône verticalement
-                  marginRight: "6px",
+                  marginRight: "10px",
                 }}
               >
                 <i
@@ -77,12 +77,12 @@ const Footer = () => {
                   display: "inline-block",
                   backgroundColor: "#FAA935",
                   borderRadius: "50%",
-                  padding: "8px", // Ajuster le padding
+                  padding: "4px", // Ajuster le padding
                   width: "30px", // Taille fixe
                   height: "30px", // Taille fixe
                   textAlign: "center", // Centrer l'icône
                   lineHeight: "30px", // Centrer l'icône verticalement
-                  marginRight: "6px",
+                  marginRight: "10px",
                 }}
               >
                 <i
@@ -103,19 +103,19 @@ const Footer = () => {
           <img
             src="../../images/logo.png" // Remplacez par le chemin de votre logo
             alt="Logo"
-            style={{ width: "40%", height: "40%" ,marginTop:'5%'}}
+            style={{ width: "40%", height: "40%", marginTop: '5%' }}
           />
-            {/* Copyright */}
-       <div
-        style={{
-          textAlign: "center",
-          marginTop:'5%',
-          fontSize: "12px",
-          color: "white",
-        }}
-      >
-        © 2024 All rights reserved
-      </div>
+          {/* Copyright */}
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: '5%',
+              fontSize: "12px",
+              color: "white",
+            }}
+          >
+            © 2024 All rights reserved
+          </div>
         </div>
 
         {/* Liste à droite "Get in Touch" */}
@@ -127,20 +127,20 @@ const Footer = () => {
             paddingRight: "20px", // Assurez-vous qu'il y ait un padding à droite
           }}
         >
-          <h3 style={{ fontSize: "14px", marginBottom: "10px", marginRight:'32%' }}>Get in Touch</h3>
+          <h3 style={{ fontSize: "14px", marginBottom: "10px", marginRight: '32%' }}>Get in Touch</h3>
           <ul style={{ paddingLeft: "0", listStyleType: "none" }}>
-            <li style={{ marginBottom: "5px" , marginRight:'8%'}}>
+            <li style={{ marginBottom: "5px", marginRight: '8%' }}>
               <span
                 style={{
                   display: "inline-block",
                   backgroundColor: "#FAA935",
                   borderRadius: "50%",
-                  padding: "8px", // Ajuster le padding
+                  padding: "4px", // Ajuster le padding
                   width: "30px", // Taille fixe
                   height: "30px", // Taille fixe
                   textAlign: "center",
                   lineHeight: "30px", // Centrer l'icône verticalement
-                  marginRight: "6px",
+                  marginRight: "10px",
                 }}
               >
                 <i
@@ -153,18 +153,18 @@ const Footer = () => {
               </span>
               +126 45 456 789
             </li>
-            <li style={{ marginBottom: "5px" ,marginright:'0' }}>
+            <li style={{ marginBottom: "5px", marginright: '0' }}>
               <span
                 style={{
                   display: "inline-block",
                   backgroundColor: "#FAA935",
                   borderRadius: "50%",
-                  padding: "8px", // Ajuster le padding
+                  padding: "4px", // Ajuster le padding
                   width: "30px", // Taille fixe
                   height: "30px", // Taille fixe
                   textAlign: "center",
                   lineHeight: "30px", // Centrer l'icône verticalement
-                  marginRight: "6px",
+                  marginRight: "10px",
                 }}
               >
                 <i
@@ -177,18 +177,18 @@ const Footer = () => {
               </span>
               Lodgini@gmail.com
             </li>
-            <li style={{ marginBottom: "5px" , marginRight:'15%'}}>
+            <li style={{ marginBottom: "5px", marginRight: '15%' }}>
               <span
                 style={{
                   display: "inline-block",
                   backgroundColor: "#FAA935",
                   borderRadius: "50%",
-                  padding: "8px", // Ajuster le padding
+                  padding: "4px", // Ajuster le padding
                   width: "30px", // Taille fixe
                   height: "30px", // Taille fixe
                   textAlign: "center",
                   lineHeight: "30px", // Centrer l'icône verticalement
-                  marginRight: "6px",
+                  marginRight: "10px",
                 }}
               >
                 <i
@@ -199,12 +199,12 @@ const Footer = () => {
                   }}
                 ></i>
               </span>
-              Ariena, Tunis
+              Ariana, Tunis
             </li>
           </ul>
         </div>
       </div>
-     
+
     </div>
   );
 };

@@ -165,23 +165,8 @@ body {
   font-weight: 600;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
-.button1 {
-  position: relative;
-  border: none;
-  background-color: #4291A3;
-  color: white;
-  padding: 15px 30px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
 
@@ -191,6 +176,102 @@ body {
 }
 
 .button1:active {
+  box-shadow: none;
+}
+
+.button2 {
+  position: relative;
+  border: none;
+  background-color: white;
+  color: #4291A3;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.button2:hover {
+  background-color: #4291A3;
+  color: white;
+}
+
+.button2:active {
+  box-shadow: none;
+}
+
+.button3 {
+  position: relative;
+  border: none;
+  background-color: #ffc677;
+  color: white;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.button3:hover {
+  background-color: white;
+  color: #ffc677;
+}
+
+.button3:active {
+  box-shadow: none;
+}
+
+.button4 {
+  position: relative;
+  border: none;
+  background-color: white;
+  color: #ffc677;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.button4:hover {
+  background-color: #ffc677;
+  color: white;
+}
+
+.button4:active {
+  box-shadow: none;
+}
+
+.button-del {
+  position: relative;
+  border: none;
+  background-color: #a34242;
+  color: white;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.button-del:hover {
+  background-color: white;
+  color: #a34242;
+}
+
+.button-del:active {
   box-shadow: none;
 }
 
@@ -256,6 +337,38 @@ body {
 
 .add-property-button:hover span {
   color: #ffc677;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  /* Diameter of the circle */
+  height: 45px;
+  /* Diameter of the circle */
+  border-radius: 50%;
+  /* Makes it a circle */
+  background-color: white;
+  /* Circle background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  /* Adds shadow */
+  color: #ffc677;
+  /* Arrow color */
+  font-size: 30px;
+  /* Size of the arrow */
+  transition: all 0.3s ease;
+  /* Smooth hover effect */
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #ffc677;
+  /* Circle becomes white on hover */
+  color: white;
+  /* Arrow becomes orange on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  /* Slightly larger shadow on hover */
 }
 
 /* Reviews */
@@ -631,4 +744,66 @@ body {
 .discount-validity {
   font-size: 0.9rem;
   color: #999;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-color: #ede7e3;
+}
+
+.dots-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.dot {
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: #82c0cc;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot:last-child {
+  margin-right: 0;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.3s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.1s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    background-color: #82c0cc;
+    box-shadow: 0 0 0 0 #77afba;
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: #16697A;
+    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+  }
+
+  100% {
+    transform: scale(0.8);
+    background-color: #82c0cc;
+    box-shadow: 0 0 0 0 #77afba;
+  }
 }

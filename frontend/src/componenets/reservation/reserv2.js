@@ -5,8 +5,8 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Footer from '../home/footer';
-import { useParams } from 'react-router-dom'; 
-import axios from 'axios'; 
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const Reserv2 = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
@@ -14,11 +14,11 @@ const Reserv2 = () => {
   const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState('');
   const [expDate, setExpDate] = useState('');
-  const { id, owner_id } = useParams();
+  const { id } = useParams();
   const [cvv, setCvv] = useState('');
   const [activeStep, setActiveStep] = useState(0); // Track the current step
   const [property, setProperty] = useState(null); // Property data state
-  
+
   useEffect(() => {
     // Get the number of days from sessionStorage
     const storedTotalPrice = sessionStorage.getItem('TotalPrice');
@@ -26,8 +26,8 @@ const Reserv2 = () => {
       setTotalPrice(Number(storedTotalPrice)); // Ensure it's treated as a number
     }
   }, []);
-  
-  
+
+
   useEffect(() => {
     // Get the number of days from sessionStorage
     const storedNumberOfDays = sessionStorage.getItem('numberOfDays');
@@ -35,10 +35,10 @@ const Reserv2 = () => {
       setNumberOfDays(Number(storedNumberOfDays)); // Ensure it's treated as a number
     }
   }, []);
-  
+
   const fetchPropertyDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
+      const response = await axios.get(`http://localhost:8000/management/properties/${id}`);
       setProperty(response.data);
     } catch (error) {
       console.error("Error fetching property details:", error);
@@ -48,7 +48,7 @@ const Reserv2 = () => {
   useEffect(() => {
     fetchPropertyDetails(); // Fetch property details when the component mounts
   }, []);
-  
+
   // Steps for the Stepper
   const steps = ['Step 1', 'Step 2'];
 
@@ -217,7 +217,7 @@ const Reserv2 = () => {
             borderRadius: '5px',
             cursor: 'pointer',
           }}
-          onClick={() => window.location.href = "../booked"}
+          onClick={() => window.location.href = `/booked/${id}`}
         >
           Confirm Booking
         </button>

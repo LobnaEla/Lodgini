@@ -7,6 +7,7 @@ import Review from "./review";
 
 const Profile = () => {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
 
     // State to store user data
     const [userData, setUserData] = useState(null);

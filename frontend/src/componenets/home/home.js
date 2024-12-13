@@ -1,5 +1,5 @@
 import Footer from './footer';
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import Navbar from './navbar1';
 import { Link } from 'react-router-dom';
 import Card from '../categories/card';
@@ -10,6 +10,8 @@ import Review from '../profile/review';
 import SearchBar1 from './searchBar1';
 import '../home/sliderStyles.css';
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleSearch = (query) => {
     console.log("Search query:", query);
     // Add logic to handle the search query
@@ -115,11 +117,11 @@ const Home = () => {
           src="../images/welcome.png"  // Remplacez par l'URL de votre image
           style={{
             position: 'absolute',
-            top: '15%',  // Ajustez pour la position verticale
+            top: '30%',  // Ajustez pour la position verticale
             left: '25%',  // Centré horizontalement
             transform: 'translateX(-50%)',  // Centrer précisément
-            width: '25%',  // Taille de l'image welcome
-            height: '25%', // Pour garder l'aspect de l'image
+            width: '33%',  // Taille de l'image welcome
+            height: '30%', // Pour garder l'aspect de l'image
           }}
         />
       </div>
@@ -280,7 +282,7 @@ const Home = () => {
       </div>
 
       {/* Popular accommodations */}
-      <section className="popular-accommodations" style={{ marginBottom: "2rem", padding:'0', height: '450px'}}>
+      <section className="popular-accommodations" style={{ marginBottom: "2rem", padding: '0', height: '450px' }}>
         <h1 className='title'>Popular Accommodations</h1>
         <Slider {...sliderSettings}>
           {popularAccommodations.map((accommodation) => (
@@ -290,13 +292,13 @@ const Home = () => {
       </section>
 
       {/* Reviews */}
-      <section style={{ marginBottom: "2rem", marginTop:'0' }}>
-        <div className="sub-title" style={{ display:'flex', textAlign:'center' , marginLeft:'35%'}}>
-          <h2 className="sub-title"  style={{ color: "#16697A" , marginRight:'1%'}}> What  </h2>
-          <h2 className="sub-title" style ={{marginRight:'1%'}}> Lodgini</h2>
+      <section style={{ marginBottom: "2rem", marginTop: '0' }}>
+        <div className="sub-title" style={{ display: 'flex', textAlign: 'center', marginLeft: '35%' }}>
+          <h2 className="sub-title" style={{ color: "#16697A", marginRight: '1%' }}> What  </h2>
+          <h2 className="sub-title" style={{ marginRight: '1%' }}> Lodgini</h2>
           <h2 className="sub-title" style={{ color: "#16697A" }}> users are saying ?</h2>
         </div>
-       <div className="reviews">
+        <div className="reviews">
           {reviews.map((review, index) => (
             <Review
               key={index}

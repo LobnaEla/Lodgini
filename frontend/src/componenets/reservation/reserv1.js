@@ -13,7 +13,7 @@ const Reserv1 = () => {
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
-  const { id, owner_id } = useParams();
+  const { id } = useParams();
   const [property, setProperty] = useState(null);
 
   // Steps for the Stepper
@@ -21,10 +21,10 @@ const Reserv1 = () => {
 
   useEffect(() => {
     // Fetch property details from the API
-    
+
     const fetchPropertyDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`);
+        const response = await axios.get(`http://localhost:8000/management/properties/${id}`);
         setProperty(response.data);
       } catch (error) {
         console.error("Error fetching property details:", error);
@@ -32,30 +32,30 @@ const Reserv1 = () => {
     };
 
     fetchPropertyDetails();
-  }, [id, owner_id]);
+  }, [id]);
   useEffect(() => {
     if (checkInDate && checkOutDate) {
       const checkIn = new Date(checkInDate);
       const checkOut = new Date(checkOutDate);
-  
+
       const timeDifference = checkOut - checkIn;
       const dayDifference = timeDifference / (1000 * 3600 * 24);
-  
+
       if (dayDifference > 0) {
-        setNumberOfDays(dayDifference); 
+        setNumberOfDays(dayDifference);
         setTotalPrice(dayDifference * property.price_per_night);  // Ensure 'property' is loaded first
         sessionStorage.setItem('numberOfDays', dayDifference);
       } else {
-        setNumberOfDays(0); 
-        setTotalPrice(0); 
+        setNumberOfDays(0);
+        setTotalPrice(0);
         sessionStorage.removeItem('numberOfDays');
       }
     }
   }, [checkInDate, checkOutDate, property]);  // Ensure the useEffect watches for changes in 'property'
-  
+
 
   if (!property) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   return (
@@ -217,7 +217,7 @@ const Reserv1 = () => {
             onClick={() => {
               if (checkInDate && checkOutDate) {
                 sessionStorage.setItem('TotalPrice', totalPrice);
-                window.location.href = `/payment/${owner_id}/${id}`;
+                window.location.href = `/payment/${id}`;
               } else {
                 alert('Please select both check-in and check-out dates.');
               }

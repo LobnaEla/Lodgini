@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 
 const AddProperty = () => {
+    const [isLoading, setIsLoading] = useState(true);
+
     const [propertyType, setPropertyType] = useState("Vacation House");
     const [category, setCategory] = useState("Modestly Furnished");
     const [formData, setFormData] = useState({

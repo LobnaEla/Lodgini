@@ -99,19 +99,23 @@ const Navbar = () => {
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
   };
-   const welcomemessage ={
+  const welcomemessage = {
     color: '#023047', /* Tomato color */
-    position:'absolute',
-    right:'9%',
+    position: 'absolute',
+    right: '9%',
     fontsize: '20px',
     fontweight: 'bold',
   }
-  
+
   return (
     <nav style={navbarStyles}>
       {/* Logo Section */}
       <div style={logoStyles}>
-        <img src="../../images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
+        <a
+          href="/"
+        >
+          <img src="../../images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
+        </a>
       </div>
 
       {/* Search Bar Section */}
@@ -168,25 +172,25 @@ const Navbar = () => {
       <div style={actionsStyles}>
         {isLoggedIn ? (
           <>
-           <span style={welcomemessage}>
+            <span style={welcomemessage}>
               Welcome, {userName} !
             </span>
             <button
-        style={{
-          padding: '8px 15px',
-          fontSize: '14px',
-          color: '#ede7e3',
-          backgroundColor: '#16697a',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          marginLeft:'0%',
-          transition: 'background-color 0.3s ease',
-        }}
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
+              style={{
+                padding: '8px 15px',
+                fontSize: '14px',
+                color: '#ede7e3',
+                backgroundColor: '#16697a',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginLeft: '0%',
+                transition: 'background-color 0.3s ease',
+              }}
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           </>
         ) : (
           <>

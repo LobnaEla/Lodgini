@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import Navbar2 from './navbar2';
 import Navbar from '../home/navbar1';
 import Footer from '../home/footer';
@@ -7,6 +7,14 @@ import ApartmentGrid from './apartmentGrid';
 import Radio from './radio';
 
 const VacationHouses = () => {
+    // State to track selected furnishing type
+    const [selectedCategory, setSelectedCategory] = useState("Modestly Furnished");
+
+    // Handler for category change
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.id);
+    };
+
     return (
         <div style={{ backgroundColor: '#ede7e3', padding: '0 15px' }}>
             <div>
@@ -29,16 +37,30 @@ const VacationHouses = () => {
                     >
                         <fieldset style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
                             <div className="options-group">
-                                <input type="radio" id="Luxuriously furnished" name="option" defaultChecked />
-                                <label htmlFor="Luxuriously furnished">Luxuriously furnished</label>
+                                <input
+                                    type="radio"
+                                    id="Modestly Furnished"
+                                    name="option"
+                                    checked={selectedCategory === "Modestly Furnished"}
+                                    onChange={handleCategoryChange}
+                                />
+                                <label htmlFor="Modestly Furnished">Modestly Furnished</label>
                             </div>
                             <div className="options-group">
-                                <input type="radio" id="Modestly furnished" name="option" />
-                                <label htmlFor="Modestly furnished">Modestly furnished</label>
+                                <input
+                                    type="radio"
+                                    id="Luxuriously Furnished"
+                                    name="option"
+                                    checked={selectedCategory === "Luxuriously Furnished"}
+                                    onChange={handleCategoryChange}
+                                />
+                                <label htmlFor="Luxuriously Furnished">Luxuriously Furnished</label>
+
                             </div>
                         </fieldset>
                     </div>
-                    <ApartmentGrid propertyType="Vacation House" />
+                    {/* ApartmentGrid */}
+                    <ApartmentGrid propertyType="Vacation House" furnishingType={selectedCategory} />
                 </main>
             </div>
             <Footer />

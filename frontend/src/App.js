@@ -34,17 +34,17 @@ function App() {
         <Route path='/Sign_up' element={<Signup />} />
         <Route path='/Sign_up_as_owner' element={<Signupowner />} />
         <Route path='/sign_up/created' element={<Created />} />
-        <Route path='/booking/:owner_id/:id' element={<Reserv1 />} />
-        <Route path='/payment/:owner_id/:id' element={<Reserv2 />} />
-        <Route path='/booked/:owner_id/:id' element={<Booked />} />
-        <Route path='/details/:owner_id/:id' element={<Details />} />
+        <Route path='/booking/:id' element={<Reserv1 />} />
+        <Route path='/payment/:id' element={<Reserv2 />} />
+        <Route path='/booked/:id' element={<Booked />} />
+        <Route path='/details/:id' element={<Details />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/profile/Add_review' element={<Addreview />} />
         <Route path='/property_owner_profile' element={<PropertyOwnerProfile />} />
         <Route path='/add_property' element={<AddProperty />} />
         <Route path='/update_reservation' element={<UpdateReservation />} />
-        <Route path='/property_details/:owner_id/:id' element={<OwnerApartmentDetails />} />
-        <Route path='/property_details/:owner_id/:id/update' element={<EditDetails />} />
+        <Route path='/property_details/:id' element={<OwnerApartmentDetails />} />
+        <Route path='/property_details/:id/update' element={<EditDetails />} />
 
       </Routes>
     </div>

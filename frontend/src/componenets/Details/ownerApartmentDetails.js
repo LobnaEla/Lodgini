@@ -1,32 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../home/navbar1";
+import Navbar from "../profile/navbaro";
 import Footer from "../home/footer";
 import OwnerCalendar from './ownerCalendar';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { ArrowBack } from "@mui/icons-material";
 
 
 
 const Details = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
-    const { id, owner_id } = useParams();
     const [property, setProperty] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // Fetch property details from the API
         const fetchPropertyDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/management/properties/${owner_id}/${id}`); // Replace with your endpoint
+                setIsLoading(true);
+                const response = await axios.get(`http://localhost:8000/management/properties/${id}`); // Replace with your endpoint
                 setProperty(response.data);
             } catch (error) {
                 console.error("Error fetching property details:", error);
+            }
+            finally {
+                setIsLoading(false);
             }
         };
 
         fetchPropertyDetails();
     }, [id]);
+
+    if (isLoading) {
+        return (
+            <div className="loader-container">
+                <section className="dots-container">
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                </section>
+            </div>
+        );
+    }
+
+    const handleDelete = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this property? This action cannot be undone.");
+
+        if (confirmDelete) {
+            try {
+                await axios.delete(`http://localhost:8000/management/properties/${id}/delete/`);
+
+                navigate(`/property_owner_profile`);
+            } catch (error) {
+                console.error("Error deleting property:", error);
+                alert("Failed to delete property. Please try again.");
+            }
+        }
+    };
 
     if (!property) {
         return <p>Loading property details...</p>;
@@ -42,6 +77,10 @@ const Details = () => {
 
                 {/* Apartment Details Section */}
                 <div style={{ padding: "20px 40px", maxWidth: "1200px", margin: "auto" }}>
+                    {/* Flèche de retour */}
+                    <div className="back-button" onClick={() => navigate(`/property_owner_profile`)}>
+                        &lt;
+                    </div>
                     {/* Title and Location */}
                     <div style={{ marginBottom: "20px" }}>
                         <h1 className="title">
@@ -111,15 +150,17 @@ const Details = () => {
                             </div>
                         </div>
 
-                        {/* Booking Section */}
+                        {/* price and edit Section */}
                         <div
                             style={{
                                 flex: 1,
-                                padding: "20px",
+                                padding: "20px 20px 40px 20px",
                                 backgroundColor: "#ffffff",
                                 borderRadius: "10px",
                                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                                 textAlign: "center",
+                                alignItems: "center",
+                                justifyItems: "center",
                             }}
                         >
                             <p style={{ fontSize: "18px", fontWeight: "bold", color: "#023047", fontFamily: 'Baloo Bhaijaan 2' }}>
@@ -138,12 +179,22 @@ const Details = () => {
                             <p style={{ fontSize: "16px", color: "#6c757d", marginBottom: "20px" }}>
                                 per night
                             </p>
-                            <button
-                                className="button1"
-                                onClick={() => navigate(`/property_details/${owner_id}/${id}/update`)}
-                            >
-                                Edit
-                            </button>
+                            <div style={{ display: "flex", alignItems: "space-between", gap: "30px", alignItems: "center" }}>
+                                <button
+                                    className="button1"
+                                    onClick={() => navigate(`/property_details/${id}/update`)}
+                                >
+                                    Edit
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="button-del"
+                                    onClick={handleDelete}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     </div>
 
