@@ -35,12 +35,8 @@ const Reserv1 = () => {
     };
 
     fetchPropertyDetails();
-<<<<<<< HEAD
-  }, [id]);
-=======
   }, [id, owner_id]);
 
->>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
   useEffect(() => {
     if (checkInDate && checkOutDate) {
       const checkIn = new Date(checkInDate);
@@ -60,10 +56,6 @@ const Reserv1 = () => {
       }
     }
   }, [checkInDate, checkOutDate, property]);  // Ensure the useEffect watches for changes in 'property'
-<<<<<<< HEAD
-
-
-=======
   useEffect(() => {
     if (checkInDate) {
       localStorage.setItem('checkInDate', checkInDate);
@@ -78,7 +70,6 @@ const Reserv1 = () => {
       localStorage.setItem('property_id', id);
     }
   }, [checkInDate, checkOutDate, owner_id, id]);
->>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
   if (!property) {
     return <div>Loading...</div>;
   }

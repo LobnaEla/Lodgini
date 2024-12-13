@@ -300,41 +300,32 @@ const Home = () => {
 
       {/* Popular accommodations */}
       <section className="popular-accommodations" style={{ marginBottom: "2rem", padding: '0', height: '450px' }}>
-<<<<<<< HEAD
-        <h1 className='title'>Popular Accommodations</h1>
-        <Slider {...sliderSettings}>
-          {popularAccommodations.map((accommodation) => (
-            <Card key={accommodation.id} {...accommodation} />
-          ))}
-        </Slider>
-=======
         <h1 className="title">Popular Accommodations</h1>
         {popularAccommodations.length > 0 ? (
-           <Slider {...sliderSettings}>
-           {popularAccommodations.map(accommodation => (
-             <div
-               key={accommodation.id}
-               onClick={() => handleCardClick(accommodation.owner_id, accommodation.id)}
-               style={{ cursor: 'pointer' }} // Indique que l'élément est cliquable
-             >
-               <Card
-                 id={accommodation.id}
-                 name={accommodation.name}
-                 stars={accommodation.stars}
-                 price={accommodation.price}
-                 image={accommodation.image}
-               />
-             </div>
-           ))}
-         </Slider>
+          <Slider {...sliderSettings}>
+            {popularAccommodations.map(accommodation => (
+              <div
+                key={accommodation.id}
+                onClick={() => handleCardClick(accommodation.owner_id, accommodation.id)}
+                style={{ cursor: 'pointer' }} // Indique que l'élément est cliquable
+              >
+                <Card
+                  id={accommodation.id}
+                  name={accommodation.name}
+                  stars={accommodation.stars}
+                  price={accommodation.price}
+                  image={accommodation.image}
+                />
+              </div>
+            ))}
+          </Slider>
         ) : (
           <p style={{ textAlign: 'center', color: '#666' }}>Loading popular accommodations...</p>
         )}
->>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
       </section >
 
-  {/* Reviews */ }
-  < section style = {{ marginBottom: "2rem", marginTop: '0' }}>
+      {/* Reviews */}
+      < section style={{ marginBottom: "2rem", marginTop: '0' }}>
         <div className="sub-title" style={{ display: 'flex', textAlign: 'center', marginLeft: '35%' }}>
           <h2 className="sub-title" style={{ color: "#16697A", marginRight: '1%' }}> What  </h2>
           <h2 className="sub-title" style={{ marginRight: '1%' }}> Lodgini</h2>
@@ -354,7 +345,7 @@ const Home = () => {
         </div>
       </section >
 
-  <Footer />
+      <Footer />
     </div >
   );
 };

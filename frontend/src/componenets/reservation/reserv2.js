@@ -5,13 +5,8 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Footer from '../home/footer';
-<<<<<<< HEAD
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-=======
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
->>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
 
 const Reserv2 = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
@@ -280,11 +275,7 @@ const Reserv2 = () => {
             borderRadius: '5px',
             cursor: 'pointer',
           }}
-<<<<<<< HEAD
-          onClick={() => window.location.href = `/booked/${id}`}
-=======
           onClick={handleConfirmBooking}
->>>>>>> 6bb00d02a7a6bc884f4c3af990d341b34c3815da
         >
           Confirm Booking
         </button>
