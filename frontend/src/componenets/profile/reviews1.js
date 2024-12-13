@@ -25,11 +25,12 @@ const Review1 = ({ userId }) => {
         fetchReviews();
     }, [userId]);
 
-    // Style for the grid layout
-    const gridStyle = {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-        gap: "1.5rem", // Space between cards
+    // Style for the row layout
+    const rowStyle = {
+        display: "flex",
+        flexWrap: "wrap", // Allow wrapping for small screens
+        gap: "1.5rem", // Space between reviews
+        justifyContent: "center", // Center the reviews horizontally
         padding: "2rem",
     };
 
@@ -37,8 +38,7 @@ const Review1 = ({ userId }) => {
         <div>
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            <div style={gridStyle}> 
-
+            <div style={rowStyle}> 
                 {reviews.length > 0 ? (
                     reviews.map((review) => {
                         const formattedDate = new Date(review.created_at).toISOString().split('T')[0];
@@ -52,6 +52,7 @@ const Review1 = ({ userId }) => {
                                     border: "1px solid #ddd", 
                                     borderRadius: "8px", 
                                     backgroundColor: "#fff", 
+                                    width: "300px", // Set a fixed width for each review card
                                     height: "auto", 
                                 }}
                                 key={review.id}
@@ -64,7 +65,7 @@ const Review1 = ({ userId }) => {
                                     </div>
                                 </div>
                                 <div className="review-body" style={{ marginTop: "10px", width: "100%" }}>
-                                    <h5 style={{ marginBottom: "5px", width: "100%" , color:'#023047', fontSize:'18px'}}>{review.property}</h5>
+                                    <h5 style={{ marginBottom: "5px", width: "100%", color:'#023047', fontSize:'18px'}}>{review.property}</h5>
                                     <small style={{ marginTop: "0" }}>{formattedDate}</small>
 
                                     <p style={{ wordWrap: "break-word", maxHeight: "100px", overflow: "hidden" }}>
