@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../home/navbar1";
 import Footer from "../home/footer";
-import ApartmentGrid from "../categories/apartmentGrid";
 import { useNavigate } from "react-router-dom";
-import Review from "./review";
+import Review1 from "./reviews1";
+import Bookings from "./bookings";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -23,47 +23,16 @@ const Profile = () => {
         }
     }, [navigate]);
 
-    const reviews = [
-        {
-            name: "Lobna Elabed",
-            propertyName: "Luxury Apartment Downtown",
-            description: "This place is absolutely amazing! Highly recommended.",
-            stars: 5,
-            date: "2 days ago",
-            imageUrl: "images/apartment.jpg",
-            profileImageUrl: "images/lobna.jpeg",
-        },
-        {
-            name: "Lobna Elabed",
-            propertyName: "Cozy Cottage Near the Lake",
-            description: "Not bad, but could be better. The staff was helpful.",
-            stars: 3,
-            date: "1 week ago",
-            imageUrl: "images/vacation.jpg",
-            profileImageUrl: "images/lobna.jpeg",
-        },
-        {
-            name: "Lobna Elabed",
-            propertyName: "Beachside Villa",
-            description: "Terrible experience. Would not recommend.",
-            stars: 1,
-            date: "1 month ago",
-            imageUrl: "images/vacation.jpg",
-            profileImageUrl: "images/lobna.jpeg",
-        },
-    ];
-
     const handleAddReviewClick = () => {
         navigate("/Profile/Add_review");
     };
 
-    // Handle Profile Picture Change
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const formData = new FormData();
-            formData.append('profile_picture', file); // Append the selected image
-            formData.append('email', userData.email); // Ensure the email is passed
+            formData.append('profile_picture', file); 
+            formData.append('email', userData.email); 
 
             // Simulate a backend call to update the profile picture
             fetch('http://localhost:8000/update_profile_picture/', {
@@ -75,14 +44,13 @@ const Profile = () => {
                     if (data.success) {
                         setUserData((prevData) => ({
                             ...prevData,
-                            profilePicture: data.profilePictureUrl,
+                            profile_picture: data.profilePictureUrl,
                         }));
-                        // Update the localStorage with the new profile picture
                         localStorage.setItem(
                             'loggedInUser',
                             JSON.stringify({
                                 ...userData,
-                                profilePicture: data.profilePictureUrl,
+                                profile_picture: data.profilePictureUrl,
                             })
                         );
                     } else {
@@ -121,9 +89,15 @@ const Profile = () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    setUserData(updatedData); // Update the local state with the new data
-                    localStorage.setItem('loggedInUser', JSON.stringify(updatedData)); // Save updated data to localStorage
-                    setIsEditing(false); // Disable editing
+                    setUserData((prevData) => ({
+                        ...prevData,
+                        profile_picture: data.profilePictureUrl || prevData.profile_picture, // Assurez-vous de conserver l'image si elle n'a pas changé
+                    }));
+                    localStorage.setItem('loggedInUser', JSON.stringify({
+                        ...updatedData,
+                        profile_picture: data.profilePictureUrl || userData.profile_picture, // Assurez-vous de conserver l'image
+                    }));
+                    setIsEditing(false); // Désactiver l'édition
                 } else {
                     alert('Failed to update profile');
                 }
@@ -154,6 +128,7 @@ const Profile = () => {
     if (!userData) {
         return <div>Loading...</div>; // Loading state until user data is available
     }
+
     return (
         <div>
             <Navbar />
@@ -171,7 +146,6 @@ const Profile = () => {
                                 width: "100%",
                             }}
                         >
-
                             <div
                                 className="avatar"
                                 style={{
@@ -186,7 +160,7 @@ const Profile = () => {
                                 }}
                             >
                                 <img
-                                    src={userData.profile_picture}
+                                    src={userData.profile_picture ? `http://localhost:8000${userData.profile_picture}`  : '../../../public/images/default-avatar.jpg'} 
                                     alt="Profile Avatar"
                                     style={{
                                         width: "100%",
@@ -329,26 +303,16 @@ const Profile = () => {
                             </div>
                         </div>
                     </section>
+
                     {/* Booking History */}
                     <h2 className="title">Booking History</h2>
-                    <ApartmentGrid />
+                    <Bookings />
 
                     {/* Reviews History */}
                     <section style={{ marginBottom: "2rem" }}>
                         <h2 className="title">Reviews History</h2>
                         <div className="reviews">
-                            {reviews.map((review, index) => (
-                                <Review
-                                    key={index}
-                                    name={review.name}
-                                    propertyName={review.propertyName}
-                                    description={review.description}
-                                    stars={review.stars}
-                                    date={review.date}
-                                    imageUrl={review.imageUrl}
-                                    profileImageUrl={review.profileImageUrl}
-                                />
-                            ))}
+                            <Review1 userId={userData.id} />
                         </div>
                         <button onClick={handleAddReviewClick} className="button1">
                             Write Review

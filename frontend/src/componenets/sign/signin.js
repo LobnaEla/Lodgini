@@ -10,6 +10,7 @@ export const Signin = () => {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -43,10 +44,13 @@ export const Signin = () => {
           id: response.data.id,
           phone_number: response.data.phone_number, // Assuming 'mobile' is part of the API response
           country: response.data.country,
+          profile_picture:response.data.profile_picture,
         };
+        
         localStorage.setItem('loggedInUser', JSON.stringify(userData));
         setIsLoggedIn(true);
         setUserName(response.data.name);
+        sessionStorage.setItem('userId', response.data.id);
         // Redirect to the previous page or fallback to a default page
         const previousPage = document.referrer;
         if (previousPage && !previousPage.includes('/Sign_in')) {

@@ -7,10 +7,13 @@ import Footer from '../home/footer';
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 
 const Reserv1 = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
   const [checkInDate, setCheckInDate] = useState('');
+  const navigate = useNavigate();
   const [checkOutDate, setCheckOutDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
   const { id } = useParams();
@@ -32,7 +35,8 @@ const Reserv1 = () => {
     };
 
     fetchPropertyDetails();
-  }, [id]);
+  }, [id, owner_id]);
+
   useEffect(() => {
     if (checkInDate && checkOutDate) {
       const checkIn = new Date(checkInDate);
@@ -52,8 +56,20 @@ const Reserv1 = () => {
       }
     }
   }, [checkInDate, checkOutDate, property]);  // Ensure the useEffect watches for changes in 'property'
-
-
+  useEffect(() => {
+    if (checkInDate) {
+      localStorage.setItem('checkInDate', checkInDate);
+    }
+    if (checkOutDate) {
+      localStorage.setItem('checkOutDate', checkOutDate);
+    }
+    if (owner_id) {
+      localStorage.setItem('owner_id', owner_id);
+    }
+    if (id) {
+      localStorage.setItem('property_id', id);
+    }
+  }, [checkInDate, checkOutDate, owner_id, id]);
   if (!property) {
     return <div>Loading...</div>;
   }
@@ -201,8 +217,9 @@ const Reserv1 = () => {
               borderRadius: '5px',
               cursor: 'pointer',
             }}
+            onClick={() => navigate(-1)}
           >
-            Cancel
+            Previous
           </button>
           <button
             style={{
@@ -217,7 +234,9 @@ const Reserv1 = () => {
             onClick={() => {
               if (checkInDate && checkOutDate) {
                 sessionStorage.setItem('TotalPrice', totalPrice);
-                window.location.href = `/payment/${id}`;
+
+
+                navigate(`/payment/${id}`);
               } else {
                 alert('Please select both check-in and check-out dates.');
               }

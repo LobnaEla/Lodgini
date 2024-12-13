@@ -101,7 +101,7 @@ const Footer = () => {
         {/* Logo au centre */}
         <div style={{ flex: 1, textAlign: "center" }}>
           <img
-            src="../../images/logo.png" // Remplacez par le chemin de votre logo
+            src="../../../images/logo.png" // Remplacez par le chemin de votre logo
             alt="Logo"
             style={{ width: "40%", height: "40%", marginTop: '5%' }}
           />
