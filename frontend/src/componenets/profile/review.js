@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledWrapper = styled.div`
   .card {
     max-width: 400px;
-    margin: 1rem auto;
+    margin: 1rem 5%;
     padding: 1.5rem;
     border-radius: 8px;
     background: #ffffff;
@@ -12,13 +12,28 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    text-align: left; /* Ensures all text aligns to the left */
+    text-align: left;
+    height: 280px
+    
   }
 
   .header {
     display: flex;
     gap: 1rem;
-    align-items: flex-start; /* Aligns image and text at the top */
+    align-items: center;
+    justify-content: flex-start; /* Aligns the photo on the left */
+  }
+
+  .header-left {
+    display: flex;
+    justify-content: center; /* Centers the image inside its container */
+    align-items: center;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column; /* Align name and date in a column */
+    justify-content: center;
   }
 
   .name-wrapper {
@@ -28,11 +43,11 @@ const StyledWrapper = styled.div`
   }
 
   .name-image {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
     border-radius: 50%;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover; /* Ensures the image covers the circle without distortion */
   }
 
   .property-name {
@@ -44,13 +59,13 @@ const StyledWrapper = styled.div`
 
   .stars {
     display: flex;
-    gap: 2px; /* Smaller gap for smaller stars */
+    gap: 2px;
     color: #ffc107;
   }
 
   .stars svg {
-    height: 12px; /* Smaller height */
-    width: 12px; /* Smaller width */
+    height: 12px;
+    width: 12px;
   }
 
   .name {
@@ -68,11 +83,11 @@ const StyledWrapper = styled.div`
     font-size: 0.9rem;
     color: #555;
     line-height: 1.4;
-    text-align: left; /* Ensures the description is left-aligned */
+    text-align: left;
   }
 `;
 
-const Review = ({ name, propertyName, description, stars, date, imageUrl, profileImageUrl }) => {
+const Review = ({ name, description, stars, date, imageUrl, profileImageUrl }) => {
     // Generate stars dynamically
     const renderStars = () => {
         return Array.from({ length: stars }, (_, index) => (
@@ -88,32 +103,28 @@ const Review = ({ name, propertyName, description, stars, date, imageUrl, profil
         ));
     };
 
+    const formattedDate = new Date(date).toISOString().split('T')[0];
+
     return (
         <StyledWrapper>
             <div className="card">
                 <div className="header">
-                    <div
-                        className="image"
-                        style={{
-                            backgroundImage: `url(${imageUrl || "https://source.unsplash.com/100x100/?portrait"})`,
-                        }}
-                    />
-                    <div>
+                    <div className="header-left">
+                        <img
+                            className="name-image"
+                            src={`http://localhost:8000${profileImageUrl}`}
+                            alt="Profile"
+                        />
+                    </div>
+                    <div className="header-right">
                         <div className="name-wrapper">
-                            <div
-                                className="name-image"
-                                style={{
-                                    backgroundImage: `url(${profileImageUrl || "https://source.unsplash.com/50x50/?face"})`,
-                                }}
-                            />
                             <div className="name">{name}</div>
                         </div>
-                        <div className="property-name">{propertyName}</div>
-                        <div className="date">{date}</div>
+                        <div className="date">{formattedDate}</div>
                     </div>
                 </div>
-                <div className="stars">{renderStars()}</div>
                 <p className="description">{description}</p>
+                <div className="stars">{renderStars()}</div>
             </div>
         </StyledWrapper>
     );

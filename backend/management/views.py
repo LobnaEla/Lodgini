@@ -167,7 +167,8 @@ def get_all_properties(request):
     try:
         # Fetch all properties from the database
         properties = Property.objects.all()
-        serializer = PropertySerializer(properties, many=True)
+        print(properties)
+        serializer = PropertySerializer1(properties, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -293,35 +294,50 @@ def create_review(request):
    
     try:
         user_id = request.data.get('user_id')
-        property_id = request.data.get('property_id')
+        about_lodgini = request.data.get('about_lodgini', False)
+        if not about_lodgini:
+            property_id = request.data.get('property_id')
         review_text = request.data.get('review')
         stars = request.data.get('stars')
-        print(request)
+        print(request.data)
         # Vérification des données
-        if not user_id or not property_id or not review_text or not stars:
+        if not user_id or not review_text or not stars:
             return Response({"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # If the review is about a property, we must have a valid property_id
+        if not about_lodgini and not property_id:
+            return Response({"error": "Property ID is required for property reviews"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Récupérer l'utilisateur et la propriété
+        # Retrieve the user
         user = UserProfile.objects.filter(id=user_id).first()
-        property_obj = Property.objects.filter(id=property_id).first()
-
         if not user:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        if not property_obj:
-            return Response({"error": "Property not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Créer la review
+        # Retrieve the property if the review is not about Lodgini
+        if not about_lodgini:
+            property_obj = Property.objects.filter(id=property_id).first()
+            if not property_obj:
+                return Response({"error": "Property not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            property_obj = None  # No property needed for Lodgini review
+
+        # Creating the review
         review = Review.objects.create(
             user=user,
-            property=property_obj,
+            property=property_obj,  # Will be None if about_lodgini is True
             review=review_text,
-            stars=stars
+            stars=stars,
+            about_lodgini=about_lodgini
         )
 
+        # Success response
         return Response({"message": "Review created successfully", "review_id": review.id}, status=status.HTTP_201_CREATED)
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+    except Exception as e:
+        # Log the exception for debugging
+        print("Error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['GET'])
 def get_user_reviews(request, user_id):
     """
@@ -331,7 +347,7 @@ def get_user_reviews(request, user_id):
         reviews = Review.objects.filter(user__id=user_id)  # Filter reviews based on user ID
         review_data = [
             {
-                'property': review.property.name,
+                'property': 'Lodgini' if review.about_lodgini else review.property.name,
                 'review': review.review,
                 'stars': review.stars,
                 'created_at': review.created_at,
@@ -341,3 +357,22 @@ def get_user_reviews(request, user_id):
         return Response(review_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def get_lodgini_reviews(request):
+    try:
+        reviews = Review.objects.filter(about_lodgini=True)
+        reviews_data = [
+            {
+                'name': review.user.name,
+                'description': review.review,
+                'stars': review.stars, 
+                'date': review.created_at.isoformat(),
+                'profileImageUrl': review.user.profile_picture.url if review.user.profile_picture else '',  # Convert to URL
+            }
+
+            for review in reviews
+        ]
+        print(f"reviews are: {reviews}")
+        return JsonResponse(reviews_data, safe=False, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

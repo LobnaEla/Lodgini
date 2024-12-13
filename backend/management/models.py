@@ -126,7 +126,9 @@ class Review(models.Model):
     property = models.ForeignKey(
         Property, 
         on_delete=models.CASCADE, 
-        related_name='reviews'
+        related_name='reviews',
+        null=True,  # Rendre nullable si la critique peut être pour Lodgini
+        blank=True
     )  # Clé étrangère vers Property (le bien à reviewer)
     user = models.ForeignKey(
         UserProfile, 
@@ -135,9 +137,13 @@ class Review(models.Model):
     )  # Clé étrangère vers User (l'utilisateur qui fait la review)
     review = models.TextField()  # Champ pour le contenu de la review
     created_at = models.DateTimeField(auto_now_add=True)
+    about_lodgini = models.BooleanField(default=False)
     stars = models.IntegerField(
         default=1,
         choices=[(i, f"{i} Star{'s' if i > 1 else ''}") for i in range(1, 6)])  # Date de création
 
     def __str__(self):
-        return f"Review by {self.user.name} for {self.property.name}"
+        if not self.about_lodgini:
+            return f"Review by {self.user.name} for {self.property.name}"
+        else:
+            return f"Review by {self.user.name} about lodgini"

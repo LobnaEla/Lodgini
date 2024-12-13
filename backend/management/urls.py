@@ -8,6 +8,8 @@ urlpatterns =[
     path("add_property/", add_property, name="add_property"),
     path("properties/<int:owner_id>/", get_properties, name="get_properties"),
     path("properties/", get_all_properties, name="get_all_properties"),
+    path('lodgini_reviews/', get_lodgini_reviews, name='lodgini_reviews'),
+
     path(
         "properties/<int:owner_id>/<int:property_id>/",
         get_property_details_by_owner,
