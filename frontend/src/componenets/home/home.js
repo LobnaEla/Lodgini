@@ -1,14 +1,13 @@
 import Footer from './footer';
 import React, { useEffect, useState } from "react";
 import Navbar from './navbar1';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../categories/card';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Review from '../profile/review';
-import SearchBar1 from './searchBar1';
+import SearchBar1 from '../categories/searchBar';
 import '../home/sliderStyles.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

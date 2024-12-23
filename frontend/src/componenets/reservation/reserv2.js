@@ -106,7 +106,7 @@ const Reserv2 = () => {
 
       if (response.status === 200) {
         // Handle successful booking creation
-        window.location.href = '/booked'; // Redirect to the booked page
+        window.location.href = `/booked/${id}`; // Redirect to the booked page
       } else {
         alert('Failed to create booking');
       }

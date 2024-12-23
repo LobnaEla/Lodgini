@@ -7,12 +7,22 @@ const ApartmentGrid = ({ propertyType, furnishingType }) => {
     const [properties, setProperties] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [filteredHouses, setFilteredHouses] = useState([]);
+    const { search } = useLocation();
+    const queryParams = new URLSearchParams(search);
+
+    const location = queryParams.get('location');
+    const checkIn = queryParams.get('checkIn');
+    const checkOut = queryParams.get('checkOut');
+    const numberOfPeople = queryParams.get('numberOfPeople');
+
     useEffect(() => {
         const fetchProperties = async () => {
             try {
                 setIsLoading(true);
                 const response = await axios.get("http://localhost:8000/management/properties/");
                 setProperties(response.data);  // Save all properties
+                console.log(response.data)
             } catch (error) {
                 console.error("Error fetching properties:", error);
             } finally {

@@ -16,7 +16,7 @@ const Reserv1 = () => {
   const navigate = useNavigate();
   const [checkOutDate, setCheckOutDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
-  const { id } = useParams();
+  const { id, owner_id } = useParams();
   const [property, setProperty] = useState(null);
 
   // Steps for the Stepper

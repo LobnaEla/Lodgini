@@ -83,7 +83,7 @@ def add_property(request):
 
 
 @csrf_exempt
-def create_booking(request, owner_id, property_id):
+def create_booking(request, property_id):
     if request.method == "POST":
         # Parse the JSON data sent in the request
         try:
@@ -93,7 +93,6 @@ def create_booking(request, owner_id, property_id):
             check_out_date = data.get("check_out_date")
             total_price = data.get("total_price")
             user_email = data.get("user_email")
-            owner_id = int(owner_id)
             property_id = int(property_id)
 
         except json.JSONDecodeError:
@@ -139,7 +138,7 @@ def create_booking(request, owner_id, property_id):
 @api_view(["GET"])
 def get_properties(request):
     """
-    Get all properties irrespective of the owner.
+    Get all properties.
     """
     try:
         # Fetch all properties from the database

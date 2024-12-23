@@ -7,7 +7,7 @@
 
 .search-bar {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 50px;
@@ -21,7 +21,7 @@
     display: flex;
     align-items: center;
     background-color: #f9f9f9;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
     border-radius: 50px;
     gap: 0.5rem;
 }
@@ -58,59 +58,4 @@
 .search-bar-container input::placeholder {
     color: #aaa;
     font-size: 0.9rem;
-}
-
-.search-bar-container {
-    width: 100%;
-}
-
-.search-bar {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 10px;
-}
-
-.search-input {
-    width: 100%;
-    /* Ensures the input fills the container */
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.search-bar-container {
-    width: 100%;
-}
-
-.suggestions {
-    position: absolute;
-    top: 100%;
-    /* Positions the suggestions directly below the input */
-    left: 0;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 10;
-    width: 100%;
-    /* Ensure dropdown is the same width as input */
-    box-sizing: border-box;
-    /* Ensure padding is included in the width calculation */
-}
-
-.suggestions li {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.suggestions li:hover {
-    background-color: #f0f0f0;
 }
