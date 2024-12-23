@@ -22,9 +22,8 @@ const Home = () => {
     // Add logic to handle the search query
   };
   const navigate = useNavigate();
-  const handleCardClick = (id) => {
-    navigate(`/details/${id}`);
-    console.log(id)
+  const handleCardClick = (id_) => {
+    navigate(`/details/${id_}`);
 
   };
   const [popularAccommodations, setPopularAccommodations] = useState([]);
@@ -307,11 +306,11 @@ const Home = () => {
             {popularAccommodations.map(accommodation => (
               <div
                 key={accommodation.id}
-                onClick={() => handleCardClick(accommodation.owner_id, accommodation.id)}
+                onClick={() => handleCardClick(accommodation.id)}
                 style={{ cursor: 'pointer' }} // Indique que l'élément est cliquable
               >
                 <Card
-                  id={accommodation.id}
+                  id_={accommodation.id}
                   name={accommodation.name}
                   stars={accommodation.stars}
                   price={accommodation.price}
