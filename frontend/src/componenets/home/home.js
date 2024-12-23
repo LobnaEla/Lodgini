@@ -24,6 +24,8 @@ const Home = () => {
   const navigate = useNavigate();
   const handleCardClick = (id) => {
     navigate(`/details/${id}`);
+    console.log(id)
+
   };
   const [popularAccommodations, setPopularAccommodations] = useState([]);
 
