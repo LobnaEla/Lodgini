@@ -1,7 +1,6 @@
 import Footer from './footer';
 import React, { useEffect, useState } from "react";
 import Navbar from './navbar1';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../categories/card';
 import Slider from "react-slick";
@@ -23,8 +22,8 @@ const Home = () => {
     // Add logic to handle the search query
   };
   const navigate = useNavigate();
-  const handleCardClick = (owner_id, id) => {
-    navigate(`/details/${owner_id}/${id}`);
+  const handleCardClick = (id) => {
+    navigate(`/details/${id}`);
   };
   const [popularAccommodations, setPopularAccommodations] = useState([]);
 

@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path(
-        "create_booking/<int:owner_id>/<int:property_id>/",
+        "create_booking/<int:property_id>/",
         create_booking,
         name="create_booking",
     ),

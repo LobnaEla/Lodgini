@@ -42,7 +42,7 @@ const Details = () => {
 
         fetchPropertyReviews();
         fetchPropertyDetails();
-    }, [id, owner_id]);
+    }, [id]);
 
     if (isLoading) {
         return (

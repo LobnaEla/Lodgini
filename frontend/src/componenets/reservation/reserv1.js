@@ -35,7 +35,7 @@ const Reserv1 = () => {
     };
 
     fetchPropertyDetails();
-  }, [id, owner_id]);
+  }, [id]);
 
   useEffect(() => {
     if (checkInDate && checkOutDate) {
@@ -63,13 +63,10 @@ const Reserv1 = () => {
     if (checkOutDate) {
       localStorage.setItem('checkOutDate', checkOutDate);
     }
-    if (owner_id) {
-      localStorage.setItem('owner_id', owner_id);
-    }
     if (id) {
       localStorage.setItem('property_id', id);
     }
-  }, [checkInDate, checkOutDate, owner_id, id]);
+  }, [checkInDate, checkOutDate, id]);
   if (!property) {
     return <div>Loading...</div>;
   }
