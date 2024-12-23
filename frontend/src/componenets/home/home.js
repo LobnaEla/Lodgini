@@ -22,8 +22,8 @@ const Home = () => {
     // Add logic to handle the search query
   };
   const navigate = useNavigate();
-  const handleCardClick = (owner_id, id) => {
-    navigate(`/details/${owner_id}/${id}`);
+  const handleCardClick = (id) => {
+    navigate(`/details/${id}`);
   };
   const [popularAccommodations, setPopularAccommodations] = useState([]);
 

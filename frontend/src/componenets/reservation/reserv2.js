@@ -17,7 +17,7 @@ const Reserv2 = () => {
   const [expDate, setExpDate] = useState('');
   const [checkInDate, setCheckInDate] = useState(localStorage.getItem('checkInDate'));
   const [checkOutDate, setCheckOutDate] = useState(localStorage.getItem('checkOutDate'));
-  const { id, owner_id } = useParams();
+  const { id } = useParams();
   const [cvv, setCvv] = useState('');
   const [activeStep, setActiveStep] = useState(0); // Track the current step
   const [property, setProperty] = useState(null); // Property data state
@@ -92,7 +92,6 @@ const Reserv2 = () => {
         check_in_date: checkInDate,   // Renamed
         check_out_date: checkOutDate, // Renamed
         total_price: TotalPrice,     // Renamed
-        owner_id,
         property_id: id,
         user_email: user_email,
       };
