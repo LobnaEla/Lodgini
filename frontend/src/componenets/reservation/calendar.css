@@ -2,98 +2,149 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px 60px 40px 60px;
-    margin: 20px 300px;
-    text-align: center;
+    padding: 20px 40px; /* Increase padding for more space */
+    margin: 30px auto; /* Increase margin for more separation */
+    max-width: 600px; /* Increase max width for the calendar container */
+    display: flex;
+    justify-content: space-between;
+    gap: 2%; /* Increase gap between calendar and legend */
+}
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%; /* Increase the width of the calendar */
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px; /* Add more space between header and calendar grid */
+    gap: 12px; /* Increase gap */
+}
+
+.calendar-header h2 {
+    margin: 0;
+    font-size: 18px; /* Increase font size */
+    font-weight: bold;
+    color: #023047;
+}
+
+.calendar-header button {
+    background-color: #fff;
+    border: none;
+    border-radius: 4px;
+    color: #ffc677;
+    cursor: pointer;
+    font-size: 20px; /* Increase button font size */
+    padding: 6px 12px; /* Increase padding */
+    transition: background-color 0.3s;
+}
+
+.calendar-header button:hover {
+    background-color: #ebb161;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    margin-top: 16px;
+    gap: 8px; /* Increase the gap between days */
+    margin-top: 15px; /* Increase margin */
 }
 
 .calendar-day {
     background-color: #f1f1f1;
-    border-radius: 4px;
+    border-radius: 6px; /* Make corners rounder */
     cursor: pointer;
-    font-size: 14px;
-    padding: 8px;
+    font-size: 16px; /* Increase font size for day numbers */
+    padding: 10px; /* Increase padding */
     transition: background-color 0.3s;
 }
 
-.calendar-day.Available {
-    background-color: #82C0CC;
-}
-
-.calendar-day.Non-available {
-    background-color: #16697A;
+.calendar-day.not-booked {
+    background-color: #EAD2AC; /* Beige for not booked */
     color: #fff;
-    cursor: not-allowed;
 }
 
-.calendar-day.Your-reservation-date {
+.calendar-day.booked {
+    background-color: #82C0CC; /* Blue for booked */
+    color: #fff;
+}
+
+.calendar-day.your-reservation {
     background-color: #ffe7b3;
+}
+
+.calendar-day.owner-unavailable {
+    background-color: #16697A; /* Color for dates 'by_owner': True */
+    color: #fff;
+}
+
+.calendar-day.user-unavailable {
+    background-color: #82C0CC; /* Color for dates 'by_owner': False */
+    color: #fff;
 }
 
 .calendar-legend {
     display: flex;
-    justify-content: center;
-    margin-top: 16px;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 17px; /* Increase font size for legend items */
+    /* Increase gap between legend items */
 }
 
 .legend-item {
     align-items: center;
     display: flex;
-    margin: 0 12px;
+    gap: 6px; /* Increase gap between color and text */
 }
 
 .legend-color {
     border-radius: 4px;
-    height: 12px;
-    margin-right: 8px;
+    height: 12px; /* Increase the size of legend color indicators */
     width: 12px;
 }
 
-.legend-color.available {
-    background-color: #c2e7f0;
-}
-
-.legend-color.non-available {
-    background-color: #8d9fac;
-}
-
-.legend-color.your-reservation {
-    background-color: #FFC677;
-}
-
-.calendar-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 24px;
-}
-
-.calendar-actions button {
-    background-color: #FFC677;
+.schedule-btn {
+    background-color: #ffc677;
     border: none;
     border-radius: 4px;
     color: #fff;
+    padding: 12px 18px; /* Increase padding */
+    font-size: 16px; /* Increase button font size */
     cursor: pointer;
-    font-size: 14px;
-    margin: 0 8px;
-    padding: 8px 16px;
+    margin-top: 20px; /* Add space between legend and button */
     transition: background-color 0.3s;
 }
 
-.calendar-actions button:hover {
+.schedule-btn:hover {
     background-color: #ebb161;
 }
-
-.calendar-actions button.cancel {
-    background-color: #ff6b6b;
+.legend-color {
+    border-radius: 4px;
+    height: 10px;
+    width: 10px;
 }
 
-.calendar-actions button.cancel:hover {
-    background-color: #e04848;
+.legend-color.not-booked {
+    background-color: #EAD2AC; /* Beige */
+    width: 15px;
+    height: 15px;
+}
+
+.legend-color.booked {
+    background-color: #82C0CC; /* Blue */
+    width: 15px;
+    height: 15px;
+}
+
+
+
+.legend-color.nnbooked {
+    background-color: #16697A;
+    width: 15px;
+    height: 15px;
 }
