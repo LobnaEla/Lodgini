@@ -17,6 +17,7 @@ urlpatterns = [
         get_property_details,
         name="get_property_details",
     ),
+    path('bookings/<int:booking_id>/cancel/', cancel_booking, name='cancel_booking'),
     path("user_reviews/<int:user_id>/", get_user_reviews, name="get_user_reviews"),
     path("create_review/", create_review, name="create_review"),
     path("bookings/<int:user_id>/", get_bookings, name="get_bookings"),

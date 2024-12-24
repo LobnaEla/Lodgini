@@ -423,3 +423,39 @@ def get_property_reviews(request, property_id):
         return JsonResponse({"reviews": reviews_data}, safe=False, status=200)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+@api_view(["DELETE"])
+def cancel_booking(request, booking_id):
+    """
+    Cancel a booking and delete associated unavailability.
+    """
+    try:
+        # Fetch the booking by the provided booking_id
+        booking = Booking.objects.filter(id=booking_id).first()
+        print(booking)
+        # Check if the booking exists
+        if not booking:
+            return Response(
+                {"error": "Booking not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        property = booking.property
+
+        # Find all unavailable dates for this property that overlap with the booking dates
+        unavailabilities = PropertyUnavailableDate.objects.filter(
+            property=property,
+            start_date__lte=booking.end_date,  # Start date should be before or on the booking's end date
+            end_date__gte=booking.start_date   # End date should be after or on the booking's start date
+        )        
+        print(unavailabilities)
+        unavailabilities.delete()
+        booking.delete()
+
+        return Response(
+            {"message": "Booking and associated unavailability successfully deleted."},
+            status=status.HTTP_200_OK,
+        )
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
