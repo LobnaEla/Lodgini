@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Card from "./card";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const ApartmentGrid = ({ propertyType, furnishingType }) => {
     const [properties, setProperties] = useState([]);
@@ -20,9 +21,34 @@ const ApartmentGrid = ({ propertyType, furnishingType }) => {
         const fetchProperties = async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get("http://localhost:8000/management/properties/");
-                setProperties(response.data);  // Save all properties
-                console.log(response.data)
+
+                // If there are search parameters, use search endpoint
+                if (location || checkIn || checkOut || numberOfPeople) {
+                    const searchParams = new URLSearchParams({
+                        location: location || '',
+                        checkIn: checkIn || '',
+                        checkOut: checkOut || '',
+                        numberOfPeople: numberOfPeople || '',
+                        propertyType: propertyType || ''
+                    });
+
+                    const response = await axios.get(
+                        `http://localhost:8000/management/search-properties/?${searchParams.toString()}`
+                    );
+                    setProperties(response.data);
+                } else {
+                    // If no search parameters, fetch all properties
+                    const response = await axios.get("http://localhost:8000/management/properties/");
+                    setProperties(response.data);
+                }
+
+                // Apply furnishing type filter if needed (client-side)
+                if (furnishingType) {
+                    setProperties(prev =>
+                        prev.filter(property => property.furnishing_type === furnishingType)
+                    );
+                }
+
             } catch (error) {
                 console.error("Error fetching properties:", error);
             } finally {
@@ -31,7 +57,9 @@ const ApartmentGrid = ({ propertyType, furnishingType }) => {
         };
 
         fetchProperties();
-    }, []);
+    }, [search, propertyType, furnishingType, location, checkIn, checkOut, numberOfPeople]);
+
+
 
     // Filter properties based on propertyType and furnishingType
     const filteredProperties = properties.filter(

@@ -46,6 +46,10 @@ const SearchBar = ({ defaultCategory }) => {
             ...prevData,
             category,
         }));
+
+        // Navigate to the appropriate page with the selected category
+        const route = category === 'vacationHouses' ? 'vacation_houses' : category;
+        navigate(`/${route}`);
     };
 
     const handleSearch = () => {

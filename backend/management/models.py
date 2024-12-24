@@ -118,29 +118,27 @@ class Booking(models.Model):
         return f"Booking for {self.property.name}"
 
     def save(self, *args, **kwargs):
-        """
-        """
+        """ """
         super().save(*args, **kwargs)
-     
+
+
 class Review(models.Model):
     property = models.ForeignKey(
-        Property, 
-        on_delete=models.CASCADE, 
-        related_name='reviews',
+        Property,
+        on_delete=models.CASCADE,
+        related_name="reviews",
         null=True,  # Rendre nullable si la critique peut être pour Lodgini
-        blank=True
+        blank=True,
     )  # Clé étrangère vers Property (le bien à reviewer)
     user = models.ForeignKey(
-        UserProfile, 
-        on_delete=models.CASCADE, 
-        related_name='reviews'
+        UserProfile, on_delete=models.CASCADE, related_name="reviews"
     )  # Clé étrangère vers User (l'utilisateur qui fait la review)
     review = models.TextField()  # Champ pour le contenu de la review
     created_at = models.DateTimeField(auto_now_add=True)
     about_lodgini = models.BooleanField(default=False)
     stars = models.IntegerField(
-        default=1,
-        choices=[(i, f"{i} Star{'s' if i > 1 else ''}") for i in range(1, 6)])  # Date de création
+        default=1, choices=[(i, f"{i} Star{'s' if i > 1 else ''}") for i in range(1, 6)]
+    )  # Date de création
 
     def __str__(self):
         if not self.about_lodgini:

@@ -13,6 +13,9 @@ from django.http import JsonResponse
 from django.utils.dateparse import parse_date
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import now
+from django.db.models import Q
+from datetime import datetime
+from django.core.exceptions import ValidationError
 
 
 @api_view(["POST"])
@@ -424,6 +427,7 @@ def get_property_reviews(request, property_id):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
 
+
 @api_view(["DELETE"])
 def cancel_booking(request, booking_id):
     """
@@ -445,8 +449,8 @@ def cancel_booking(request, booking_id):
         unavailabilities = PropertyUnavailableDate.objects.filter(
             property=property,
             start_date__lte=booking.end_date,  # Start date should be before or on the booking's end date
-            end_date__gte=booking.start_date   # End date should be after or on the booking's start date
-        )        
+            end_date__gte=booking.start_date,  # End date should be after or on the booking's start date
+        )
         print(unavailabilities)
         unavailabilities.delete()
         booking.delete()
@@ -459,3 +463,53 @@ def cancel_booking(request, booking_id):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(["GET"])
+def search_properties(request):
+    location = request.GET.get("location")
+    check_in = request.GET.get("checkIn")
+    check_out = request.GET.get("checkOut")
+    number_of_people = request.GET.get("numberOfPeople")
+    property_type = request.GET.get("propertyType")
+
+    # Start with all properties
+    queryset = Property.objects.all()
+
+    # Filter by location if provided
+    if location:
+        queryset = queryset.filter(location=location)
+
+    # Filter by property type if provided
+    if property_type:
+        queryset = queryset.filter(property_type=property_type)
+
+    # Filter by number of guests if provided
+    if number_of_people:
+        try:
+            num_guests = int(number_of_people)
+            queryset = queryset.filter(max_number_guests__gte=num_guests)
+        except ValueError:
+            return Response({"error": "Invalid number of guests"}, status=400)
+
+    # Filter by availability if both check-in and check-out dates are provided
+    if check_in and check_out:
+        try:
+            check_in_date = datetime.strptime(check_in, "%Y-%m-%d").date()
+            check_out_date = datetime.strptime(check_out, "%Y-%m-%d").date()
+
+            # Exclude properties that have bookings during the selected period
+            unavailable_properties = Booking.objects.filter(
+                Q(start_date__lte=check_out_date) & Q(end_date__gte=check_in_date),
+                status="Confirmed",
+            ).values_list("property_id", flat=True)
+
+            queryset = queryset.exclude(id__in=unavailable_properties)
+
+        except ValueError:
+            return Response({"error": "Invalid date format"}, status=400)
+
+    # Serialize the filtered queryset
+    from .serializers import PropertySerializer  # Import your serializer
+
+    serializer = PropertySerializer(queryset, many=True)
+    return Response(serializer.data)
