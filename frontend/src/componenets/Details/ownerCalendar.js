@@ -7,6 +7,8 @@ const OwnerCalendar = ({ propertyId }) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+    const [showUnavailabilityModal, setShowUnavailabilityModal] = useState(false); // Modal visibility state
+    const [datesToMarkUnavailable, setDatesToMarkUnavailable] = useState([]); // Dates to mark as unavailable
 
     // Fetch unavailable dates
     useEffect(() => {
@@ -25,14 +27,15 @@ const OwnerCalendar = ({ propertyId }) => {
     }, [propertyId]);
 
     const handleDateClick = (date) => {
-        if (!unavailableDates.includes(date)) {
+        if (!unavailableDates.some((d) => d.date === date && d.by_owner)) {
             setSelectedDate(date);
         }
     };
 
     const getDayStatus = (date) => {
-        if (unavailableDates.includes(date)) {
-            return 'booked';
+        const unavailableDate = unavailableDates.find((d) => d.date === date);
+        if (unavailableDate) {
+            return unavailableDate.by_owner ? 'owner-unavailable' : 'user-unavailable';
         } else if (date === selectedDate) {
             return 'your-reservation';
         } else {
@@ -53,9 +56,36 @@ const OwnerCalendar = ({ propertyId }) => {
     const daysInMonth = getDaysInMonth(currentYear, currentMonth);
     const monthName = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' });
 
+    // Function to handle scheduling unavailability
     const handleScheduleUnavailability = () => {
-        // Functionality to schedule unavailability (e.g., open a modal, etc.)
-        alert('Schedule Unavailability clicked');
+        setShowUnavailabilityModal(true); // Open the modal
+    };
+
+    const handleSelectUnavailabilityDate = (date) => {
+        setDatesToMarkUnavailable((prevDates) => {
+            if (prevDates.includes(date)) {
+                return prevDates.filter((d) => d !== date); // Remove the date if already selected
+            } else {
+                return [...prevDates, date]; // Add the date if not selected
+            }
+        });
+    };
+
+    const handleSaveUnavailability = async () => {
+        try {
+            await axios.post(
+                `http://localhost:8000/management/properties/${propertyId}/mark-unavailable/`,
+                { dates: datesToMarkUnavailable }
+            );
+            // Add the new dates to the unavailableDates state
+            setUnavailableDates((prevDates) => [
+                ...prevDates,
+                ...datesToMarkUnavailable.map((date) => ({ date, by_owner: true })),
+            ]);
+            setShowUnavailabilityModal(false); // Close the modal after saving
+        } catch (error) {
+            console.error('Error saving unavailability:', error);
+        }
     };
 
     return (
@@ -83,6 +113,31 @@ const OwnerCalendar = ({ propertyId }) => {
                     })}
                 </div>
             </div>
+
+            {showUnavailabilityModal && (
+                <div className="unavailability-modal">
+                    <h3>Select Unavailable Dates</h3>
+                    <div className="unavailability-grid">
+                        {Array.from({ length: daysInMonth }, (_, i) => {
+                            const date = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${(i + 1)
+                                .toString()
+                                .padStart(2, '0')}`;
+                            return (
+                                <div
+                                    key={date}
+                                    className={`calendar-day ${datesToMarkUnavailable.includes(date) ? 'selected' : ''}`}
+                                    onClick={() => handleSelectUnavailabilityDate(date)}
+                                >
+                                    {i + 1}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <button className="save-unavailability" onClick={handleSaveUnavailability}>Save Unavailability</button>
+                    <button className="cancel" onClick={() => setShowUnavailabilityModal(false)}>Cancel</button>
+                </div>
+            )}
+
             <div className="calendar-legend">
                 <div className="legend-item">
                     <div className="legend-color not-booked"></div>
@@ -97,7 +152,6 @@ const OwnerCalendar = ({ propertyId }) => {
                     <span>Not available to book</span>
                 </div>
                 <button className="schedule-btn" onClick={handleScheduleUnavailability}>Schedule Unavailability</button>
-
             </div>
         </div>
     );

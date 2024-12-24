@@ -78,6 +78,16 @@
     background-color: #ffe7b3;
 }
 
+.calendar-day.owner-unavailable {
+    background-color: #16697A; /* Color for dates 'by_owner': True */
+    color: #fff;
+}
+
+.calendar-day.user-unavailable {
+    background-color: #82C0CC; /* Color for dates 'by_owner': False */
+    color: #fff;
+}
+
 .calendar-legend {
     display: flex;
     flex-direction: column;
@@ -121,16 +131,20 @@
 
 .legend-color.not-booked {
     background-color: #EAD2AC; /* Beige */
+    width: 15px;
+    height: 15px;
 }
 
 .legend-color.booked {
     background-color: #82C0CC; /* Blue */
+    width: 15px;
+    height: 15px;
 }
 
-.legend-color.your-reservation {
-    background-color: #ffe7b3;
-}
+
 
 .legend-color.nnbooked {
     background-color: #16697A;
+    width: 15px;
+    height: 15px;
 }

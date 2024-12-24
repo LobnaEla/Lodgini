@@ -128,7 +128,7 @@ def create_booking(request, property_id):
         )
         booking.save()
         PropertyUnavailableDate.objects.create(
-            property=property, start_date=check_in_date, end_date=check_out_date, 
+            property=property, start_date=check_in_date, end_date=check_out_date,by_owner=False,
         )
 
         return JsonResponse({"message": "Booking confirmed successfully!"}, status=200)
@@ -467,6 +467,10 @@ def get_unavailable_dates(request, property_id):
     for date_range in unavailable_dates:
         current_date = date_range.start_date
         while current_date <= date_range.end_date:
-            dates.append(current_date.strftime('%Y-%m-%d'))
+            dates.append({
+                "date": current_date.strftime('%Y-%m-%d'),
+                "by_owner": date_range.by_owner
+            })
             current_date += timedelta(days=1)
+    print(dates)
     return Response(dates)

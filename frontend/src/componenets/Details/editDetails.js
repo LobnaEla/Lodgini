@@ -343,9 +343,7 @@ const EditDetails = () => {
                     </form>
                 </div>
 
-                <div className="main-content">
-                    <OwnerCalendar />
-                </div>
+               
                 <Footer />
             </div>
         </StyledWrapper>

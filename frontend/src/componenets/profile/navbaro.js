@@ -60,8 +60,8 @@ const Navbar = () => {
     <nav style={navbarStyles}>
       {/* Logo Section */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
-        <img src="../images/logo_seul.png" alt="Lodgini logo" style={{ width: '100%', height: '45px' }} />
-        <img src="../images/lodgini.png" alt="Lodgini logo" style={{ width: '100%', height: '30px', marginLeft: '20%' }} />
+        <img src="../../images/logo_seul.png" alt="Lodgini logo" style={{ width: '100%', height: '45px' }} />
+        <img src="../../images/lodgini.png" alt="Lodgini logo" style={{ width: '100%', height: '30px', marginLeft: '20%' }} />
       </div>
 
       {/* Conditional Buttons Section */}
