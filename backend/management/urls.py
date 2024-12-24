@@ -9,6 +9,7 @@ urlpatterns = [
         create_booking,
         name="create_booking",
     ),
+
     path("add_property/", add_property, name="add_property"),
     path("properties/", get_properties, name="get_properties"),
     path("lodgini_reviews/", get_lodgini_reviews, name="lodgini_reviews"),
@@ -16,6 +17,11 @@ urlpatterns = [
         "properties/<int:property_id>/",
         get_property_details,
         name="get_property_details",
+    ),
+    path(
+        "properties/<int:property_id>/unavailable-dates/",
+        get_unavailable_dates,
+        name="unavailable-dates/",
     ),
     path('bookings/<int:booking_id>/cancel/', cancel_booking, name='cancel_booking'),
     path("user_reviews/<int:user_id>/", get_user_reviews, name="get_user_reviews"),

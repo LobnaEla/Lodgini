@@ -87,7 +87,6 @@ class PropertyUnavailableDate(models.Model):
     Model to store the unavailable date ranges for a property set by the owner.
     This allows each property to have its own set of unavailable date ranges.
     """
-
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()

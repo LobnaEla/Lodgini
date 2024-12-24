@@ -94,7 +94,7 @@ def create_booking(request, property_id):
             total_price = data.get("total_price")
             user_email = data.get("user_email")
             property_id = int(property_id)
-
+            print("done")
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
 
@@ -115,7 +115,7 @@ def create_booking(request, property_id):
                 {"error": "The property is not available for the selected dates."},
                 status=400,
             )
-
+        print("done2")
         user_profile = UserProfile.objects.get(email=user_email)
         booking = Booking(
             user=user_profile,
@@ -124,10 +124,11 @@ def create_booking(request, property_id):
             end_date=check_out_date,
             total_price=total_price,
             status="Confirmed",
+            
         )
         booking.save()
         PropertyUnavailableDate.objects.create(
-            property=property, start_date=check_in_date, end_date=check_out_date
+            property=property, start_date=check_in_date, end_date=check_out_date, 
         )
 
         return JsonResponse({"message": "Booking confirmed successfully!"}, status=200)
@@ -459,3 +460,13 @@ def cancel_booking(request, booking_id):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def get_unavailable_dates(request, property_id):
+    unavailable_dates = PropertyUnavailableDate.objects.filter(property_id=property_id)
+    dates = []
+    for date_range in unavailable_dates:
+        current_date = date_range.start_date
+        while current_date <= date_range.end_date:
+            dates.append(current_date.strftime('%Y-%m-%d'))
+            current_date += timedelta(days=1)
+    return Response(dates)

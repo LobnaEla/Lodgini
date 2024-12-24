@@ -162,7 +162,7 @@ const Profile = () => {
                                 }}
                             >
                                 <img
-                                    src={ownerData.profile_picture ? `http://localhost:8000${ownerData.profile_picture}` : 'defaultImage.jpg'}
+                                    src={ownerData.profile_picture ? `${ownerData.profile_picture}` : 'defaultImage.jpg'}
                                     style={{
                                         width: "100%",
                                         height: "100%",
