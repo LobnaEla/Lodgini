@@ -2,19 +2,24 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px 40px; /* Increase padding for more space */
-    margin: 30px auto; /* Increase margin for more separation */
-    max-width: 600px; /* Increase max width for the calendar container */
+    padding: 20px 40px;
+    /* Increase padding for more space */
+    margin: 30px auto;
+    /* Increase margin for more separation */
+    max-width: 600px;
+    /* Increase max width for the calendar container */
     display: flex;
     justify-content: space-between;
-    gap: 2%; /* Increase gap between calendar and legend */
+    gap: 2%;
+    /* Increase gap between calendar and legend */
 }
 
 .calendar-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60%; /* Increase the width of the calendar */
+    width: 60%;
+    /* Increase the width of the calendar */
 }
 
 .calendar-header {
@@ -22,13 +27,16 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 15px; /* Add more space between header and calendar grid */
-    gap: 12px; /* Increase gap */
+    margin-bottom: 15px;
+    /* Add more space between header and calendar grid */
+    gap: 12px;
+    /* Increase gap */
 }
 
 .calendar-header h2 {
     margin: 0;
-    font-size: 18px; /* Increase font size */
+    font-size: 18px;
+    /* Increase font size */
     font-weight: bold;
     color: #023047;
 }
@@ -39,8 +47,10 @@
     border-radius: 4px;
     color: #ffc677;
     cursor: pointer;
-    font-size: 20px; /* Increase button font size */
-    padding: 6px 12px; /* Increase padding */
+    font-size: 20px;
+    /* Increase button font size */
+    padding: 6px 12px;
+    /* Increase padding */
     transition: background-color 0.3s;
 }
 
@@ -51,26 +61,33 @@
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px; /* Increase the gap between days */
-    margin-top: 15px; /* Increase margin */
+    gap: 8px;
+    /* Increase the gap between days */
+    margin-top: 15px;
+    /* Increase margin */
 }
 
 .calendar-day {
     background-color: #f1f1f1;
-    border-radius: 6px; /* Make corners rounder */
+    border-radius: 6px;
+    /* Make corners rounder */
     cursor: pointer;
-    font-size: 16px; /* Increase font size for day numbers */
-    padding: 10px; /* Increase padding */
+    font-size: 16px;
+    /* Increase font size for day numbers */
+    padding: 10px;
+    /* Increase padding */
     transition: background-color 0.3s;
 }
 
 .calendar-day.not-booked {
-    background-color: #EAD2AC; /* Beige for not booked */
+    background-color: #EAD2AC;
+    /* Beige for not booked */
     color: #fff;
 }
 
 .calendar-day.booked {
-    background-color: #82C0CC; /* Blue for booked */
+    background-color: #82C0CC;
+    /* Blue for booked */
     color: #fff;
 }
 
@@ -79,12 +96,14 @@
 }
 
 .calendar-day.owner-unavailable {
-    background-color: #16697A; /* Color for dates 'by_owner': True */
+    background-color: #16697A;
+    /* Color for dates 'by_owner': True */
     color: #fff;
 }
 
 .calendar-day.user-unavailable {
-    background-color: #82C0CC; /* Color for dates 'by_owner': False */
+    background-color: #82C0CC;
+    /* Color for dates 'by_owner': False */
     color: #fff;
 }
 
@@ -92,19 +111,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    font-size: 17px; /* Increase font size for legend items */
+    font-size: 17px;
+    /* Increase font size for legend items */
     /* Increase gap between legend items */
 }
 
 .legend-item {
     align-items: center;
     display: flex;
-    gap: 6px; /* Increase gap between color and text */
+    gap: 6px;
+    /* Increase gap between color and text */
 }
 
 .legend-color {
     border-radius: 4px;
-    height: 12px; /* Increase the size of legend color indicators */
+    height: 12px;
+    /* Increase the size of legend color indicators */
     width: 12px;
 }
 
@@ -113,16 +135,20 @@
     border: none;
     border-radius: 4px;
     color: #fff;
-    padding: 12px 18px; /* Increase padding */
-    font-size: 16px; /* Increase button font size */
+    padding: 12px 18px;
+    /* Increase padding */
+    font-size: 16px;
+    /* Increase button font size */
     cursor: pointer;
-    margin-top: 20px; /* Add space between legend and button */
+    margin-top: 20px;
+    /* Add space between legend and button */
     transition: background-color 0.3s;
 }
 
 .schedule-btn:hover {
     background-color: #ebb161;
 }
+
 .legend-color {
     border-radius: 4px;
     height: 10px;
@@ -130,13 +156,15 @@
 }
 
 .legend-color.not-booked {
-    background-color: #EAD2AC; /* Beige */
+    background-color: #EAD2AC;
+    /* Beige */
     width: 15px;
     height: 15px;
 }
 
 .legend-color.booked {
-    background-color: #82C0CC; /* Blue */
+    background-color: #82C0CC;
+    /* Blue */
     width: 15px;
     height: 15px;
 }
@@ -147,4 +175,52 @@
     background-color: #16697A;
     width: 15px;
     height: 15px;
+}
+
+.calendar-day.owner-unavailable {
+    background-color: #16697A;
+    color: white;
+}
+
+.calendar-day.user-unavailable {
+    background-color: #82C0CC;
+    color: white;
+}
+
+.unavailability-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.calendar-day.selected {
+    background-color: #4291A3;
+    color: white;
+}
+
+.calendar-day.unavailable {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
 }

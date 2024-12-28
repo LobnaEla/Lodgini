@@ -4,42 +4,24 @@ import axios from 'axios';
 
 const OwnerCalendar = ({ propertyId }) => {
     const [unavailableDates, setUnavailableDates] = useState([]);
-    const [selectedDate, setSelectedDate] = useState(null);
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-    const [showUnavailabilityModal, setShowUnavailabilityModal] = useState(false); // Modal visibility state
-    const [datesToMarkUnavailable, setDatesToMarkUnavailable] = useState([]); // Dates to mark as unavailable
+    const [showUnavailabilityModal, setShowUnavailabilityModal] = useState(false);
+    const [datesToMarkUnavailable, setDatesToMarkUnavailable] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Fetch unavailable dates
     useEffect(() => {
-        const fetchUnavailableDates = async () => {
-            try {
-                const response = await axios.get(
-                    `http://localhost:8000/management/properties/${propertyId}/unavailable-dates/`
-                );
-                setUnavailableDates(response.data); // Assuming the API returns an array of unavailable dates
-            } catch (error) {
-                console.error('Error fetching unavailable dates:', error);
-            }
-        };
-
         fetchUnavailableDates();
     }, [propertyId]);
 
-    const handleDateClick = (date) => {
-        if (!unavailableDates.some((d) => d.date === date && d.by_owner)) {
-            setSelectedDate(date);
-        }
-    };
-
-    const getDayStatus = (date) => {
-        const unavailableDate = unavailableDates.find((d) => d.date === date);
-        if (unavailableDate) {
-            return unavailableDate.by_owner ? 'owner-unavailable' : 'user-unavailable';
-        } else if (date === selectedDate) {
-            return 'your-reservation';
-        } else {
-            return 'not-booked';
+    const fetchUnavailableDates = async () => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/management/properties/${propertyId}/unavailable-dates/`
+            );
+            setUnavailableDates(response.data);
+        } catch (error) {
+            console.error('Error fetching unavailable dates:', error);
         }
     };
 
@@ -53,40 +35,46 @@ const OwnerCalendar = ({ propertyId }) => {
         return new Date(year, month + 1, 0).getDate();
     };
 
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-    const monthName = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' });
-
-    // Function to handle scheduling unavailability
-    const handleScheduleUnavailability = () => {
-        setShowUnavailabilityModal(true); // Open the modal
-    };
-
     const handleSelectUnavailabilityDate = (date) => {
-        setDatesToMarkUnavailable((prevDates) => {
-            if (prevDates.includes(date)) {
-                return prevDates.filter((d) => d !== date); // Remove the date if already selected
-            } else {
-                return [...prevDates, date]; // Add the date if not selected
+        setDatesToMarkUnavailable(prev => {
+            if (prev.includes(date)) {
+                return prev.filter(d => d !== date);
             }
+            return [...prev, date];
         });
     };
 
     const handleSaveUnavailability = async () => {
+        if (datesToMarkUnavailable.length === 0) return;
+
+        setIsSubmitting(true);
         try {
             await axios.post(
                 `http://localhost:8000/management/properties/${propertyId}/mark-unavailable/`,
                 { dates: datesToMarkUnavailable }
             );
-            // Add the new dates to the unavailableDates state
-            setUnavailableDates((prevDates) => [
-                ...prevDates,
-                ...datesToMarkUnavailable.map((date) => ({ date, by_owner: true })),
-            ]);
-            setShowUnavailabilityModal(false); // Close the modal after saving
+
+            await fetchUnavailableDates();
+            setShowUnavailabilityModal(false);
+            setDatesToMarkUnavailable([]);
         } catch (error) {
             console.error('Error saving unavailability:', error);
+            alert('Failed to save unavailable dates. Please try again.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
+
+    const getDayStatus = (date) => {
+        const unavailableDate = unavailableDates.find(d => d.date === date);
+        if (unavailableDate) {
+            return unavailableDate.by_owner ? 'owner-unavailable' : 'user-unavailable';
+        }
+        return 'not-booked';
+    };
+
+    const monthName = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' });
+    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
 
     return (
         <div className="calendar-reservation">
@@ -98,14 +86,12 @@ const OwnerCalendar = ({ propertyId }) => {
                 </div>
                 <div className="calendar-grid">
                     {Array.from({ length: daysInMonth }, (_, i) => {
-                        const date = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${(i + 1)
-                            .toString()
-                            .padStart(2, '0')}`;
+                        const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`;
+                        const status = getDayStatus(date);
                         return (
                             <div
                                 key={date}
-                                className={`calendar-day ${getDayStatus(date)}`}
-                                onClick={() => handleDateClick(date)}
+                                className={`calendar-day ${status}`}
                             >
                                 {i + 1}
                             </div>
@@ -116,25 +102,44 @@ const OwnerCalendar = ({ propertyId }) => {
 
             {showUnavailabilityModal && (
                 <div className="unavailability-modal">
-                    <h3>Select Unavailable Dates</h3>
-                    <div className="unavailability-grid">
-                        {Array.from({ length: daysInMonth }, (_, i) => {
-                            const date = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${(i + 1)
-                                .toString()
-                                .padStart(2, '0')}`;
-                            return (
-                                <div
-                                    key={date}
-                                    className={`calendar-day ${datesToMarkUnavailable.includes(date) ? 'selected' : ''}`}
-                                    onClick={() => handleSelectUnavailabilityDate(date)}
-                                >
-                                    {i + 1}
-                                </div>
-                            );
-                        })}
+                    <div className="modal-content">
+                        <h3>Select Dates to Mark as Unavailable</h3>
+                        <div className="calendar-grid">
+                            {Array.from({ length: daysInMonth }, (_, i) => {
+                                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`;
+                                const isSelected = datesToMarkUnavailable.includes(date);
+                                const isUnavailable = unavailableDates.some(d => d.date === date);
+
+                                return (
+                                    <div
+                                        key={date}
+                                        className={`calendar-day ${isSelected ? 'selected' : ''} ${isUnavailable ? 'unavailable' : ''}`}
+                                        onClick={() => !isUnavailable && handleSelectUnavailabilityDate(date)}
+                                    >
+                                        {i + 1}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div className="modal-actions">
+                            <button
+                                className="save-unavailability"
+                                onClick={handleSaveUnavailability}
+                                disabled={isSubmitting || datesToMarkUnavailable.length === 0}
+                            >
+                                {isSubmitting ? 'Saving...' : 'Save'}
+                            </button>
+                            <button
+                                className="cancel"
+                                onClick={() => {
+                                    setShowUnavailabilityModal(false);
+                                    setDatesToMarkUnavailable([]);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
                     </div>
-                    <button className="save-unavailability" onClick={handleSaveUnavailability}>Save Unavailability</button>
-                    <button className="cancel" onClick={() => setShowUnavailabilityModal(false)}>Cancel</button>
                 </div>
             )}
 
@@ -151,7 +156,12 @@ const OwnerCalendar = ({ propertyId }) => {
                     <div className="legend-color nnbooked"></div>
                     <span>Not available to book</span>
                 </div>
-                <button className="schedule-btn" onClick={handleScheduleUnavailability}>Schedule Unavailability</button>
+                <button
+                    className="schedule-btn"
+                    onClick={() => setShowUnavailabilityModal(true)}
+                >
+                    Schedule Unavailability
+                </button>
             </div>
         </div>
     );

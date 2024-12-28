@@ -141,6 +141,28 @@ def create_booking(request, property_id):
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
+@api_view(["POST"])
+def mark_property_unavailable(request, property_id):
+    try:
+        property = Property.objects.get(id=property_id)
+        dates = request.data.get("dates", [])
+
+        for date in dates:
+            PropertyUnavailableDate.objects.create(
+                property=property, start_date=date, end_date=date, by_owner=True
+            )
+
+        return Response(
+            {"message": "Dates marked as unavailable"}, status=status.HTTP_200_OK
+        )
+    except Property.DoesNotExist:
+        return Response(
+            {"error": "Property not found"}, status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(["GET"])
 def get_properties(request):
     """
