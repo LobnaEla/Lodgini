@@ -22,6 +22,16 @@ urlpatterns = [
     path("create_review/", create_review, name="create_review"),
     path("bookings/<int:user_id>/", get_bookings, name="get_bookings"),
     path(
+        "properties/<int:property_id>/unavailable-dates/",
+        get_unavailable_dates,
+        name="unavailable-dates/",
+    ),
+    path(
+        "properties/<int:property_id>/mark-unavailable/",
+        mark_property_unavailable,
+        name="mark-property-unavailable",
+    ),
+    path(
         "reserved_properties/<int:user_id>/",
         get_user_reserved_properties,
         name="reserved-properties",

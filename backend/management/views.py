@@ -130,12 +130,37 @@ def create_booking(request, property_id):
         )
         booking.save()
         PropertyUnavailableDate.objects.create(
-            property=property, start_date=check_in_date, end_date=check_out_date
+            property=property,
+            start_date=check_in_date,
+            end_date=check_out_date,
+            by_owner=False,
         )
 
         return JsonResponse({"message": "Booking confirmed successfully!"}, status=200)
 
     return JsonResponse({"error": "Invalid request method."}, status=400)
+
+
+@api_view(["POST"])
+def mark_property_unavailable(request, property_id):
+    try:
+        property = Property.objects.get(id=property_id)
+        dates = request.data.get("dates", [])
+
+        for date in dates:
+            PropertyUnavailableDate.objects.create(
+                property=property, start_date=date, end_date=date, by_owner=True
+            )
+
+        return Response(
+            {"message": "Dates marked as unavailable"}, status=status.HTTP_200_OK
+        )
+    except Property.DoesNotExist:
+        return Response(
+            {"error": "Property not found"}, status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["GET"])
@@ -513,3 +538,21 @@ def search_properties(request):
 
     serializer = PropertySerializer(queryset, many=True)
     return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_unavailable_dates(request, property_id):
+    unavailable_dates = PropertyUnavailableDate.objects.filter(property_id=property_id)
+    dates = []
+    for date_range in unavailable_dates:
+        current_date = date_range.start_date
+        while current_date <= date_range.end_date:
+            dates.append(
+                {
+                    "date": current_date.strftime("%Y-%m-%d"),
+                    "by_owner": date_range.by_owner,
+                }
+            )
+            current_date += timedelta(days=1)
+    print(dates)
+    return Response(dates)
