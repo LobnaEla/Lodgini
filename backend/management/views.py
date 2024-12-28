@@ -491,53 +491,74 @@ def cancel_booking(request, booking_id):
 
 @api_view(["GET"])
 def search_properties(request):
-    location = request.GET.get("location")
-    check_in = request.GET.get("checkIn")
-    check_out = request.GET.get("checkOut")
-    number_of_people = request.GET.get("numberOfPeople")
-    property_type = request.GET.get("propertyType")
+    """
+    Search properties with filters.
+    """
+    try:
+        # Start with all properties
+        properties = Property.objects.all()
 
-    # Start with all properties
-    queryset = Property.objects.all()
+        # Get search parameters
+        location = request.GET.get("location")
+        check_in = request.GET.get("checkIn")
+        check_out = request.GET.get("checkOut")
+        number_of_people = request.GET.get("numberOfPeople")
+        property_type = request.GET.get("propertyType")
 
-    # Filter by location if provided
-    if location:
-        queryset = queryset.filter(location=location)
+        # Filter by location
+        if location:
+            properties = properties.filter(location=location)
 
-    # Filter by property type if provided
-    if property_type:
-        queryset = queryset.filter(property_type=property_type)
+        # Filter by property type
+        if property_type:
+            properties = properties.filter(property_type=property_type)
 
-    # Filter by number of guests if provided
-    if number_of_people:
-        try:
-            num_guests = int(number_of_people)
-            queryset = queryset.filter(max_number_guests__gte=num_guests)
-        except ValueError:
-            return Response({"error": "Invalid number of guests"}, status=400)
+        # Filter by number of guests
+        if number_of_people:
+            try:
+                num_guests = int(number_of_people)
+                properties = properties.filter(max_number_guests__gte=num_guests)
+            except ValueError:
+                return Response(
+                    {"error": "Invalid number of guests"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
-    # Filter by availability if both check-in and check-out dates are provided
-    if check_in and check_out:
-        try:
-            check_in_date = datetime.strptime(check_in, "%Y-%m-%d").date()
-            check_out_date = datetime.strptime(check_out, "%Y-%m-%d").date()
+        # Filter by availability
+        if check_in and check_out:
+            try:
+                check_in_date = datetime.strptime(check_in, "%Y-%m-%d").date()
+                check_out_date = datetime.strptime(check_out, "%Y-%m-%d").date()
 
-            # Exclude properties that have bookings during the selected period
-            unavailable_properties = Booking.objects.filter(
-                Q(start_date__lte=check_out_date) & Q(end_date__gte=check_in_date),
-                status="Confirmed",
-            ).values_list("property_id", flat=True)
+                # Get properties with conflicting bookings
+                booked_properties = Booking.objects.filter(
+                    Q(start_date__lte=check_out_date) & Q(end_date__gte=check_in_date),
+                    status="Confirmed",
+                ).values_list("property_id", flat=True)
 
-            queryset = queryset.exclude(id__in=unavailable_properties)
+                # Get properties marked as unavailable by owners
+                owner_unavailable_properties = PropertyUnavailableDate.objects.filter(
+                    Q(start_date__lte=check_out_date) & Q(end_date__gte=check_in_date),
+                ).values_list("property_id", flat=True)
 
-        except ValueError:
-            return Response({"error": "Invalid date format"}, status=400)
+                # Combine both sets of unavailable properties
+                all_unavailable_properties = list(booked_properties) + list(
+                    owner_unavailable_properties
+                )
 
-    # Serialize the filtered queryset
-    from .serializers import PropertySerializer  # Import your serializer
+                # Exclude all unavailable properties
+                properties = properties.exclude(id__in=all_unavailable_properties)
 
-    serializer = PropertySerializer(queryset, many=True)
-    return Response(serializer.data)
+            except ValueError:
+                return Response(
+                    {"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST
+                )
+
+        serializer = PropertySerializer1(properties, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["GET"])

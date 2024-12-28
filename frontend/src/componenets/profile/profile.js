@@ -31,8 +31,8 @@ const Profile = () => {
         const file = e.target.files[0];
         if (file) {
             const formData = new FormData();
-            formData.append('profile_picture', file); 
-            formData.append('email', userData.email); 
+            formData.append('profile_picture', file);
+            formData.append('email', userData.email);
 
             // Simulate a backend call to update the profile picture
             fetch('http://localhost:8000/update_profile_picture/', {
@@ -160,7 +160,7 @@ const Profile = () => {
                                 }}
                             >
                                 <img
-                                    src={userData.profile_picture ? `http://localhost:8000${userData.profile_picture}`  : '../../../public/images/default-avatar.jpg'} 
+                                    src={userData.profile_picture ? `http://localhost:8000${userData.profile_picture}` : '../../../public/images/default-avatar.jpg'}
                                     alt="Profile Avatar"
                                     style={{
                                         width: "100%",
@@ -234,7 +234,7 @@ const Profile = () => {
                                         border: "1px solid #ddd",
                                     }}
                                     readOnly={!isEditing}
-                                    onChange={(e) => handleInputChange(e, 'phoneNumber')}
+                                    onChange={(e) => handleInputChange(e, 'phone_number')}
                                 />
                                 <input
                                     type="text"

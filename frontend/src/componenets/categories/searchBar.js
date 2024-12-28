@@ -41,13 +41,14 @@ const SearchBar = ({ defaultCategory }) => {
         }
     };
 
+    // In SearchBar.js
     const handleCategoryChange = (category) => {
         setFormData((prevData) => ({
             ...prevData,
             category,
         }));
 
-        // Navigate to the appropriate page with the selected category
+        // Use "vacation_houses" consistently
         const route = category === 'vacationHouses' ? 'vacation_houses' : category;
         navigate(`/${route}`);
     };
@@ -67,8 +68,9 @@ const SearchBar = ({ defaultCategory }) => {
             numberOfPeople,
         }).toString();
 
-        // Navigate to the appropriate page with search criteria
-        navigate(`/${category}?${query}`);
+        // Use "vacation_houses" consistently here as well
+        const route = category === 'vacationHouses' ? 'vacation_houses' : category;
+        navigate(`/${route}?${query}`);
     };
 
     const handleLocationSelect = (location) => {

@@ -235,7 +235,7 @@ const Profile = () => {
                                         border: "1px solid #ddd",
                                     }}
                                     readOnly={!isEditing}
-                                    onChange={(e) => handleInputChange(e, 'phoneNumber')}
+                                    onChange={(e) => handleInputChange(e, 'phone_number')}
                                 />
                                 <input
                                     type="text"
