@@ -234,7 +234,7 @@ const Details = () => {
                     </div>
                 </div>
                 <div className="main-content">
-                <OwnerCalendar propertyId={id} />
+                    <OwnerCalendar propertyId={id} />
 
                 </div>
                 <Footer />
