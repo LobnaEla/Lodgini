@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const Navbar = () => {
-  // State to track user login status and user data
+const Navbar = ({ onSearch }) => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const location = useLocation();
 
-  // Simulate fetching user data (replace with actual API call or context)
+  // Preserve existing login effect
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')); // Example: check localStorage or auth context
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     if (loggedInUser) {
       setIsLoggedIn(true);
-      setUserName(loggedInUser.name); // Adjust key as per your data structure
+      setUserName(loggedInUser.name);
     }
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (onSearch) {
+      onSearch(searchQuery);
+    }
+
+    // Add URL parameter for the search
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.set('name', searchQuery);
+    const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
+    window.history.pushState({}, '', newUrl);
+  };
+
 
   const handleLogout = () => {
     // Clear user data on logout
@@ -122,11 +139,31 @@ const Navbar = () => {
         </a>
       </div>
 
-      {/* Search Bar Section with Material-UI Search Icon */}
-      <div style={searchWrapperStyles}>
-        <input type="text" placeholder="Search by name" style={searchStyles} />
-        <SearchIcon style={searchIconStyles} />
-      </div>
+      {/* Search Bar Section */}
+      <form onSubmit={handleSearch} style={searchWrapperStyles}>
+        <input
+          type="text"
+          placeholder="Search by name"
+          style={searchStyles}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button
+          type="submit"
+          style={{
+            position: 'absolute',
+            right: '7px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0
+          }}
+        >
+          <SearchIcon style={searchIconStyles} />
+        </button>
+      </form>
 
       {/* Navigation Links */}
       <ul style={linksStyles}>

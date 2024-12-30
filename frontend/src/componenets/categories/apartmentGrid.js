@@ -11,6 +11,7 @@ const ApartmentGrid = ({ propertyType, furnishingType }) => {
     const [filteredHouses, setFilteredHouses] = useState([]);
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
+    const searchName = queryParams.get('name');
 
     const location = queryParams.get('location');
     const checkIn = queryParams.get('checkIn');
@@ -42,13 +43,6 @@ const ApartmentGrid = ({ propertyType, furnishingType }) => {
                     setProperties(response.data);
                 }
 
-                // Apply furnishing type filter if needed (client-side)
-                if (furnishingType) {
-                    setProperties(prev =>
-                        prev.filter(property => property.furnishing_type === furnishingType)
-                    );
-                }
-
             } catch (error) {
                 console.error("Error fetching properties:", error);
             } finally {
@@ -57,17 +51,19 @@ const ApartmentGrid = ({ propertyType, furnishingType }) => {
         };
 
         fetchProperties();
-    }, [search, propertyType, furnishingType, location, checkIn, checkOut, numberOfPeople]);
+    }, [search, propertyType, location, checkIn, checkOut, numberOfPeople, searchName]);
 
+    // Filter properties based on all criteria
+    const filteredProperties = properties.filter((property) => {
+        const matchesPropertyType = propertyType ? property.property_type === propertyType : true;
+        const matchesFurnishing = furnishingType ? property.furnishing_type === furnishingType : true;
+        const matchesSearch = searchName
+            ? property.name.toLowerCase().includes(searchName.toLowerCase())
+            : true;
 
+        return matchesPropertyType && matchesFurnishing && matchesSearch;
+    });
 
-    // Filter properties based on propertyType and furnishingType
-    const filteredProperties = properties.filter(
-        (property) =>
-            (propertyType ? property.property_type === propertyType : true) &&
-            (furnishingType ? property.furnishing_type === furnishingType : true)
-    );
-    console.log("filtered:", filteredProperties);
     if (isLoading) {
         return (
             <div className="loader-container">
@@ -81,6 +77,7 @@ const ApartmentGrid = ({ propertyType, furnishingType }) => {
             </div>
         );
     }
+
 
     return (
         <div className="apartment-grid" style={gridStyle}>

@@ -8,16 +8,28 @@ import ApartmentGrid from './apartmentGrid';
 const Apartments = () => {
     // State to track selected furnishing type
     const [selectedCategory, setSelectedCategory] = useState("Modestly Furnished");
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Handler for category change
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.id);
     };
 
+
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        // Force a re-render of ApartmentGrid by updating the URL
+        const currentParams = new URLSearchParams(window.location.search);
+        currentParams.set('name', query);
+        window.history.pushState({}, '', `${window.location.pathname}?${currentParams.toString()}`);
+        // Optional: force a re-render
+        window.dispatchEvent(new Event('popstate'));
+    };
+
     return (
         <div style={{ backgroundColor: '#ede7e3', padding: '0 15px' }}>
             <div>
-                <Navbar2 />
+                <Navbar2 onSearch={handleSearch} />
                 <main>
                     <section className="hero_apt" style={{ padding: '200px 0' }}>
                         <h1 className='discover'>
@@ -59,7 +71,7 @@ const Apartments = () => {
                         </fieldset>
                     </div>
                     {/* ApartmentGrid */}
-                    <ApartmentGrid propertyType="Apartment" furnishingType={selectedCategory} />
+                    <ApartmentGrid propertyType="Apartment" furnishingType={selectedCategory} searchName={searchQuery} />
                 </main>
             </div>
             <Footer />

@@ -70,7 +70,7 @@ const Navbar = () => {
   const linksStyles = {
     listStyle: 'none',
     display: 'flex',
-    gap: '30px',
+    gap: '100px',
     margin: 0,
     padding: 0,
     marginLeft: isLoggedIn ? '-12%' : '0',
@@ -116,12 +116,6 @@ const Navbar = () => {
         >
           <img src="../../images/logo_seul.png" alt="Lodgini logo" style={logoImageStyles} />
         </a>
-      </div>
-
-      {/* Search Bar Section */}
-      <div style={searchWrapperStyles}>
-        <input type="text" placeholder="Search by name" style={searchStyles} />
-        <SearchIcon style={searchIconStyles} />
       </div>
 
       {/* Navigation Links */}
