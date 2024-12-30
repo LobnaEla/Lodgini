@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('management', '0018_review_about_lodgini_alter_review_property'),
+        ("management", "0018_review_about_lodgini_alter_review_property"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='propertyunavailabledate',
-            name='by_owner',
+            model_name="propertyunavailabledate",
+            name="by_owner",
             field=models.BooleanField(default=False),
         ),
     ]

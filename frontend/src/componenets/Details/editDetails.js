@@ -343,7 +343,6 @@ const EditDetails = () => {
                     </form>
                 </div>
 
-
                 <Footer />
             </div>
         </StyledWrapper>

@@ -197,7 +197,7 @@ const Reserv1 = () => {
             {/* Payment */}
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px' }}>
               <span style={{ color: '#d69e66' }}>You will pay:</span>
-              <span style={{ color: '#023047', fontWeight: 'bold' }}>${totalPrice}</span>
+              <span style={{ color: '#023047', fontWeight: 'bold' }}>{totalPrice} DT</span>
             </div>
           </div>
         </div>
